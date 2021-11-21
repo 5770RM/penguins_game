@@ -2,6 +2,10 @@
 // returns: number of players
 int get_nbr_of_players();
 
+// arguments: none
+// returns: number of penguins
+int get_nbr_of_penguins();
+
 // aguments: pointer to array's first index and number n of players to be initialized - score, penguins left etc.
 // returns: no value 
 void init_players(struct player* array, int n);
