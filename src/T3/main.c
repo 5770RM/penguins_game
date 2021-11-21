@@ -24,8 +24,9 @@ int main(int agrc, char **argv) {
     //int y = dims.y;
 
     // allocate memory for board and fill with elements using generate_board
-    int len = sizeof(struct board_tile*) * y + sizeof(struct board_tile) * x * y;
-    struct board_tile** board  = (struct board_tile **)malloc(len);
+    struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
+    for (i = 0; i < y; i++)
+        board[i] = (struct board_tile*)malloc(x * sizeof(struct board_tile));
     generate_board(board, x, y);
 
     // in the movement phase we might want to choose ones again the first player to make a move
@@ -72,6 +73,11 @@ int main(int agrc, char **argv) {
     
     int winner = determine_winner(players, n);
     end_game();
+
+    for (int i = 0; i < y; i++)
+        free(board[i]);
+
+    free(board);
     
     return 0;      
 }
