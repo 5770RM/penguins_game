@@ -74,6 +74,7 @@ int main(int agrc, char **argv) {
     int winner = determine_winner(players, n);
     end_game();
 
+    // free memory - this part might be move to end_game at some point
     for (int i = 0; i < y; i++)
         free(board[i]);
 
