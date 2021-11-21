@@ -1,19 +1,15 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>
-#include <stdlib.h>
-#include "structures.h"
-#include "gameplay_functions.h"
+#include <stdio.h>;
+#include <stdlib.h>;
+#include <structures.h>;
+#include <gameplay_functions.h>
 
-//int main() {
-//    char names_of_players[9]; //Put 9 here because it is max number of players
-//    int num = get_number_of_players();
-//    get_names_of_players(names_of_players, num);
-//    get_x_dimension();
-//    get_y_dimension();
-//   return 0;
-//}
-
-int get_nbr_of_players () {
+/*
+input parameters: none
+return: integer
+this function asks a user for an input and returns an integer for number of players.
+*/
+int get_nbr_of_players() {
     int number_of_players;
     printf("Enter the number of players(from 1 to 9): ");
     scanf("%i", &number_of_players);
@@ -22,9 +18,14 @@ int get_nbr_of_players () {
         scanf("%i", &number_of_players);
     }
     return number_of_players;
-}
 
-void init_players (struct player* players, int number_of_players) {
+}
+/*
+input parameters: struct player* players, int number_of_players
+return: none
+this function gets an array and number of players as an input and asks each player for name, simultaneously assigning names to array.
+*/
+void init_players(struct player* players, int number_of_players) {
     for (int i = 0; i < number_of_players; i++) {
         //if you only ask for one char you dont need an array of chars
         char ch;
@@ -38,18 +39,12 @@ void init_players (struct player* players, int number_of_players) {
     }
 }
 
-int get_x_dimension () {
-    int x;
-    printf("Enter how many columns you want in the board(from 2 to 16):");
-    scanf("%i", &x);
-    while (x < 2 || x > 16) {
-        printf("Wrong number of columns. Please try again: ");
-        scanf("%i", &x);
-    }
-    return x;
-}
-
-int get_y_dimension () {
+/*
+input parameters: none
+return: integer
+this function asks a user for number of columns of a board.
+*/
+int get_x_dimension() {
     int y;
     printf("Enter how many rows you want in the board(from 2 to 16):");
     scanf("%i", &y);
@@ -59,3 +54,20 @@ int get_y_dimension () {
     }
     return y;
 }
+/*
+input parameters: none
+return: integer
+this function asks a user for number of rows of a board.
+*/
+int get_y_dimension() {
+    int y;
+    printf("Enter how many rows you want in the board(from 2 to 16):");
+    scanf("%i", &y);
+    while (y < 2 || y > 16) {
+        printf("Wrong number of columns. Please try again: ");
+        scanf("%i", &y);
+    }
+    return y;
+}
+
+
