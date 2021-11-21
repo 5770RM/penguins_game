@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <structures.h>
-#include <gameplay_functions.h>
+#include "structures.h"
+#include "gameplay_functions.h"
 
 #define END_PP 1
 
