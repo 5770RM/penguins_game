@@ -2,7 +2,7 @@ struct player {
     int id;
     char name;
     int fish_collected;
-    int penguins;       //number of penguins
+    int penguins;       //number of penguins, should not be changed
     int pen_not_placed; //number of penguins which are not placed
 };
 
