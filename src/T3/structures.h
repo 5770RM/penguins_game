@@ -2,6 +2,8 @@ struct player {
     int id;
     char name;
     int fish_collected;
+    int penguins;       //number of penguins
+    int pen_not_placed; //number of penguins which are not placed
 };
 
 struct board_tile {
