@@ -47,7 +47,7 @@ struct placement get_placement();
 // returns: 1 if placement is valid, 0 otherwise
 int valid_placement(struct board_tile** board, struct placement p);
 
-// based of the premise that placement p is valid, places the penguin on board at coordinates specified in p, updates score of current player
+// based on the premise that placement p is valid, places the penguin on board at coordinates specified in p, updates score of current player
 // arguments: board, array of players, current player, valid placement
 // returns: no value
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p);
@@ -72,7 +72,7 @@ struct movement get_movement();
 // returns: 1 if movement is valid, 0 otherwise
 int valid_movement(struct board_tile** board, struct movement m, int curr_player);
 
-// based of the premise that movement m is valid, places the penguin on board at coordinates specified in m, remove the ice floe the penguin was standing on, update score of current player
+// based on the premise that movement m is valid, places the penguin on board at coordinates specified in m, remove the ice floe the penguin was standing on, update score of current player
 // arguments: board, array of players, current player, valid movement
 // returns: no value
 void execute_movement(struct board_tile** board, struct player* players, int curr_player, struct movement m);
