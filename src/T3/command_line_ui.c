@@ -20,6 +20,23 @@ int get_nbr_of_players() {
     return number_of_players;
 
 }
+
+/*
+input parameters: none
+return: integer
+this function asks a user for an input and returns an integer for number of penguins.
+*/
+int get_nbr_of_penguins() {
+    int number_of_penguins;
+    print("Enter the number of penguins(from 1 to 5): ");
+    scanf("%i", &number_of_penguins);
+    while (number_of_penguins <= 1 || number_of_penguins >= 5) {
+        printf("Wrong number of penguins. Please try again: ");
+        scanf("%i", &number_of_penguins);
+    }
+    return number_of_penguins; 
+}
+
 /*
 input parameters: struct player* players, int number_of_players
 return: none
@@ -54,6 +71,7 @@ int get_x_dimension() {
     }
     return y;
 }
+
 /*
 input parameters: none
 return: integer
@@ -70,4 +88,22 @@ int get_y_dimension() {
     return y;
 }
 
+/*
+input parameters: none
+return: movement type
+this function asks a user for a movement and returns it.
+*/
+struct movement get_movement() {
+    struct movement m;
+    return m;
+}
 
+/*
+input parameters: none
+return: placement type
+this function asks a user for a placement of a penguin and returns it.
+*/
+struct placement get_placement() {
+    struct placement p;
+    return p;
+}
