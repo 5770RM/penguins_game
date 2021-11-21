@@ -1,6 +1,6 @@
 #include "stuctures.h"
 #include "gameplay_functions.h"
-void determine_winner()
+int determine_winner(struct player* players, int n)
 {
 
 }
