@@ -13,7 +13,7 @@ int get_nbr_of_players() {
     int number_of_players;
     printf("Enter the number of players(from 1 to 9): ");
     scanf("%i", &number_of_players);
-    while (number_of_players <= 1 || number_of_players >= 9) {
+    while (number_of_players < 1 || number_of_players >= 9) {
         printf("Wrong number of players. Please try again: ");
         scanf("%i", &number_of_players);
     }
@@ -30,7 +30,7 @@ int get_nbr_of_penguins() {
     int number_of_penguins;
     print("Enter the number of penguins(from 1 to 5): ");
     scanf("%i", &number_of_penguins);
-    while (number_of_penguins <= 1 || number_of_penguins >= 5) {
+    while (number_of_penguins < 1 || number_of_penguins >= 5) {
         printf("Wrong number of penguins. Please try again: ");
         scanf("%i", &number_of_penguins);
     }
