@@ -8,6 +8,7 @@
 #define FALSE 0
 #define NONE -1
 
+// this function might be movde to another file
 struct board_tile** new_board(int x, int y) {
     struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
     for (i = 0; i < y; i++)
@@ -15,9 +16,8 @@ struct board_tile** new_board(int x, int y) {
 
     return board;
 }
-
+// this function might be moved to another file
 void free_board(struct board_tile** arr, int x, int y) {
-    // free memory - this part might be move to end_game at some point
     for (int i = 0; i < y; i++)
         free(board[i]);
 
