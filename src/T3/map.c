@@ -3,7 +3,7 @@
 #include "structures.h"
 #include <conio.h>
 #include "input.c"
-void generate_board(int x_size, int y_size, struct board_tile (*board)[y_size])
+void generate_board(struct board_tile** board, int x_size, int y_size)
 {
     srand(time(0));
     for (int j = 0; j < y_size; j++) // Map generation
@@ -18,7 +18,7 @@ void generate_board(int x_size, int y_size, struct board_tile (*board)[y_size])
         }
     }
 }
-void show_board(int x_size, int y_size, struct board_tile (*board)[y_size])
+void show_board(struct board_tile** board, int x_size, int y_size)
 {
     printf("   ");
     for (int i = 0; i < x_size; i++)
