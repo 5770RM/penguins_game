@@ -8,6 +8,22 @@
 #define FALSE 0
 #define NONE -1
 
+struct board_tile** new_board(int x, int y) {
+    struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
+    for (i = 0; i < y; i++)
+        board[i] = (struct board_tile*)malloc(x * sizeof(struct board_tile));
+
+    return board;
+}
+
+void free_board(struct board_tile** arr, int x, int y) {
+    // free memory - this part might be move to end_game at some point
+    for (int i = 0; i < y; i++)
+        free(board[i]);
+
+    free(board);
+}
+
 int main(int agrc, char **argv) {   
     //init();
     
@@ -24,10 +40,7 @@ int main(int agrc, char **argv) {
     //int y = dims.y;
 
     // allocate memory for board and fill with elements using generate_board
-    struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
-    for (i = 0; i < y; i++)
-        board[i] = (struct board_tile*)malloc(x * sizeof(struct board_tile));
-    generate_board(board, x, y);
+    struct board_tile** board = new_board(x, y);
 
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
@@ -74,11 +87,7 @@ int main(int agrc, char **argv) {
     int winner = determine_winner(players, n);
     end_game();
 
-    // free memory - this part might be move to end_game at some point
-    for (int i = 0; i < y; i++)
-        free(board[i]);
-
-    free(board);
+    free_board(board, x, y);
     
     return 0;      
 }
