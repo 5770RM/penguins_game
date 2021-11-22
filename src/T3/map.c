@@ -1,8 +1,9 @@
 #include <stdio.h>
 #include <time.h>
 #include "structures.h"
-#include <conio.h>
-#include "input.c"
+#include "command_line_ui.c"
+//#include <conio.h>
+//#include "input.c"
 void generate_board(struct board_tile** board, int x_size, int y_size)
 {
     srand(time(0));
