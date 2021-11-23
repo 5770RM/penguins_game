@@ -1,5 +1,6 @@
 output: main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
 	gcc -o output main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
+	
 main.o: gameplay_functions.h structures.h
 	gcc -c main.c
 
