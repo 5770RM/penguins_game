@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "input.c"
+//#include "input.c"
 int input_x(int x)
 {
     int position_x; //input x coord for moving
