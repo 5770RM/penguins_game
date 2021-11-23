@@ -1,3 +1,5 @@
+#ifndef STRUCTS
+#define STRUCTS
 struct player {
     int id;
     char name;
@@ -19,7 +21,7 @@ struct coordinate {
 struct placement {
     struct coordinate to;
 };
-
+#endif
 struct movement {
     struct coordinate from;
     struct coordinate to;
