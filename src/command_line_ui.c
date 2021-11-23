@@ -1,8 +1,8 @@
 #define _CRT_SECURE_NO_WARNINGS
-#include <stdio.h>;
-#include <stdlib.h>;
-#include "structures.h";
-#include "gameplay_functions.h";
+#include <stdio.h>
+#include <stdlib.h>
+#include "structures.h"
+#include "gameplay_functions.h"
 
 /*
 input parameters: none
