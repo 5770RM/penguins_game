@@ -1,3 +1,5 @@
+#ifndef FUNCTIONS
+#define FUNCTIONS
 // arguments: none
 // returns: number of players
 int get_nbr_of_players();
@@ -91,3 +93,4 @@ int determine_winner(struct player* players, int n);
 // TO-DO
 void init_game();
 void end_game();
+#endif
