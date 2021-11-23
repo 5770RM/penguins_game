@@ -1,13 +1,13 @@
 #include <stdio.h>
-//#include "input.c"
+
 int input_x(int x)
 {
-    int position_x; //input x coord for moving
+    int position_x; // input x coord for moving
     printf("Enter x coordinate of the penguin you want to choose: ");
     scanf("%d", &position_x);
     if (position_x > 1 && position_x <= x)
     {
-        return position_x;   
+        return position_x;
     }
     else
     {
@@ -15,7 +15,7 @@ int input_x(int x)
         input_x(x);
     }
 }
-int input_y(int y) //input y coord for moving
+int input_y(int y) // input y coord for moving
 {
     int position_y;
     printf("Enter y coordinate of the penguin you want to choose: ");
@@ -30,22 +30,28 @@ int input_y(int y) //input y coord for moving
         input_y(y);
     }
 }
-int movement_game_status() // check if there are tiles left to go onto
-{  
-    //int result;
+struct movement get_movement()
+{
+}
+int movement_game_status(struct board_tile** board, struct player* player) // check if there are tiles left to go onto
+{
+    // int result;
 
-    // return result;  
+    // return result;
 }
 int choosing_penguin() // read coord of a penguin, the player is going to move
 {
 }
-int movement_possible() // check if the penguin has a tile to go onto
+int movement_possible(struct board_tile** board, struct player* player, int curr_player) // check if the penguin has a tile to go onto
 {
 }
-int valid_movement() // check if it is possible to move onto this tile
+int valid_movement(struct board_tile** board, struct movement m, int curr_player) // check if it is possible to move onto this tile
 {
 }
-int execute_movement() // move the penguin to a tile, collect fish, remove the tile the penguin was on before
+void execute_movement(struct board_tile** board, struct player* players, int curr_player, struct movement m) // move the penguin to a tile, collect fish, remove the tile the penguin was on before
+{
+}
+void next_player(int curr_player,int n)
 {
 }
 
