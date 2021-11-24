@@ -11,13 +11,14 @@
 // this function might be movde to another file
 struct board_tile** new_board(int x, int y) {
     struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
+    int i;
     for (i = 0; i < y; i++)
         board[i] = (struct board_tile*)malloc(x * sizeof(struct board_tile));
 
     return board;
 }
 // this function might be moved to another file
-void free_board(struct board_tile** arr, int x, int y) {
+void free_board(struct board_tile** board, int x, int y) {
     for (int i = 0; i < y; i++)
         free(board[i]);
 
