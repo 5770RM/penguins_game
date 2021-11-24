@@ -1,4 +1,6 @@
 #include <stdio.h>
+#include "structures.h"
+#include "gameplay_functions.h"
 
 int input_x(int x)
 {
