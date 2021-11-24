@@ -32,9 +32,11 @@ int input_y(int y) // input y coord for moving
         input_y(y);
     }
 }
+/* this function is in command_line_ui.c
 struct movement get_movement()
 {
 }
+*/
 int movement_game_status(struct board_tile** board, struct player* player) // check if there are tiles left to go onto
 {
     // int result;
