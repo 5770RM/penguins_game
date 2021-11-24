@@ -37,9 +37,6 @@ void execute_placement(struct board_tile** board, struct player* players, int cu
 				nbr_of_penguins--; // reduce number of penguins after every successful placement
 			}
 	}
-	
-
-	return 0;
 }
 
 // check if there is left some penguins
