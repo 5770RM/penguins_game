@@ -5,10 +5,6 @@
 
 #define END_PP 1
 
-int get_nbr_of_players() {}
-int show_map() {}
-int get_nbr_of_penguins() {}
-
 int placement_game_status(penguins);
 
 int placement_possible(current_player, penguins);
@@ -20,13 +16,13 @@ int get_placement_y();
 int valid_placement(board, x, y);
 
 // executing placement
-int execute_placement() {
+void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p) {
 	int nbr_of_players = get_nbr_of_players(); // save number of players in variable
 	int nbr_of_penguins = get_nbr_of_penguins(); // save number of penguins in variable
 	while (placement_game_status(nbr_of_penguins) != END_PP) {
 		// Loop for asking every player the coordinates
 		for (int i = 0; i < nbr_of_players; i++) {
-				show_map();
+				show_board();
 				int x = get_placement_x();
 				int y = get_placement_y();
 				int valid = valid_placement(board, x, y);
