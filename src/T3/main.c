@@ -19,7 +19,8 @@ struct board_tile** new_board(int x, int y) {
 }
 // this function might be moved to another file
 void free_board(struct board_tile** board, int x, int y) {
-    for (int i = 0; i < y; i++)
+    int i;
+    for (i = 0; i < y; i++)
         free(board[i]);
 
     free(board);
