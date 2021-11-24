@@ -53,9 +53,6 @@ int valid_movement(struct board_tile** board, struct movement m, int curr_player
 void execute_movement(struct board_tile** board, struct player* players, int curr_player, struct movement m) // move the penguin to a tile, collect fish, remove the tile the penguin was on before
 {
 }
-void next_player(int curr_player,int n)
-{
-}
 
 /* int main()
 {
