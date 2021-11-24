@@ -28,7 +28,7 @@ this function asks a user for an input and returns an integer for number of peng
 */
 int get_nbr_of_penguins() {
     int number_of_penguins;
-    print("Enter the number of penguins(from 1 to 5): ");
+    printf("Enter the number of penguins(from 1 to 5): ");
     scanf("%i", &number_of_penguins);
     while (number_of_penguins < 1 || number_of_penguins >= 5) {
         printf("Wrong number of penguins. Please try again: ");
