@@ -32,6 +32,6 @@ struct GameState {
     struct player* players;
     int board_x, board_y; // board dims
     int n;  // number of players
-}
+};
 
 #endif
