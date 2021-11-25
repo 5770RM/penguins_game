@@ -44,6 +44,7 @@ int main(int agrc, char **argv) {
     // allocate memory for board and fill with elements using generate_board
     struct board_tile** board = new_board(x, y);
     generate_board(board, x, y);
+    show_board(board, x, y);
     
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
