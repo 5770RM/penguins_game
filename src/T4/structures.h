@@ -21,8 +21,17 @@ struct coordinate {
 struct placement {
     struct coordinate to;
 };
-#endif
+
 struct movement {
     struct coordinate from;
     struct coordinate to;
 };
+
+struct GameState {
+    struct board_tile** board;
+    struct player* players;
+    int board_x, board_y; // board dims
+    int n;  // number of players
+}
+
+#endif
