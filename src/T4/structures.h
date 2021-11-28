@@ -6,6 +6,7 @@ struct player {
     int fish_collected;
     int penguins;       //number of penguins, should not be changed
     int pen_not_placed; //number of penguins which are not placed
+    int movement_status; //if the player has a tile to go onto
 };
 
 struct board_tile {
