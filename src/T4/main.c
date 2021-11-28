@@ -71,7 +71,7 @@ int main(int agrc, char **argv) {
             } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
         }
-        next_player(curr_player, n);
+        next_player(&curr_player, n);
     }
    
     /*
@@ -91,7 +91,7 @@ int main(int agrc, char **argv) {
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);
         }
-        next_player(curr_player, n);
+        next_player(&curr_player, n);
     }
     
     int winner = determine_winner(players, n);
