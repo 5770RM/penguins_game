@@ -89,7 +89,7 @@ void execute_movement(struct board_tile** board, struct player* players, int cur
 // changes index of curr_player at given memory adress, for example (curr_player+1)%n
 // arguments: address to current player index, number of players in the game
 // returns: no value
-void next_player(int &curr_player, int n);
+void next_player(int *curr_player, int n);
 
 // displays the board to command line
 // arguments: board, board dims
