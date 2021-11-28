@@ -6,7 +6,7 @@
 int movement_game_status(struct board_tile** board, struct player* players, int amount_of_players);
 
 // for a given state of the game, decides if current player can move one of their penguins 
-// arguments: board, array of players, number of players
+// arguments: board, array of players, number of players, size of the map
 // returns: 1 if current players can move one of their penguins, 0 otherwise
 int movement_possible(struct board_tile** board, struct player* players, int curr_player,int x,int y);
 
