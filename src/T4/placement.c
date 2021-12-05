@@ -13,12 +13,20 @@ void execute_placement(struct board_tile** board, struct player* players, int cu
 }
 
 int placement_game_status(struct board_tile** board, struct player* players) {
-	for (int i = 0; i < sizeof(players) / sizeof(*players); i++) {
-		if (players[i].pen_not_placed != 0) {
-			return 0;
-		}
-		else {
-			return 1;
+	for (int i = 0; i < sizeof(board) / sizeof(board[0]); i++) {
+		for (int j = 0; j < sizeof(board[0]) / sizeof(board[0][0]); j++) {
+			if (board[i][j].fishes == 1) {
+				for (int i = 0; i < sizeof(players) / sizeof(players[0]); i++) {
+					if (players[i].pen_not_placed != 0) {
+						return 0;
+					}
+					else {
+						return 1;
+					}
+				}
+			}
+			else
+				return 1;
 		}
 	}
 }
