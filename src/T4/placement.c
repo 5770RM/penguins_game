@@ -59,7 +59,7 @@ struct placement get_placement() {
 */
 
 int valid_placement(struct board_tile** board, struct placement p) {
-	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.x][p.to.y].fishes == 1)
+	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.x][p.to.y].fishes == 1 && board[p.to.x][p.to.y].occupied == 0)
 		return 1;
 	else
 		return 0;
