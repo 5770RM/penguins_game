@@ -19,6 +19,9 @@ movement.o: movement.h structures.h
 placement.o: placement.h structures.h
 	gcc -c placement.c
 
+evaluation.o: evaluation.h structures.h
+	gcc -c evaluation.c
+
 clean:
 	rm *.o output
 
