@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structures.h"
-#include "command_line_ui_functions.h"
+#include "command_line_ui.h"
 
 /*
 input parameters: none
