@@ -3,7 +3,7 @@
 
 int choose_first_player(int n) {
 	int first_player = 1;
-    return first_player;
+	return first_player;
 }
 
 void next_player(int* curr_player, int n) {
