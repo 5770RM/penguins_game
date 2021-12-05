@@ -49,6 +49,7 @@ int main(int agrc, char **argv) {
 
     // allocate memory for board and fill with elements using generate_board
     struct board_tile** board = new_board(x, y);
+    // board has ocean tiles on all of its borders
     generate_board(board, x, y);
     show_board(board, x, y);
     
