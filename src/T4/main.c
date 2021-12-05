@@ -79,7 +79,7 @@ int main(int agrc, char **argv) {
         MOVEMENT PHASE
     */
     // as long as at least one player can make a move 
-    while (movement_game_status(board, players) != END_MP) {
+    while (movement_game_status(board, players),n != END_MP) {
         // check if currnet player can make a move        
         if (movement_possible(board, players, curr_player,x,y) == TRUE) {
             // unitl chosen move is invalid ask for another            
