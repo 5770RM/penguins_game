@@ -67,7 +67,7 @@ int main(int agrc, char **argv) {
             struct placement p;
             do {
                 show_board(board, x, y);
-                p = get_placement();
+                p = get_placement(x,y);
                 valid = valid_placement(board, p);
             } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
@@ -87,7 +87,7 @@ int main(int agrc, char **argv) {
             struct movement m;
             do {
                 show_board(board, x, y);
-                m = get_movement();
+                m = get_movement(x,y);
                 valid = valid_movement(board, m, curr_player);
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);
