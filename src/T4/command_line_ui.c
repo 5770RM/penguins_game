@@ -98,14 +98,14 @@ this function asks a user for a movement and returns it.
 */
 struct movement get_movement(int number_of_columns, int number_of_rows) {
     int x, y;
-    printf("Please enter a positive x-coordinate:");
+    printf("Enter x-coordinate you want to place your penguin on:");
     scanf("%i",&x);
     while (x > number_of_columns - 1 || x < 0) {
         printf("Wrong coordinates, please try again:");
         scanf("%i", &x);
     }
 
-    printf("Please enter a positive y-coordinate:");
+    printf("Enter y-coordinate you want to place your penguin on:");
     scanf("%i",&y);
     while (y > number_of_rows - 1 || y < 0) {
         printf("Wrong coordinates, please try again:");
@@ -123,14 +123,14 @@ this function asks a user for a placement of a penguin and returns it.
 */
 struct placement get_placement(int number_of_columns, int number_of_rows) {
     int x, y;
-    printf("Please enter a positive x-coordinate:");
+    printf("Enter x-coordinate you want to place your penguin on:");
     scanf("%i",&x);
     while (x > number_of_columns - 1 || x < 0)) {
         printf("Wrong coordinates, please try again:");
         scanf("%i", &x);
     }
 
-    printf("Please enter a positive y-coordinate:");
+    printf("Enter y-coordinate you want to place your penguin on:");
     scanf("%i",&y);
     while (y > number_of_rows - 1|| y < 0) {
         printf("Wrong coordinates, please try again:");
