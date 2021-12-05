@@ -10,7 +10,7 @@ struct player {
 
 struct board_tile {
     int occupied;   // id of player which occupies this tile or 0 if it is not occupied
-    int fishes;     // if it is equal to 0 then it is an ice floe, if it is equal to 1 or 2 or 3 then it has this amount of fish on it, otherwise it is equal to 0
+    int fishes;     // if it is equal to 0 then it is an ocean floe, if it is equal to 1 or 2 or 3 then it has this amount of fish on it, otherwise it is equal to 0
 };
 
 struct coordinate {
