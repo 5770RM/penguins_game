@@ -32,11 +32,17 @@ int placement_game_status(struct board_tile** board, struct player* players) {
 }
 
 int placement_possible(struct board_tile** board, struct player* players, int curr_player) {
-	if (players[curr_player].pen_not_placed == 0) {
-		return 0;
-	}
-	else {
-		return 1;
+	for (int i = 0; i < sizeof(board) / sizeof(board[0]); i++) {
+		for (int j = 0; j < sizeof(board[0]) / sizeof(board[0][0]); j++) {
+			if (board[i][j].fishes == 1) {
+				if (players[curr_player].pen_not_placed == 0)
+					return 0;
+				else
+					return 1;
+			}
+			else
+				return 0;
+		}
 	}
 }
 
