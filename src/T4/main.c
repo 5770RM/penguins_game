@@ -61,7 +61,7 @@ int main(int agrc, char **argv) {
     // as long as at least one player can place one of their penguins
     while (placement_game_status(board, players) != END_PP) {
         // check if current player can place a penguin
-        if (placement_possible(board, players, curr_playerб,) == TRUE) {
+        if (placement_possible(board, players, curr_player) == TRUE) {
             // until chosen placement is invalid ask for a new one
             int valid;
             struct placement p;
