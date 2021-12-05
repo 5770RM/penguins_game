@@ -8,15 +8,15 @@
 void generate_board(struct board_tile **board, int x_size, int y_size)
 {
     srand(time(0));
-    for (int j = 0; j < y_size; j++) // Map generation
+    for (int i = 0; i < y_size; i++) // Map generation
     {
-        for (int i = 0; i < x_size; i++)
+        for (int j = 0; j < x_size; j++)
         {
             board[i][j].fishes = (rand() % 3 + 1); // random value for fish on a tile
             board[i][j].occupied = 0;
-            if ((j == 0) || (j == (y_size - 1)) || (i == 0) || (i == (x_size - 1)))
+            if ((j == 0) || (j == (x_size - 1)) || (i == 0) || (i == (y_size - 1)))
             {
-               board[i][j].fishes = 0; // making tiles on the perimetr ocean
+                board[i][j].fishes = 0; // making tiles on the perimetr ocean
             }
         }
     }
@@ -24,19 +24,19 @@ void generate_board(struct board_tile **board, int x_size, int y_size)
 void show_board(struct board_tile **board, int x_size, int y_size)
 {
     printf("   ");
-    for (int i = 0; i < x_size; i++)
+    for (int j = 0; j < x_size; j++)
     {
-        printf("%4d", i); // x counter
-        if (i == x_size - 1)
+        printf("%4d", j); // x counter
+        if (j == x_size - 1)
         {
             printf("\n");
         }
     }
-    for (int j = 0; j < y_size; j++)
+    for (int i = 0; i < y_size; i++)
     {
-        for (int i = 0; i < x_size; i++)
+        for (int j = 0; j < x_size; j++)
         {
-            if ((j == 0) && (i == 0))
+            if ((i == 0) && (j == 0))
             {
                 printf("%-4d", j); // first line, index
                 printf("|%d %d", board[i][j].fishes, board[i][j].occupied);
@@ -45,32 +45,34 @@ void show_board(struct board_tile **board, int x_size, int y_size)
             {
                 printf("|%d %d", board[i][j].fishes, board[i][j].occupied);
             }
-            if (i == x_size - 1)
+            if (j == x_size - 1)
             {
                 printf("|\n");
-                if (j != (y_size - 1))
+                if (i != (y_size - 1))
                 {
-                    printf("%-4d", j + 1);
+                    printf("%-4d", i + 1);
                 }
             }
         }
     }
 }
-/* int main()
+/*struct board_tile **new_board(int x, int y)
 {
-    int x = get_x_dimension();
-    int y = get_y_dimension();
-    int len = sizeof(struct board_tile*) * y + sizeof(struct board_tile) * x * y;
-    struct board_tile** board  = (struct board_tile **)malloc(len);
-    generate_board(x, y,board);
-    show_board(x, y,board);
-     int position_x = input_x(x);
-    int position_y = input_y(y);
-     checking who1x is the current player
-     checking if there are any penguins left who can move
-     getting cords
-    checking if there is a current player's penguin on that tile
-    getting cords to move on
-     checking if cords are valid
-     switch players
-} */
+    struct board_tile **board = (struct board_tile **)malloc(y * sizeof(struct board_tile *));
+    int i;
+    for (i = 0; i < y; i++)
+        board[i] = (struct board_tile *)malloc(x * sizeof(struct board_tile));
+
+    return board;
+}
+int main()
+{
+    printf("enter: ");
+    int x, y;
+    scanf("%d", &x);
+    scanf("%d", &y);
+    struct board_tile **board = new_board(x, y);
+    generate_board(board, x, y);
+    show_board(board, x, y);
+}
+*/
