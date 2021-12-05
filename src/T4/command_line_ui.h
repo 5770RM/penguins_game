@@ -34,5 +34,5 @@ struct placement get_placement(int number_of_columns, int number_of_rows);
 
 // asks user for coordinates of the tile the penguins is being moved from and coordinates of the tile the penguins is moved to
 // arguments: number of columns and rows
-// returns: movement
+// returns: movement type
 struct movement get_movement(int number_of_columns, int number_of_rows);
