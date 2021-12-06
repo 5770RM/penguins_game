@@ -125,7 +125,7 @@ struct placement get_placement(int number_of_columns, int number_of_rows) {
     int x, y;
     printf("Enter x-coordinate you want to place your penguin on:");
     scanf("%i",&x);
-    while (x > number_of_columns - 1 || x < 0)) {
+    while (x > number_of_columns - 1 || x < 0) {
         printf("Wrong coordinates, please try again:");
         scanf("%i", &x);
     }
