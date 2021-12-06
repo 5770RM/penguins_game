@@ -42,9 +42,9 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 
 struct placement get_placement() {
 	int placement_x, placement_y;
-	printf("Please enter x coordinate: \n");
+	printf("Please enter X coordinate (only tiles with 1 fish): \n");
 	scanf("%d", &placement_x);
-	printf("Please enter y coordinate: \n");
+	printf("Please enter Y coordinate (only tiles with 1 fish): \n");
 	scanf("%d", &placement_y);
 	struct placement coord = { placement_x, placement_y };
 	return coord;
