@@ -19,15 +19,11 @@ int placement_game_status(struct board_tile** board, struct player* players, int
 					if (players[i].pen_not_placed != 0) {
 						return 0;
 					}
-					else {
-						return 1;
-					}
 				}
 			}
-			else
-				return 1;
 		}
 	}
+	return 1;
 }
 
 int placement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player) {
@@ -39,10 +35,9 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 				else
 					return 1;
 			}
-			else
-				return 0;
 		}
 	}
+	return 0;
 }
 
 /*
