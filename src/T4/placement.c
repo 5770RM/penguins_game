@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "placement.h"
 #include "structures.h"
+#include "placement.h"
 // #include "gameplay_functions.h"
-
 
 // executing placement
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p) {
