@@ -7,6 +7,8 @@ struct player {
     int penguins;       //number of penguins, should not be changed
     int pen_not_placed; //number of penguins which are not placed
     int movement_status; //if the player has a tile to go onto
+    int bot; // if a player is bot 1, if human - 0; 
+    int bot_level; // difficulty level of the bot, 0 if the player is a human.
 };
 
 struct board_tile {
