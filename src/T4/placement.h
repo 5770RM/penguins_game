@@ -1,12 +1,14 @@
+#ifndef PLCFUNCTIONS
+#define PLCFUNCTIONS
 // check if there is left some penguins and if there is left some tiles with 1 fish
-// arguments: board, array of players
+// arguments: board, array of players and its size
 // returns: 1 if number of penguins equals 0; 0 otherwise 
-int placement_game_status(struct board_tile** board, struct player* players);
+int placement_game_status(struct board_tile** board, struct player* players, int amount_of_players);
 
 // check if current_player has penguins and if board has tiles with 1 fish
-// arguments: board, array of players, current player
+// arguments: board and its x and y size, array of players and its size, current player
 // returns: 1 if current players has penguins, 0 otherwise
-int placement_possible(struct board_tile** board, struct player* players, int curr_player);
+int placement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player);
 
 // check if player entered valid coordinate
 // arguments: board, coordinates
@@ -17,3 +19,4 @@ int valid_placement(struct board_tile** board, struct placement p);
 // arguments: board, array of players, current player, valid placement
 // returns: no value
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p);
+#endif

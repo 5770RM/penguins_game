@@ -12,11 +12,11 @@ void execute_placement(struct board_tile** board, struct player* players, int cu
 	players[curr_player].fish_collected++;		
 }
 
-int placement_game_status(struct board_tile** board, struct player* players) {
+int placement_game_status(struct board_tile** board, struct player* players, int n) {
 	for (int i = 0; i < sizeof(board) / sizeof(board[0]); i++) {
 		for (int j = 0; j < sizeof(board[0]) / sizeof(board[0][0]); j++) {
 			if (board[i][j].fishes == 1) {
-				for (int i = 0; i < sizeof(players) / sizeof(players[0]); i++) {
+				for (int i = 0; i < n; i++) {
 					if (players[i].pen_not_placed != 0) {
 						return 0;
 					}
@@ -31,9 +31,9 @@ int placement_game_status(struct board_tile** board, struct player* players) {
 	}
 }
 
-int placement_possible(struct board_tile** board, struct player* players, int curr_player) {
-	for (int i = 0; i < sizeof(board) / sizeof(board[0]); i++) {
-		for (int j = 0; j < sizeof(board[0]) / sizeof(board[0][0]); j++) {
+int placement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player) {
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < y; j++) {
 			if (board[i][j].fishes == 1) {
 				if (players[curr_player].pen_not_placed == 0)
 					return 0;

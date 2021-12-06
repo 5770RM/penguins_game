@@ -59,15 +59,15 @@ int main(int agrc, char **argv) {
         PLACEMENT PHASE
     */
     // as long as at least one player can place one of their penguins
-    while (placement_game_status(board, players) != END_PP) {
+    while (placement_game_status(board, players, n) != END_PP) {
         // check if current player can place a penguin
-        if (placement_possible(board, players, curr_player) == TRUE) {
+        if (placement_possible(board, x, y, players, n, curr_player) == TRUE) {
             // until chosen placement is invalid ask for a new one
             int valid;
             struct placement p;
             do {
                 show_board(board, x, y);
-                p = get_placement(x,y);
+                p = get_placement(x, y);
                 valid = valid_placement(board, p);
             } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
@@ -79,15 +79,15 @@ int main(int agrc, char **argv) {
         MOVEMENT PHASE
     */
     // as long as at least one player can make a move 
-    while (movement_game_status(board, players),n != END_MP) {
+    while (movement_game_status(board, players, n) != END_MP) {
         // check if currnet player can make a move        
-        if (movement_possible(board, players, curr_player,x,y) == TRUE) {
+        if (movement_possible(board, x, y, players, n, curr_player) == TRUE) {
             // unitl chosen move is invalid ask for another            
             int valid;
             struct movement m;
             do {
                 show_board(board, x, y);
-                m = get_movement(x,y);
+                m = get_movement(x, y);
                 valid = valid_movement(board, m, curr_player);
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);

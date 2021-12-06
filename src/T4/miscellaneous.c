@@ -7,5 +7,5 @@ int choose_first_player(int n) {
 }
 
 void next_player(int* curr_player, int n) {
-	curr_player = (curr_player + 1) % n;
+	*curr_player = (*curr_player + 1) % n;
 }
