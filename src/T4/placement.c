@@ -40,7 +40,6 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 	return 0;
 }
 
-/*
 struct placement get_placement() {
 	int placement_x, placement_y;
 	printf("Please enter x coordinate: \n");
@@ -50,7 +49,6 @@ struct placement get_placement() {
 	struct placement coord = { placement_x, placement_y };
 	return coord;
 }
-*/
 
 int valid_placement(struct board_tile** board, struct placement p) {
 	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.x][p.to.y].fishes == 1 && board[p.to.x][p.to.y].occupied == 0)
