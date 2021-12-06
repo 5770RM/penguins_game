@@ -15,6 +15,11 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 // returns 1 if coords valid, 0 otherwise
 int valid_placement(struct board_tile** board, struct placement p);
 
+// asks user for coordinates of placement of one of their penguins
+// arguments: none
+// returns: placement type 
+struct placement get_placement();
+
 // based on the premise that placement p is valid, places the penguin on board at coordinates specified in p, updates score of current player
 // arguments: board, array of players, current player, valid placement
 // returns: no value
