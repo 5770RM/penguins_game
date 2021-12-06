@@ -36,5 +36,10 @@ struct GameState {
     int board_x, board_y; // board dims
     int n;  // number of players
 };
+struct bot_placement
+    {
+        int x; // x coordinate of the tile
+        int y; // y coordinate of the tile
+    };
 
 #endif
