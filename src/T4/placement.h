@@ -8,7 +8,7 @@ int placement_game_status(struct board_tile** board, struct player* players, int
 // check if current_player has penguins and if board has tiles with 1 fish
 // arguments: board and its x and y size, array of players and its size, current player
 // returns: 1 if current players has penguins, 0 otherwise
-int placement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player);
+int placement_possible(struct board_tile** board, int x, int y, struct player* players, int curr_player);
 
 // check if player entered valid coordinate
 // arguments: board, coordinates
