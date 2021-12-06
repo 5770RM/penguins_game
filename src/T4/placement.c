@@ -26,7 +26,7 @@ int placement_game_status(struct board_tile** board, struct player* players, int
 	return 1;
 }
 
-int placement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player) {
+int placement_possible(struct board_tile** board, int x, int y, struct player* players, int curr_player) {
 	for (int i = 0; i < x; i++) {
 		for (int j = 0; j < y; j++) {
 			if (board[i][j].fishes == 1) {
