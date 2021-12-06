@@ -8,7 +8,7 @@
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p) {
 	board[p.to.x][p.to.y].occupied = players[curr_player].id; // show player's id on the board
 	players[curr_player].pen_not_placed--; // reduce number of penguins of current player after every successful placement
-	players[curr_player].fish_collected++;		
+	players[curr_player].fish_collected++; // update the score of the current player	
 }
 
 int placement_game_status(struct board_tile** board, struct player* players, int n) {
