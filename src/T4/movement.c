@@ -1,5 +1,4 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <math.h>
 #include "structures.h"
 // #include "gameplay_functions.h"
@@ -11,7 +10,7 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
     int status = 0;
     for (int i = 0; i < amount_of_players; i++)
     {
-        if (players[i].movement_status == 1)
+        if (players[i].movement_status == 0)
         {
             status_counter++;
         }
@@ -22,80 +21,83 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
     }
     return status;
 }
-int movement_possible(struct board_tile **board, int x, int y, struct player *players, int n, int curr_player) // check if the player has a tile to go onto
+int movement_possible(struct board_tile **board, struct player *players, int curr_player, int x, int y) // check if the player has a tile to go onto
 {
     int id = players[curr_player].id;
     int result = 0;
-    for (int j = 1; j < x - 1; j++)
+    if (players[curr_player].movement_status == 1)
     {
-        for (int i = 1; i < y - 1; i++)
-            if (board[j][i].occupied == id)
-            {
-                if ((board[i + 1][j].fishes != 0) || (board[i - 1][j].fishes != 0) || (board[i][j + 1].fishes != 0) || (board[i][j - 1].fishes != 0))
+        for (int j = 1; j < x - 1; j++)
+        {
+            for (int i = 1; i < y - 1; i++)
+                if (board[j][i].occupied == id)
                 {
-                    result = 1;
-                    players[curr_player].movement_status = 0;
-                    return result;
+                    if ((board[i + 1][j].fishes != 0) || (board[i - 1][j].fishes != 0) || (board[i][j + 1].fishes != 0) || (board[i][j - 1].fishes != 0))
+                    {
+                        result = 1;
+                        return result;
+                    }
                 }
-            }
+        }
+        players[curr_player].movement_status = 0;
     }
     return result;
 }
-int valid_movement(struct board_tile **board, struct movement m, int curr_player) // check if it is possible to move onto this tile
+int valid_movement(struct board_tile **board, struct player *players, struct movement m, int curr_player) // check if it is possible to move onto this tile
 {
     int flag = 0;
-    if ((m.from.x == m.to.x) || (m.from.y == m.to.y))
+    if (board[m.from.y][m.from.x].occupied == players[curr_player].id)
     {
-        if (m.from.x == m.to.x)
+        if ((m.from.x == m.to.x) || (m.from.y == m.to.y))
         {
-            if (m.from.x - m.to.x > 0)
+            flag = 1;
+            if (m.from.x == m.to.x)
             {
-                for (int i = 0; i < abs(m.from.x - m.to.x); i++)
+                if (m.from.x - m.to.x > 0)
                 {
-                    if ((board[m.to.y-i][m.to.x].fishes == 0) || ((board[m.from.y-i][m.from.x].occupied > 0)))
+                    for (int i = 1; i < abs(m.from.x - m.to.x); i++)
                     {
-                        flag = 1;
+                        if ((board[m.to.y - i][m.to.x].fishes == 0) || ((board[m.from.y - i][m.from.x].occupied > 0)))
+                        {
+                            flag = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i < abs(m.from.x - m.to.x); i++)
+                    {
+                        if ((board[m.to.y + i][m.from.x].fishes == 0) || ((board[m.to.y + i][m.from.x].occupied > 0)))
+                        {
+                            flag = 0;
+                        }
                     }
                 }
             }
             else
             {
-                for (int i = 0; i < abs(m.from.x - m.to.x); i++)
+                if (m.from.y - m.to.y > 0)
                 {
-                    if ((board[m.to.y+i][m.from.x].fishes == 0) || ((board[m.to.y+i][m.from.x].occupied > 0)))
+                    for (int i = 1; i < abs(m.from.y - m.to.y); i++)
                     {
-                        flag = 1;
+                        if ((board[m.to.y][m.to.x - i].fishes == 0) || ((board[m.to.y][m.to.x - i].occupied > 0)))
+                        {
+                            flag = 0;
+                        }
+                    }
+                }
+                else
+                {
+                    for (int i = 1; i < abs(m.from.y - m.to.y); i++)
+                    {
+                        if ((board[m.to.y][m.to.x + i].fishes == 0) || ((board[m.to.y][m.to.x + i].occupied > 0)))
+                        {
+                            flag = 0;
+                        }
                     }
                 }
             }
         }
-        else
-        {
-            if (m.from.y - m.to.y > 0)
-            {
-                for (int i = 0; i < abs(m.from.y - m.to.y); i++)
-                {
-                    if ((board[m.to.y][m.to.x-i].fishes == 0) || ((board[m.to.y][m.to.x-i].occupied > 0)))
-                    {
-                        flag = 1;
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 0; i < abs(m.from.y - m.to.y); i++)
-                {
-                    if ((board[m.to.y][m.to.x+i].fishes == 0) || ((board[m.to.y][m.to.x+1].occupied > 0)))
-                    {
-                        flag = 1;
-                    }
-                }
-            }
-        }
-    }
-    else
-    {
-        return flag;
     }
     return flag;
 }
