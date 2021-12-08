@@ -158,6 +158,13 @@ void display_curr_player(struct player* players, int curr_player) {
    printf("It is %c player's turn\n", players[curr_player-1].name); 
 }
 
+void print_invalid_placement() {
+    printf("Placement is invalid.\n");
+}
+
+void print_invalid_movement() {
+    printf("Movement is invalid.\n");
+}
 //int get_difficulty_level() {
 //    int level;
 //    printf("Enter the level of difficulty(from 1 to 3): ");
