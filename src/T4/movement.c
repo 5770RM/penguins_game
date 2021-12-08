@@ -8,7 +8,7 @@
 int movement_game_status(struct board_tile **board, struct player *players, int amount_of_players) // check if there are tiles left to go onto
 {
     int status_counter = 0;
-    int status = 0;
+    int status = 1;
     for (int i = 0; i < amount_of_players; i++)
     {
         if (players[i].movement_status == 0)
@@ -18,7 +18,7 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
     }
     if (status_counter == amount_of_players)
     {
-        status = 1;
+        status = 0;
     }
     return status;
 }
