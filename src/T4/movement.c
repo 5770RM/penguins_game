@@ -24,9 +24,9 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
 }
 int movement_possible(struct board_tile **board, int x, int y, struct player *players, int curr_player) // check if the player has a tile to go onto
 {
-    int id = players[curr_player-1].id;
+    int id = players[curr_player - 1].id;
     int result = 0;
-    if (players[curr_player-1].movement_status == 1)
+    if (players[curr_player - 1].movement_status == 1)
     {
         for (int j = 1; j < x - 1; j++)
         {
@@ -35,41 +35,38 @@ int movement_possible(struct board_tile **board, int x, int y, struct player *pl
                 {
                     if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
                     {
-                        //printf("yes\n");
+                        // printf("yes\n");
                         result = 1;
                         return result;
                     }
                 }
         }
-        players[curr_player-1].movement_status = 0;
+        players[curr_player - 1].movement_status = 0;
     }
     return result;
 }
 int valid_movement(struct board_tile **board, struct player *players, struct movement m, int curr_player) // check if it is possible to move onto this tile
 {
     int flag = 0;
-    if (board[m.from.y][m.from.x].occupied == players[curr_player-1].id)
+    if (board[m.from.y][m.from.x].occupied == players[curr_player - 1].id)
     {
         if ((m.from.x == m.to.x) || (m.from.y == m.to.y))
         {
             flag = 1;
             if (m.from.x == m.to.x)
             {
-                if (m.from.x - m.to.x > 0)
+                for (int i = 1; i < (abs(m.from.y - m.to.y)); i++)
                 {
-                    for (int i = 1; i < abs(m.from.x - m.to.x); i++)
+                    if ((m.from.y - m.to.y) > 0)
                     {
-                        if ((board[m.to.y - i][m.to.x].fishes == 0) || ((board[m.from.y - i][m.from.x].occupied > 0)))
+                        if ((board[m.from.y - i][m.to.x].fishes == 0))
                         {
                             flag = 0;
                         }
                     }
-                }
-                else
-                {
-                    for (int i = 1; i < abs(m.from.x - m.to.x); i++)
+                    else
                     {
-                        if ((board[m.to.y + i][m.from.x].fishes == 0) || ((board[m.to.y + i][m.from.x].occupied > 0)))
+                        if (board[m.from.y + i][m.to.x].fishes == 0)
                         {
                             flag = 0;
                         }
@@ -78,21 +75,18 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
             }
             else
             {
-                if (m.from.y - m.to.y > 0)
+                for (int i = 1; i < (abs(m.from.y - m.to.y)); i++)
                 {
-                    for (int i = 1; i < abs(m.from.y - m.to.y); i++)
+                    if ((m.from.x - m.to.x) > 0)
                     {
-                        if ((board[m.to.y][m.to.x - i].fishes == 0) || ((board[m.to.y][m.to.x - i].occupied > 0)))
+                        if ((board[m.from.y][m.from.x-i].fishes == 0))
                         {
                             flag = 0;
                         }
                     }
-                }
-                else
-                {
-                    for (int i = 1; i < abs(m.from.y - m.to.y); i++)
+                    else
                     {
-                        if ((board[m.to.y][m.to.x + i].fishes == 0) || ((board[m.to.y][m.to.x + i].occupied > 0)))
+                        if (board[m.from.y][m.from.x+i].fishes == 0)
                         {
                             flag = 0;
                         }
@@ -106,8 +100,8 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
 void execute_movement(struct board_tile **board, struct player *players, int curr_player, struct movement m) // move the penguin to a tile, collect fish, remove the tile the penguin was on before
 {
     board[m.from.y][m.from.x].occupied = 0;
-    board[m.to.y][m.to.x].occupied = players[curr_player-1].id;
-    players[curr_player-1].fish_collected = players[curr_player-1].fish_collected + board[m.to.y][m.to.x].fishes;
+    board[m.to.y][m.to.x].occupied = players[curr_player - 1].id;
+    players[curr_player - 1].fish_collected = players[curr_player - 1].fish_collected + board[m.to.y][m.to.x].fishes;
     board[m.to.y][m.to.x].fishes = 0;
 }
 
