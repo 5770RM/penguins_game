@@ -111,22 +111,39 @@ return: movement type
 this function asks a user for a movement and returns it.
 */
 struct movement get_movement(int number_of_columns, int number_of_rows) {
-    int x, y;
+    int fromX, fromY, toX, toY;
     printf("Enter x-coordinate you want to move your penguin on:");
-    scanf("%i",&x);
-    while (x > number_of_columns - 1 || x < 0) {
+    scanf("%i",&toX);
+    while (fromX > number_of_columns - 1 || fromX < 0) {
         printf("Wrong coordinates, please try again:");
-        scanf("%i", &x);
+        scanf("%i", &fromX);
     }
 
     printf("Enter y-coordinate you want to move your penguin on:");
-    scanf("%i",&y);
-    while (y > number_of_rows - 1 || y < 0) {
+    scanf("%i",&fromY);
+    while (fromY > number_of_rows - 1 || fromY < 0) {
         printf("Wrong coordinates, please try again:");
-        scanf("%i", &y);
+        scanf("%i", &fromY);
+    }
+    printf("Enter x-coordinate you want to move your penguin on:");
+    scanf("%i",&toX);
+    while (toX > number_of_columns - 1 || toX < 0) {
+        printf("Wrong coordinates, please try again:");
+        scanf("%i", &toX);
     }
 
-    struct movement m = {x, y};
+    printf("Enter y-coordinate you want to move your penguin on:");
+    scanf("%i",&toY);
+    while (toY > number_of_rows - 1 || toY < 0) {
+        printf("Wrong coordinates, please try again:");
+        scanf("%i", &toY);
+    }
+
+    struct movement m;
+    m.from.x= fromX;
+    m.from.y= fromY;
+    m.to.x= toX;
+    m.to.y= toY;
     return m;
 }
 
