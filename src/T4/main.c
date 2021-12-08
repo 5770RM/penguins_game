@@ -6,13 +6,9 @@
 #include "miscellaneous.h"
 #include "movement.h"
 #include "placement.h"
+#include "defines.h"
 #include <stdlib.h>
 #include <stdio.h>
-#define END_PP 0
-#define END_MP 0
-#define TRUE 1
-#define FALSE 0
-#define NONE -1
 
 int main(int agrc, char **argv) {   
     //init();
@@ -64,7 +60,7 @@ int main(int agrc, char **argv) {
     /*
         MOVEMENT PHASE
     */
-    movement_init();
+    movement_init(board, x, y, players, n);
     // as long as at least one player can make a move 
     while (movement_game_status(board, players, n) != END_MP) {
         // check if currnet player can make a move        

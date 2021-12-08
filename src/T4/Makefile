@@ -1,7 +1,7 @@
 output: main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
 	gcc -o output main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
 	
-main.o: evaluation.h map.h miscellaneous.h movement.h placement.h command_line_ui.h structures.h
+main.o: evaluation.h map.h miscellaneous.h movement.h placement.h command_line_ui.h defines.h structures.h
 	gcc -c main.c
 
 command_line_ui.o: command_line_ui.h structures.h

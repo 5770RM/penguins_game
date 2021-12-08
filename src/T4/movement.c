@@ -35,7 +35,7 @@ int movement_possible(struct board_tile **board, int x, int y, struct player *pl
                 {
                     if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
                     {
-                        printf("yes\n");
+                        //printf("yes\n");
                         result = 1;
                         return result;
                     }

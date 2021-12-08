@@ -18,10 +18,17 @@ void placement_init() {
     printf("-------------------\n");    
 }
 
-void movement_init() {
+void movement_init(struct board_tile** board, int x, int y, struct player* players, int n) {
     printf("------------------\n");        
     printf("| MOVEMENT PHASE |\n");    
     printf("------------------\n");    
+
+    int i, j;
+    for (i=1; i<y-1; ++i) 
+        for (j=1; j<x-1; ++j) 
+            if (board[i][j].occupied) 
+                if (board[i-1][j].fishes || board[i][j-1].fishes || board[i+1][j].fishes || board[i][j+1].fishes)
+                    players[board[i][j].occupied-1].movement_status = 1;
 }
 
 // IMPORTANT! in 2D array of the map first [] is for y, second [] is for x
