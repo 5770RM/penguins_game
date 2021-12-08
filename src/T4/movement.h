@@ -8,7 +8,7 @@ int movement_game_status(struct board_tile** board, struct player* players, int 
 // for a given state of the game, decides if current player can move one of their penguins 
 // arguments: board, array of players and its x and y dims, array of players and the number of players n, id of current players
 // returns: 1 if current players can move one of their penguins, 0 otherwise
-int movement_possible(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player);
+int movement_possible(struct board_tile** board, int x, int y, struct player* players, int curr_player);
 
 // decides if the movement m is possible = origin tile is occupied by one of current player's penguins, ther is no other penguins on a second tile and secone tile must be an ice floe
 // agruments: movement m, current player number
