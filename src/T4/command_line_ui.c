@@ -66,6 +66,7 @@ void init_players(struct player* players, int number_of_players) {
     }
     int penguins;
     printf("Amount of players each players has: ");
+    scanf("%d", &penguins);
     for (i = 0; i < number_of_players; i++) {
         players[i].penguins = penguins;
         players[i].pen_not_placed = penguins;
