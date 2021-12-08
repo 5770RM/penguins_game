@@ -50,45 +50,54 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
     int flag = 0;
     if (board[m.from.y][m.from.x].occupied == players[curr_player - 1].id)
     {
-        if ((m.from.x == m.to.x) || (m.from.y == m.to.y))
+        if ((m.from.x == m.to.x) && (m.from.y == m.to.y))
         {
-            flag = 1;
-            if (m.from.x == m.to.x)
+        }
+        else
+        {
+            if ((m.from.x == m.to.x) || (m.from.y == m.to.y))
             {
-                for (int i = 1; i <= (abs(m.from.y - m.to.y)); i++)
+                if (board[m.to.y][m.to.x].fishes != 0)
                 {
-                    if ((m.from.y - m.to.y) > 0)
+                    flag = 1;
+                    if (m.from.x == m.to.x)
                     {
-                        if ((board[m.from.y - i][m.to.x].fishes == 0))
+                        for (int i = 1; i <= (abs(m.from.y - m.to.y)); i++)
                         {
-                            flag = 0;
+                            if ((m.from.y - m.to.y) > 0)
+                            {
+                                if ((board[m.from.y - i][m.to.x].fishes == 0))
+                                {
+                                    flag = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (board[m.from.y + i][m.to.x].fishes == 0)
+                                {
+                                    flag = 0;
+                                }
+                            }
                         }
                     }
                     else
                     {
-                        if (board[m.from.y + i][m.to.x].fishes == 0)
+                        for (int i = 1; i <= (abs(m.from.y - m.to.y)); i++)
                         {
-                            flag = 0;
-                        }
-                    }
-                }
-            }
-            else
-            {
-                for (int i = 1; i <= (abs(m.from.y - m.to.y)); i++)
-                {
-                    if ((m.from.x - m.to.x) > 0)
-                    {
-                        if ((board[m.from.y][m.from.x - i].fishes == 0))
-                        {
-                            flag = 0;
-                        }
-                    }
-                    else
-                    {
-                        if (board[m.from.y][m.from.x + i].fishes == 0)
-                        {
-                            flag = 0;
+                            if ((m.from.x - m.to.x) > 0)
+                            {
+                                if ((board[m.from.y][m.from.x - i].fishes == 0))
+                                {
+                                    flag = 0;
+                                }
+                            }
+                            else
+                            {
+                                if (board[m.from.y][m.from.x + i].fishes == 0)
+                                {
+                                    flag = 0;
+                                }
+                            }
                         }
                     }
                 }
