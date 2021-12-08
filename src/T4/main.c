@@ -8,8 +8,8 @@
 #include "placement.h"
 #include <stdlib.h>
 #include <stdio.h>
-#define END_PP 1
-#define END_MP 1
+#define END_PP 0
+#define END_MP 0
 #define TRUE 1
 #define FALSE 0
 #define NONE -1

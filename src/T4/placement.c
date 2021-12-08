@@ -8,36 +8,28 @@
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p) {
 	board[p.to.y][p.to.x].occupied = players[curr_player-1].id; // show player's id on the board
 	board[p.to.y][p.to.x].fishes = 0;
-	players[curr_player].pen_not_placed--; // reduce number of penguins of current player after every successful placement
-	players[curr_player].fish_collected++; // update the score of the current player	
+	players[curr_player-1].pen_not_placed--; // reduce number of penguins of current player after every successful placement
+	players[curr_player-1].fish_collected++; // update the score of the current player	
 }
 
 int placement_game_status(struct board_tile** board, int x, int y, struct player* players, int n) {
-	for (int i = 0; i < x; i++) {
-		for (int j = 0; j < y; j++) {
-			if (board[i][j].fishes == 1) {
-				for (int i = 0; i < n; i++) {
-					if (players[i].pen_not_placed != 0) {
-						return 0;
-					}
-				}
-			}
-		}
-	}
-	return 1;
+	int floes = 0; // numbr of ice floes with 1 penguins on them
+    for (int i = 0; i < y; i++) 
+		for (int j = 0; j < x; j++) 
+			if (board[i][j].fishes == 1 && board[i][j].occupied == 0) 
+                ++floes;
+    int pen_not_placed = 0; // sum of not not placed penguins of all players
+    for (int i = 0; i < n; i++)
+        pen_not_placed += players[i].pen_not_placed;
+    return pen_not_placed && floes >= pen_not_placed;
 }
 
 int placement_possible(struct board_tile** board, int x, int y, struct player* players, int curr_player) {
-	for (int i = 0; i < y; i++) {
-		for (int j = 0; j < x; j++) {
-			if (board[i][j].fishes == 1) {
-				if (players[curr_player].pen_not_placed == 0)
-					return 0;
-				else
-					return 1;
-			}
-		}
-	}
+	for (int i = 0; i < y; i++) 
+		for (int j = 0; j < x; j++) 
+			if (board[i][j].fishes == 1 && board[i][j].occupied == 0) 
+		        return 1;
+	
 	return 0;
 }
 
