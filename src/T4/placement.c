@@ -13,7 +13,7 @@ void execute_placement(struct board_tile** board, struct player* players, int cu
 }
 
 int placement_game_status(struct board_tile** board, int x, int y, struct player* players, int n) {
-	int floes = 0; // numbr of ice floes with 1 penguins on them
+    int floes = 0; // numbr of ice floes with 1 penguins on them
     for (int i = 0; i < y; i++) 
 		for (int j = 0; j < x; j++) 
 			if (board[i][j].fishes == 1 && board[i][j].occupied == 0) 

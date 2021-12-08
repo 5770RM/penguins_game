@@ -31,7 +31,7 @@ int movement_possible(struct board_tile **board, int x, int y, struct player *pl
         for (int j = 1; j < x - 1; j++)
         {
             for (int i = 1; i < y - 1; i++)
-                if (board[j][i].occupied == id)
+                if (board[i][j].occupied == id)
                 {
                     if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
                     {
@@ -107,7 +107,7 @@ void execute_movement(struct board_tile **board, struct player *players, int cur
 {
     board[m.from.y][m.from.x].occupied = 0;
     board[m.to.y][m.to.x].occupied = players[curr_player-1].id;
-    players[curr_player].fish_collected = players[curr_player-1].fish_collected + board[m.to.y][m.to.x].fishes;
+    players[curr_player-1].fish_collected = players[curr_player-1].fish_collected + board[m.to.y][m.to.x].fishes;
     board[m.to.y][m.to.x].fishes = 0;
 }
 
