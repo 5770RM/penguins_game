@@ -41,3 +41,9 @@ struct movement get_movement(int number_of_columns, int number_of_rows);
 // arguments: players, id of current player
 // returns: no value
 void display_curr_player(struct player* players, int curr_player);
+
+// displays error messange to the screen
+void print_invalid_placement();
+
+// displays_error message to the screen
+void print_invalid_movement();
