@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <math.h>
+#include <stdlib.h>
 #include "structures.h"
 // #include "gameplay_functions.h"
 #include "movement.h"

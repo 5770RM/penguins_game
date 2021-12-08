@@ -47,7 +47,8 @@ return: none
 this function gets an array and number of players as an input and asks each player for name, simultaneously assigning names to array.
 */
 void init_players(struct player* players, int number_of_players) {
-    for (int i = 0; i < number_of_players; i++) {
+    int i;
+    for (i = 0; i < number_of_players; i++) {
         char ch;
         printf("Enter the name of the %ist player(only one character):", i + 1);
         scanf(" %c", &ch);
@@ -55,7 +56,19 @@ void init_players(struct player* players, int number_of_players) {
             printf("Invalid name, try again:");
             scanf("%c", &ch);
         }
+        // assigning initial values
+        players[i].id = i+1;
         players[i].name = ch;
+        players[i].fish_collected = 0;
+        players[i].movement_status = 0;
+        players[i].bot = 0;
+        players[i].bot_level = 0;
+    }
+    int penguins;
+    printf("Amount of players each players has: ");
+    for (i = 0; i < number_of_players; i++) {
+        players[i].penguins = penguins;
+        players[i].pen_not_placed = penguins;
     }
 }
 
@@ -139,6 +152,10 @@ struct placement get_placement(int number_of_columns, int number_of_rows) {
 
     struct placement p = {x, y};
     return p;
+}
+
+void display_curr_player(struct player* players, int curr_player) {
+   printf("It is %c player's turn\n", players[curr_player-1].name); 
 }
 
 //int get_difficulty_level() {

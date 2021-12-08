@@ -13,7 +13,7 @@ int movement_possible(struct board_tile** board, int x, int y, struct player* pl
 // decides if the movement m is possible = origin tile is occupied by one of current player's penguins, ther is no other penguins on a second tile and secone tile must be an ice floe
 // agruments: movement m, current player number
 // returns: 1 if movement is valid, 0 otherwise
-int valid_movement(struct board_tile** board, struct movement m, int curr_player);
+int valid_movement(struct board_tile** board, struct player* players, struct movement m, int curr_player);
 
 // based on the premise that movement m is valid, places the penguin on board at coordinates specified in m, remove the ice floe the penguin was standing on, update score of current player
 // arguments: board, array of players, current player, valid movement

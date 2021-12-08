@@ -7,7 +7,7 @@
 #include "movement.h"
 #include "placement.h"
 #include <stdlib.h>
-
+#include <stdio.h>
 #define END_PP 1
 #define END_MP 1
 #define TRUE 1
@@ -55,6 +55,7 @@ int main(int agrc, char **argv) {
     
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
+    
     /*
         PLACEMENT PHASE
     */
@@ -65,6 +66,7 @@ int main(int agrc, char **argv) {
             // until chosen placement is invalid ask for a new one
             int valid;
             struct placement p;
+            display_curr_player(players, curr_player);
             do {
                 show_board(board, x, y);
                 p = get_placement(x, y);
@@ -81,14 +83,15 @@ int main(int agrc, char **argv) {
     // as long as at least one player can make a move 
     while (movement_game_status(board, players, n) != END_MP) {
         // check if currnet player can make a move        
-        if (movement_possible(board, x, y, players, n, curr_player) == TRUE) {
+        if (movement_possible(board, x, y, players, curr_player) == TRUE) {
             // unitl chosen move is invalid ask for another            
             int valid;
             struct movement m;
+            display_curr_player(players, curr_player);
             do {
                 show_board(board, x, y);
                 m = get_movement(x, y);
-                valid = valid_movement(board, m, curr_player);
+                valid = valid_movement(board, players, m, curr_player);
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);
         }

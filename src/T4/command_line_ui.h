@@ -36,3 +36,8 @@ struct placement get_placement(int number_of_columns, int number_of_rows);
 // arguments: number of columns and rows
 // returns: movement type
 struct movement get_movement(int number_of_columns, int number_of_rows);
+
+// displays on the screen the name of current players with a message, is used to determine which player turn it is
+// arguments: players, id of current player
+// returns: no value
+void display_curr_player(struct player* players, int curr_player);
