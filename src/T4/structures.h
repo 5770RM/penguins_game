@@ -41,5 +41,16 @@ struct bot_placement
         int x; // x coordinate of the tile
         int y; // y coordinate of the tile
     };
+        struct bot_choosing
+    {
+        int x; // x coordinate of the tile
+        int y; // y coordinate of the tile
+    };
+    struct bot_movement
+    {
+        int x; // x coordinate of the tile
+        int y; // y coordinate of the tile
+    };
+
 
 #endif
