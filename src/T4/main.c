@@ -71,6 +71,7 @@ int main(int agrc, char **argv) {
                 show_board(board, x, y);
                 p = get_placement(x, y);
                 valid = valid_placement(board, p);
+                if  (!valid) print_invalid_placement();
             } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
         }
@@ -92,6 +93,7 @@ int main(int agrc, char **argv) {
                 show_board(board, x, y);
                 m = get_movement(x, y);
                 valid = valid_movement(board, players, m, curr_player);
+                if (!valid) print_invalid_movement();
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);
         }

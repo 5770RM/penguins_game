@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include "structures.h"
 // #include "gameplay_functions.h"
@@ -21,7 +22,7 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
     }
     return status;
 }
-int movement_possible(struct board_tile **board, struct player *players, int x, int y, int curr_player) // check if the player has a tile to go onto
+int movement_possible(struct board_tile **board, int x, int y, struct player *players, int curr_player) // check if the player has a tile to go onto
 {
     int id = players[curr_player].id;
     int result = 0;
