@@ -12,11 +12,15 @@ void next_player(int* curr_player, int n) {
 }
 
 void placement_init() {
-    printf("PLACEMENT PHASE\n");    
+    printf("-------------------\n");        
+    printf("| PLACEMENT PHASE |\n");    
+    printf("-------------------\n");    
 }
 
 void movement_init() {
-    printf("MOVEMENT PHASE\n");
+    printf("------------------\n");        
+    printf("| MOVEMENT PHASE |\n");    
+    printf("------------------\n");    
 }
 
 void init_game() {}
