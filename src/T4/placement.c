@@ -6,7 +6,8 @@
 
 // executing placement
 void execute_placement(struct board_tile** board, struct player* players, int curr_player, struct placement p) {
-	board[p.to.x][p.to.y].occupied = players[curr_player].id; // show player's id on the board
+	board[p.to.y][p.to.x].occupied = players[curr_player].id; // show player's id on the board
+	board[p.to.y][p.to.x].fishes = 0;
 	players[curr_player].pen_not_placed--; // reduce number of penguins of current player after every successful placement
 	players[curr_player].fish_collected++; // update the score of the current player	
 }
@@ -41,7 +42,7 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 }
 
 int valid_placement(struct board_tile** board, struct placement p) {
-	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.x][p.to.y].fishes == 1 && board[p.to.x][p.to.y].occupied == 0)
+	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.y][p.to.x].fishes == 1 && board[p.to.y][p.to.x].occupied == 0)
 		return 1;
 	else
 		return 0;
