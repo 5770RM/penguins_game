@@ -14,7 +14,8 @@
 #define FALSE 0
 #define NONE -1
 
-// this function might be movde to another file
+// this function might be moved to another file
+// IMPORTANT! in 2D array of the map first [] is for y, second [] is for x
 struct board_tile** new_board(int x, int y) {
     struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));
     int i;
