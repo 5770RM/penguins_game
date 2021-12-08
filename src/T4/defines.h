@@ -3,4 +3,4 @@
 #define TRUE 1
 #define FALSE 0
 #define NONE -1
-
+#define SEED 0
