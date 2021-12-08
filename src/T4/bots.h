@@ -1,5 +1,5 @@
-#ifndef STRUCTS
-#define STRUCTS
+#ifndef BOTS
+#define BOTS
 // find which tiles the bot can place its penguins on
 int bot_possible_placement(struct board_tile **board, struct player *players, int x_size, int y_size);
 // place bot's penguins
