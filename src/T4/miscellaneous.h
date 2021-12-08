@@ -10,6 +10,12 @@ int choose_first_player(int n);
 // returns: no value
 void next_player(int *curr_player, int n);
 
+// returns: 2D array of dimensions x, y
+// IMPORTANT! board[i][j], where i<y and j<x
+struct board_tile** new_board(int x, int y);
+
+// frees memory takes by the 2D array
+void free_board(struct board_tile** board, int x, int y);
 // To-do
 void placement_init();
 // To-do
