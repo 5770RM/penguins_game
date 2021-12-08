@@ -10,6 +10,11 @@ int choose_first_player(int n);
 // returns: no value
 void next_player(int *curr_player, int n);
 
+// To-do
+void placement_init();
+// To-do
+void movement_init();
+
 // TO-DO
 void init_game();
 void end_game();

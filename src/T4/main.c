@@ -60,6 +60,7 @@ int main(int agrc, char **argv) {
     /*
         PLACEMENT PHASE
     */
+    placement_init();
     // as long as at least one player can place one of their penguins
     while (placement_game_status(board, x, y, players, n) != END_PP) {
         // check if current player can place a penguin
@@ -82,6 +83,7 @@ int main(int agrc, char **argv) {
     /*
         MOVEMENT PHASE
     */
+    movement_init();
     // as long as at least one player can make a move 
     while (movement_game_status(board, players, n) != END_MP) {
         // check if currnet player can make a move        
