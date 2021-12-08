@@ -12,9 +12,9 @@ void execute_placement(struct board_tile** board, struct player* players, int cu
 	players[curr_player].fish_collected++; // update the score of the current player	
 }
 
-int placement_game_status(struct board_tile** board, struct player* players, int n) {
-	for (int i = 0; i < sizeof(board) / sizeof(board[0]); i++) {
-		for (int j = 0; j < sizeof(board[0]) / sizeof(board[0][0]); j++) {
+int placement_game_status(struct board_tile** board, int x, int y, struct player* players, int n) {
+	for (int i = 0; i < x; i++) {
+		for (int j = 0; j < y; j++) {
 			if (board[i][j].fishes == 1) {
 				for (int i = 0; i < n; i++) {
 					if (players[i].pen_not_placed != 0) {
@@ -41,8 +41,8 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 	return 0;
 }
 
-int valid_placement(struct board_tile** board, struct placement p) {
-	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < sizeof(board)/sizeof(board[0])) && (p.to.y < sizeof(board[0]) / sizeof(board[0][0])) && board[p.to.y][p.to.x].fishes == 1 && board[p.to.y][p.to.x].occupied == 0)
+int valid_placement(struct board_tile** board, int x, int y, struct placement p) {
+	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < x) && (p.to.y < y) && board[p.to.y][p.to.x].fishes == 1 && board[p.to.y][p.to.x].occupied == 0)
 		return 1;
 	else
 		return 0;

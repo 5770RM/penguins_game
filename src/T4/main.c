@@ -60,7 +60,7 @@ int main(int agrc, char **argv) {
         PLACEMENT PHASE
     */
     // as long as at least one player can place one of their penguins
-    while (placement_game_status(board, players, n) != END_PP) {
+    while (placement_game_status(board, x, y, players, n) != END_PP) {
         // check if current player can place a penguin
         if (placement_possible(board, x, y, players, curr_player) == TRUE) {
             // until chosen placement is invalid ask for a new one
@@ -70,7 +70,7 @@ int main(int agrc, char **argv) {
             do {
                 show_board(board, x, y);
                 p = get_placement(x, y);
-                valid = valid_placement(board, p);
+                valid = valid_placement(board, x, y, p);
                 if  (!valid) print_invalid_placement();
             } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
