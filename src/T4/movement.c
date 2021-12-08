@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <math.h>
-#include <stdlib.h>
 #include "structures.h"
 // #include "gameplay_functions.h"
 #include "movement.h"
@@ -22,7 +21,7 @@ int movement_game_status(struct board_tile **board, struct player *players, int 
     }
     return status;
 }
-int movement_possible(struct board_tile **board, int x, int y, struct player *players, int curr_player) // check if the player has a tile to go onto
+int movement_possible(struct board_tile **board, struct player *players, int x, int y, int curr_player) // check if the player has a tile to go onto
 {
     int id = players[curr_player].id;
     int result = 0;
@@ -33,8 +32,9 @@ int movement_possible(struct board_tile **board, int x, int y, struct player *pl
             for (int i = 1; i < y - 1; i++)
                 if (board[j][i].occupied == id)
                 {
-                    if ((board[i + 1][j].fishes != 0) || (board[i - 1][j].fishes != 0) || (board[i][j + 1].fishes != 0) || (board[i][j - 1].fishes != 0))
+                    if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
                     {
+                        printf("yes\n");
                         result = 1;
                         return result;
                     }
