@@ -116,6 +116,7 @@ struct movement get_movement(int number_of_columns, int number_of_rows) {
     scanf("%i",&fromX);
     while (fromX > number_of_columns - 1 || fromX < 0) {
         printf("Wrong coordinates, please try again:");
+        printf("Enter x-coordinate you want to move your penguin from:");
         scanf("%i", &fromX);
     }
 
@@ -123,12 +124,14 @@ struct movement get_movement(int number_of_columns, int number_of_rows) {
     scanf("%i",&fromY);
     while (fromY > number_of_rows - 1 || fromY < 0) {
         printf("Wrong coordinates, please try again:");
+        printf("Enter y-coordinate you want to move your penguin from:");
         scanf("%i", &fromY);
     }
     printf("Enter x-coordinate you want to move your penguin on:");
     scanf("%i",&toX);
     while (toX > number_of_columns - 1 || toX < 0) {
         printf("Wrong coordinates, please try again:");
+        printf("Enter x-coordinate you want to move your penguin on:");
         scanf("%i", &toX);
     }
 
@@ -136,6 +139,7 @@ struct movement get_movement(int number_of_columns, int number_of_rows) {
     scanf("%i",&toY);
     while (toY > number_of_rows - 1 || toY < 0) {
         printf("Wrong coordinates, please try again:");
+        printf("Enter y-coordinate you want to move your penguin on:");
         scanf("%i", &toY);
     }
 
