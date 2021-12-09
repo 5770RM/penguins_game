@@ -81,6 +81,7 @@ int main(int agrc, char **argv) {
     }
     
     int winner = determine_winner(players, n);
+    print_winner(players, n, winner);
     end_game();
 
     free_board(board, x, y);
