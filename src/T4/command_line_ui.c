@@ -187,6 +187,15 @@ void print_invalid_placement() {
 void print_invalid_movement() {
     printf("Movement is invalid.\n");
 }
+
+void print_winner(struct player* players, int n, int winner) {
+    printf("RANKING\n");
+    printf("name | score\n");
+    int i;
+    for (i=0; i<n; ++i) {
+        printf("%c: %d\n", players[i].name, players[i].fish_collected);
+    }
+}
 //int get_difficulty_level() {
 //    int level;
 //    printf("Enter the level of difficulty(from 1 to 3): ");

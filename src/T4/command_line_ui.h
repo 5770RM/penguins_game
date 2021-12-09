@@ -47,3 +47,8 @@ void print_invalid_placement();
 
 // displays_error message to the screen
 void print_invalid_movement();
+
+// printf winnwer and message that sums up the game
+// arugments: array of players and its size n, winner_id is in range [1,n]
+// returns: no value
+void print_winner(struct player* players, int n, int winner_id);
