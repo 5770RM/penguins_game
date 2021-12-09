@@ -2,7 +2,7 @@
 #define MOVFUNCTIONS
 // for a given state of the game, decides if movement phase should be stopped = none of the players can move one of their penguins
 // arguments: board, array of players
-// returns: 1 if none of the players can move one of their penguins, 0 otherwise 
+// returns: 0 if none of the players can move one of their penguins, 1 otherwise 
 int movement_game_status(struct board_tile** board, struct player* players, int amount_of_players);
 
 // for a given state of the game, decides if current player can move one of their penguins 
@@ -20,6 +20,4 @@ int valid_movement(struct board_tile** board, struct player* players, struct mov
 // returns: no value
 void execute_movement(struct board_tile** board, struct player* players, int curr_player, struct movement m);
 
-// displays the board to command line
-void show_board(struct board_tile** board, int x, int y);
 #endif

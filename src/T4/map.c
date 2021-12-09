@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structures.h"
+#include "map.h"
 //#include "command_line_ui.c"
 //#include <conio.h>
 //#include "input.c"
