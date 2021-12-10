@@ -56,7 +56,7 @@ void init_players(struct player* players, int number_of_players) {
             printf("Invalid name, try again:");
             scanf("%c", &ch);
         }
-        printf("Is the player a bot(1 yes, 0 no): ") // We need to add cheching the values here
+        printf("Is the player a bot(1 yes, 0 no): "); // We need to add cheching the values here
         scanf("%d",&bot);
         // assigning initial values
         players[i].id = i+1;
