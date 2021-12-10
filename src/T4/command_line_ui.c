@@ -208,6 +208,10 @@ void print_winner(struct player* players, int n, int winner) {
 //
 //}
 
-//int check_if_ai() {
-//    printf("");
-//}
+int check_if_ai() {
+    int answer;
+    printf("The player is a bot(1 yes,0 not): ");
+    scanf("%d",&answer);
+    return answer;
+}
+
