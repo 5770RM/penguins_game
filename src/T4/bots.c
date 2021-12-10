@@ -68,7 +68,7 @@ int bot1_choosing_movement(struct board_tile **board, struct player *players, st
     {
         mov_choice[movement_counter].x = (m.from.x);
         mov_choice[movement_counter].y = (m.from.y + up);
-        printf("%d %d",mov_choice[movement_counter].y, mov_choice[movement_counter].x);
+        // printf("%d %d",mov_choice[movement_counter].y, mov_choice[movement_counter].x);
         up++;
         movement_counter++;
     }
@@ -93,9 +93,9 @@ int bot1_choosing_movement(struct board_tile **board, struct player *players, st
         left++;
         movement_counter++;
     }
-    printf("%d ", movement_counter); 
+    // printf("%d ", movement_counter); 
     int movement_decision = (rand() % (movement_counter));
-    printf("%d ", movement_decision); // del
+    // printf("%d ", movement_decision); // del
     return movement_decision;
 }
 struct movement bot_mov_choosing_execution(struct board_tile **board, struct player *players, struct bot_movement *mov_choice, struct movement m, int curr_player, int movement_decision)
