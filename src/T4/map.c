@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structures.h"
-#include "map.h"
 //#include "command_line_ui.c"
 //#include <conio.h>
 //#include "input.c"
@@ -57,23 +56,41 @@ void show_board(struct board_tile **board, int x_size, int y_size)
         }
     }
 }
-/*struct board_tile **new_board(int x, int y)
+void board_gen_check(struct board_tile **board,struct player* players, int x_size, int y_size,int n)
 {
-    struct board_tile **board = (struct board_tile **)malloc(y * sizeof(struct board_tile *));
-    int i;
-    for (i = 0; i < y; i++)
-        board[i] = (struct board_tile *)malloc(x * sizeof(struct board_tile));
-
-    return board;
+    srand(time(0));
+    int one_counter = 0;
+    int zero_counter = 0;
+    int x_ran=0;
+    int y_ran=0;
+    for (int i = 0; i < y_size; i++)
+    {
+        for (int j = 0; j < x_size; j++)
+        {
+            if (board[i][j].fishes == 0)
+            {
+                zero_counter++;
+            }
+        }
+    }
+    for (int i = 0; i < y_size; i++)
+    {
+        for (int j = 0; j < x_size; j++)
+        {
+            if (board[i][j].fishes == 1)
+            {
+                one_counter++;
+            }
+        }
+    }
+    while(one_counter<((x_size*y_size)-zero_counter))
+    {
+        y_ran=rand()%(y_size-2)+1;
+        x_ran=rand()%(x_size-2)+1;
+        if ((board[y_ran][x_ran].fishes!=1) && (board[y_ran][x_ran].fishes!=0))
+        {
+            board[y_ran][x_ran].fishes=1;
+            one_counter++;
+        }
+    }
 }
-int main()
-{
-    printf("enter: ");
-    int x, y;
-    scanf("%d", &x);
-    scanf("%d", &y);
-    struct board_tile **board = new_board(x, y);
-    generate_board(board, x, y);
-    show_board(board, x, y);
-}
-*/
