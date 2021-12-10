@@ -45,14 +45,25 @@ int main(int agrc, char **argv) {
             // until chosen placement is invalid ask for a new one
             int valid;
             struct placement p;
-            display_curr_player(players, curr_player);
-            do {
-                show_board(board, x, y);
-                p = get_placement(x, y);
-                valid = valid_placement(board, x, y, p);
+            struct bot_placement *placements = (struct bot_placement *)malloc(x * y * sizeof(struct bot_placement));
+            if (players[curr_player].bot == 0)
+            {
+                display_curr_player(players, curr_player);
+                do 
+                {
+                    show_board(board, x, y);
+                    p = get_placement(x, y);
+                    valid = valid_placement(board, x, y, p);
                 if  (!valid) print_invalid_placement();
-            } while (valid == FALSE);
+                } while (valid == FALSE);
             execute_placement(board, players, curr_player, p);
+            }
+            else
+            {
+                show_board(board, x, y);
+                int placement_decision = bot_possible_placement(board, players, placements, x, y);
+                bot1_placement_execution(board, players, placements, p, curr_player, placement_decision);
+            }
         }
         next_player(&curr_player, n);
     }
@@ -66,8 +77,13 @@ int main(int agrc, char **argv) {
         // check if currnet player can make a move        
         if (movement_possible(board, x, y, players, curr_player) == TRUE) {
             // unitl chosen move is invalid ask for another            
-            int valid;
+            
+            struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
+            struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));
             struct movement m;
+            if (players[curr_player].bot == 0)
+            {
+            int valid;
             display_curr_player(players, curr_player);
             do {
                 show_board(board, x, y);
@@ -76,6 +92,16 @@ int main(int agrc, char **argv) {
                 if (!valid) print_invalid_movement();
             } while (valid == FALSE);
             execute_movement(board, players, curr_player, m);
+            }
+            else
+            {
+                show_board(board, x, y);
+                int penguin_decision = bot1_choosing_penguin(board, players, choice, x, y, curr_player);
+                m = bot1_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
+                int movement_deicision = bot1_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+                m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+                execute_movement(board, players, curr_player, m);
+            }
         }
         next_player(&curr_player, n);
     }
