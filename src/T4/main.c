@@ -31,6 +31,7 @@ int main(int agrc, char **argv) {
     // board has ocean tiles on all of its borders
     generate_board(board, x, y);
     // show_board(board, x, y);
+    board_gen_check(board, players, x, y, n);
     
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
