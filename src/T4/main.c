@@ -6,6 +6,7 @@
 #include "miscellaneous.h"
 #include "movement.h"
 #include "placement.h"
+#include "bots.h"
 #include "defines.h"
 #include <stdlib.h>
 #include <stdio.h>
