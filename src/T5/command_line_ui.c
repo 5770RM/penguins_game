@@ -232,15 +232,15 @@ return: integer
 this function is determine the difficulty level of the bot.
 */
 int get_difficulty_level() {
-   int level;
-   printf("Enter the level of difficulty(from 0(included) to 3(included)): ");
-   scanf("%i", &level);
+    int level;
+    printf("Enter the level of difficulty(from 0(included) to 3(included)): ");
+    scanf("%i", &level);
 
-   while (level < 0 || level > 3) {
-       printf("Wrong level of difficulty. Please try again");
-       scanf("%i", &level);
-   }
-
+    while (level < 0 || level > 3) {
+        printf("Wrong level of difficulty. Please try again");
+        scanf("%i", &level);
+    }
+    return level;
 }
 
 /*

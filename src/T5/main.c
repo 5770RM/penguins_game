@@ -10,13 +10,17 @@
 #include "external_data.h"
 #include "autonomous.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 int main(int agrc, char **argv) {   
 #if AUTONOMOUS_MODE
+    if (invalid_cla(agrc, argv) == TRUE) {
+        error("Invalid command line arguments %s\n", argv[0]);
+        return 1;
+    }
     struct GameState* state = read_board(argv[3]);
     execute_autonomous_command(state, argc, argv); 
-    write_board(state, argv[4]);
-    return 0;   
+    write_board(state, argv[4]);  
 #endif
 #if INTERACTIVE_MODE  
     int n = get_nbr_of_players();
@@ -42,27 +46,26 @@ int main(int agrc, char **argv) {
     while (placement_game_status(board, x, y, players, n) != END_PP) {
         // check if current player can place a penguin
         if (placement_possible(board, x, y, players, curr_player) == TRUE) {
-            // until chosen placement is invalid ask for a new one
-            int valid;
-            struct placement p;
-            
             display_curr_player(players, curr_player);
-            if (players[curr_player-1].bot == FALSE) { 
+            if (players[curr_player-1].bot == FALSE) {
+                int valid;
+                struct placement p;
                 // until chosen placement is invalid ask for a new one
                 do {
                     show_ranking(players, n);
                     show_board(board, x, y, players);
                     p = get_placement(x, y);
-                    if ( (valid = valid_placement(board, x, y, p)) == FALSE);
+                    if ( (valid = valid_placement(board, x, y, p)) == FALSE)
                         print_invalid_placement();
                 } while (valid == FALSE);
+                // execute valid placement
                 execute_placement(board, players, curr_player, p);
             }
             else {
                 // current player is a bot
+                execute_placement_bot(board, x, y, players, n, curr_player);
                 show_ranking(players, n);
                 show_board(board, x, y, players);
-                execute_placement_bot(board, x, y, players, n, curr_player);
             }
         }
         next_player(&curr_player, n);
@@ -87,7 +90,7 @@ int main(int agrc, char **argv) {
                     show_ranking(players, n);    
                     show_board(board, x, y, players);
                     m = get_movement(x, y);
-                    if ( (valid = valid_movement(board, players, m, curr_player)) == FALSE);
+                    if ( (valid = valid_movement(board, players, m, curr_player)) == FALSE)
                         print_invalid_movement();
                 } while (valid == FALSE);
                 execute_movement(board, players, curr_player, m);
