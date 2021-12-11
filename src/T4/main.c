@@ -48,7 +48,7 @@ int main(int agrc, char **argv) {
             int valid;
             struct placement p;
             struct bot_placement *placements = (struct bot_placement *)malloc(x * y * sizeof(struct bot_placement));
-            if (players[curr_player].bot == 0)
+            if (players[curr_player-1].bot == 0)
             {
                 display_curr_player(players, curr_player);
                 do 
@@ -83,7 +83,7 @@ int main(int agrc, char **argv) {
             struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
             struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));
             struct movement m;
-            if (players[curr_player].bot == 0)
+            if (players[curr_player-1].bot == 0)
             {
             int valid;
             display_curr_player(players, curr_player);

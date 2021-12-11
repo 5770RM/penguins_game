@@ -78,7 +78,7 @@ int main(int agrc, char **argv) {
             
             struct movement m; 
             display_curr_player(players, curr_player);
-            if (players[curr_player].bot == FALSE) {
+            if (players[curr_player-1].bot == FALSE) {
                 int valid;
                 // unitl chosen move is invalid ask for another            
                 do {
