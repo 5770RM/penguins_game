@@ -7,16 +7,18 @@
 #include "placement.h"
 #include "bots.h"
 #include "defines.h"
+#include "external_data.h"
+#include "autonomous.h"
 #include <stdlib.h>
-#include <stdio.h>
 
 int main(int agrc, char **argv) {   
-    
 #if AUTONOMOUS_MODE
-    
+    struct GameState* state = read_board(argv[3]);
+    execute_autonomous_command(state, argc, argv); 
+    write_board(state, argv[4]);
+    return 0;   
 #endif
 #if INTERACTIVE_MODE  
-    //int GUI = 0;
     int n = get_nbr_of_players();
     struct player* players = (struct player*)malloc(n * sizeof(struct player));
 
