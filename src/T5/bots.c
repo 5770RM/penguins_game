@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structures.h"
+#include "movement.h"
+#include "placement.h"
 // Bot level 1
 int bot_possible_placement(struct board_tile **board, struct player *players, struct bot_placement *placements, int x_size, int y_size)
 {
@@ -107,3 +109,26 @@ struct movement bot_mov_choosing_execution(struct board_tile **board, struct pla
     return m;
 }
 // bot level 2
+
+// BOT GENERAL FUNCTIONS
+void execute_placement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player) {
+    struct placement p;
+    struct bot_placement *placements = (struct bot_placement *)malloc(x * y * sizeof(struct bot_placement));
+    int placement_decision = bot_possible_placement(board, players, placements, x, y);
+    bot1_placement_execution(board, players, placements, p, curr_player, placement_decision);
+    // TO-DO 
+    // FREE THE MEMEORY OF plaments array
+}
+
+void execute_movement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player) {
+    struct movement m;
+    struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
+    struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));
+    int penguin_decision = bot1_choosing_penguin(board, players, choice, x, y, curr_player);
+    m = bot1_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
+    int movement_deicision = bot1_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+    m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+    execute_movement(board, players, curr_player, m); 
+    // TO-DO
+    // FREE THE MEMORY
+}

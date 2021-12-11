@@ -12,4 +12,9 @@ struct movement bot1_choosing_execution(struct board_tile **board, struct player
 int bot1_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice,  int x_size, int y_size, int curr_player);
 // apply the tile the bot choose to go onto
 struct movement bot_mov_choosing_execution(struct board_tile **board, struct player *players, struct bot_movement *mov_choice, struct movement m, int curr_player, int movement_decision);
+// executes the placement of the bot, changes values on the board - board is passed by reference 
+void execute_placement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player);
+// executes the movement of the bot, changes values on the board - board is passed by reference 
+void execute_movement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player);
+
 #endif
