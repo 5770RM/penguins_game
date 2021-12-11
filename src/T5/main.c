@@ -12,8 +12,11 @@
 #include <stdio.h>
 
 int main(int agrc, char **argv) {   
-    //init();
     
+#if AUTONOMOUS_MODE
+    
+#endif
+#if INTERACTIVE_MODE  
     //int GUI = 0;
     int n = get_nbr_of_players();
     struct player* players = (struct player*)malloc(n * sizeof(struct player));
@@ -113,6 +116,7 @@ int main(int agrc, char **argv) {
     end_game();
 
     free_board(board, x, y);
-    
+#endif
+   
     return 0;      
 }
