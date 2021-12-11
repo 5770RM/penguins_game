@@ -66,7 +66,7 @@ void generate_board(struct board_tile **board, int x_size, int y_size)
         }
     }
 }
-void show_board(struct board_tile **board, int x_size, int y_size)
+void show_board(struct board_tile **board, int x_size, int y_size, struct player* players)
 {
     printf("   ");
     for (int j = 0; j < x_size; j++)
@@ -81,24 +81,28 @@ void show_board(struct board_tile **board, int x_size, int y_size)
     {
         for (int j = 0; j < x_size; j++)
         {
+            int occupied = board[i][j].occupied;
+            int fishes = board[i][j].fishes;
             if ((i == 0) && (j == 0))
             {
                 printf("%-4d", j); // first line, index
-                if (board[i][j].occupied != 0)
-                    printf("|- %d", board[i][j].occupied);
-                else if (board[i][j].occupied == 0 && board[i][j].fishes == 0)
+                int occupied = board[i][j].occupied;
+                int fishes = board[i][j].fishes;
+                if (occupied != 0)
+                    printf("|- %c", players[occupied].name);
+                else if (occupied == 0 && fishes == 0)
                     printf("|- -");
                 else
-                    printf("|%d -", board[i][j].fishes);
+                    printf("|%d -", fishes);
             }
             else
             {
-                if (board[i][j].occupied != 0)
-                    printf("|- %d", board[i][j].occupied);
-                else if (board[i][j].occupied == 0 && board[i][j].fishes == 0)
+                if (occupied != 0)
+                    printf("|- %c", players[occupied-1].name);
+                else if (occupied == 0 && fishes == 0)
                     printf("|- -");
                 else
-                    printf("|%d -", board[i][j].fishes);
+                    printf("|%d -", fishes);
             }
             if (j == x_size - 1)
             {
