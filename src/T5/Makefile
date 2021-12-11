@@ -1,5 +1,5 @@
-output: main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
-	gcc -o output main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o
+output: main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
+	gcc -o output main.o evaluation.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
 	
 main.o: evaluation.h map.h miscellaneous.h movement.h placement.h command_line_ui.h defines.h structures.h
 	gcc -c main.c
@@ -21,6 +21,10 @@ placement.o: placement.h structures.h
 
 evaluation.o: evaluation.h structures.h
 	gcc -c evaluation.c
+
+
+bots.o: bots.h structures.h
+	gcc -c bots.c
 
 clean:
 	rm *.o output
