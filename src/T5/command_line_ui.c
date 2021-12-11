@@ -178,20 +178,45 @@ struct placement get_placement(int number_of_columns, int number_of_rows) {
     return p;
 }
 
+/*
+input parameters: struct player* players, int curr_player
+return: none
+this function displays which player's turn is.
+*/
 void display_curr_player(struct player* players, int curr_player) {
    printf("TURN: %c\n", players[curr_player-1].name); 
 }
 
+/*
+input parameters: none
+return: none
+this function is used when the placement is invalid.
+*/
 void print_invalid_placement() {
     printf("Placement is invalid.\n");
 }
 
+/*
+input parameters: none
+return: none
+this function is used when the movement is invalid.
+*/
 void print_invalid_movement() {
     printf("Movement is invalid.\n");
 }
 
+/*
+input parameters: struct player* players, int n, int winner
+return: none
+this function is used to print the winner.
+*/
 void print_winner(struct player* players, int n, int winner) {}
 
+/*
+input parameters: struct player* players, int n
+return: none
+this function is used to show the ranking.
+*/
 void show_ranking(struct player* players, int n) {
     printf("RANKING\n");
     printf("name | score\n");
@@ -200,22 +225,36 @@ void show_ranking(struct player* players, int n) {
         printf("%c: %d\n", players[i].name, players[i].fish_collected);
     }
 }
-//int get_difficulty_level() {
-//    int level;
-//    printf("Enter the level of difficulty(from 1 to 3): ");
-//    scanf("%i", &level);
-//
-//    while (level <= 0 || level > 3) {
-//        printf("Wrong level of difficulty. Please try again");
-//        scanf("%i", &level);
-//    }
-//
-//}
 
-int check_if_ai() {
-    int answer;
-    printf("The player is a bot(1 yes,0 not): ");
-    scanf("%d",&answer);
-    return answer;
+/*
+input parameters: none
+return: integer
+this function is determine the difficulty level of the bot.
+*/
+int get_difficulty_level() {
+   int level;
+   printf("Enter the level of difficulty(from 0(included) to 3(included)): ");
+   scanf("%i", &level);
+
+   while (level < 0 || level > 3) {
+       printf("Wrong level of difficulty. Please try again");
+       scanf("%i", &level);
+   }
+
 }
 
+/*
+input parameters: none
+return: integer
+this function is check if certain player is a bot.
+*/
+int check_if_ai() {
+    int answer;
+    printf("Is the player a bot?(1 for yes and 0 for no: ");
+    scanf("%i",&answer);
+    while(answer != 0 || answer != 1) {
+        printf("Wrong level of difficulty. Please try again");
+        scanf("%i",&answer);
+    }
+    return answer;
+}
