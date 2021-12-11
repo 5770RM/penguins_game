@@ -179,7 +179,7 @@ struct placement get_placement(int number_of_columns, int number_of_rows) {
 }
 
 void display_curr_player(struct player* players, int curr_player) {
-   printf("It is %c player's turn\n", players[curr_player-1].name); 
+   printf("TURN: %c\n", players[curr_player-1].name); 
 }
 
 void print_invalid_placement() {
