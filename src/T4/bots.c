@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include "structures.h"
+// Bot level 1
 int bot_possible_placement(struct board_tile **board, struct player *players, struct bot_placement *placements, int x_size, int y_size)
 {
     srand(time(0));
@@ -38,11 +39,14 @@ int bot1_choosing_penguin(struct board_tile **board, struct player *players, str
     {
         for (int j = 0; j < x_size; j++)
         {
-            if (board[i][j].occupied == players[curr_player - 1].id)
+            if (board[i][j].occupied == players[curr_player - 1].id) // CHANGE LINES BELOW
             {
-                choice[choosing_counter].x = j;
-                choice[choosing_counter].y = i;
-                choosing_counter++;
+                if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
+                {
+                    choice[choosing_counter].x = j;
+                    choice[choosing_counter].y = i;
+                    choosing_counter++;
+                }
             }
         }
     }
@@ -97,8 +101,9 @@ int bot1_choosing_movement(struct board_tile **board, struct player *players, st
 }
 struct movement bot_mov_choosing_execution(struct board_tile **board, struct player *players, struct bot_movement *mov_choice, struct movement m, int curr_player, int movement_decision)
 {
-    
+
     m.to.x = mov_choice[movement_decision].x;
     m.to.y = mov_choice[movement_decision].y;
     return m;
 }
+// bot level 2
