@@ -52,5 +52,9 @@ void print_invalid_movement();
 // arugments: array of players and its size n, winner_id is in range [1,n]
 // returns: no value
 void print_winner(struct player* players, int n, int winner_id);
+
+// prints scores and names of all players
+// arguemtns: array of players and its size n
+void show_ranking(struct player* players, int n);
 // askes the user if a player would be under bot's control
 int check_if_ai();

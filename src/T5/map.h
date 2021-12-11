@@ -1,7 +1,7 @@
 #ifndef MAPFUNCTIONS
 #define MAPFUNCTIONS
 // displays the board to command line
-void show_board(struct board_tile** board, int x, int y);
+void show_board(struct board_tile** board, int x, int y, struct player* players);
 // each tile for the board is filled with new values, with at least n ice floes with 1 fish on them
 // arguments: board, board's x and y dimension
 // returns: -1 if it is imposible to generate a board (for example more players than the number of tiles, otherwise 1

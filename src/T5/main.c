@@ -48,7 +48,8 @@ int main(int agrc, char **argv) {
             if (players[curr_player-1].bot == FALSE) { 
                 // until chosen placement is invalid ask for a new one
                 do {
-                    show_board(board, x, y);
+                    show_ranking(players, n);
+                    show_board(board, x, y, players);
                     p = get_placement(x, y);
                     if ( (valid = valid_placement(board, x, y, p)) == FALSE);
                         print_invalid_placement();
@@ -57,7 +58,8 @@ int main(int agrc, char **argv) {
             }
             else {
                 // current player is a bot
-                show_board(board, x, y);
+                show_ranking(players, n);
+                show_board(board, x, y, players);
                 execute_placement_bot(board, x, y, players, n, curr_player);
             }
         }
@@ -79,8 +81,9 @@ int main(int agrc, char **argv) {
             if (players[curr_player].bot == FALSE) {
                 int valid;
                 // unitl chosen move is invalid ask for another            
-                do {    
-                    show_board(board, x, y);
+                do {
+                    show_ranking(players, n);    
+                    show_board(board, x, y, players);
                     m = get_movement(x, y);
                     if ( (valid = valid_movement(board, players, m, curr_player)) == FALSE);
                         print_invalid_movement();
@@ -89,7 +92,8 @@ int main(int agrc, char **argv) {
             }
             else {
                 // current player is a bot
-                show_board(board, x, y);
+                show_ranking(players, n);
+                show_board(board, x, y, players);
                 execute_movement_bot(board, x, y, players, n, curr_player);
             }
         }
@@ -97,6 +101,7 @@ int main(int agrc, char **argv) {
     }
     
     int winner = determine_winner(players, n);
+    show_ranking(players, n);
     print_winner(players, n, winner);
     end_game();
 

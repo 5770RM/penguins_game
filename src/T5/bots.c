@@ -111,7 +111,7 @@ struct movement bot_mov_choosing_execution(struct board_tile **board, struct pla
 // bot level 2
 
 // BOT GENERAL FUNCTIONS
-void execute_placement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player) {
+void execute_placement_bot(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player) {
     struct placement p;
     struct bot_placement *placements = (struct bot_placement *)malloc(x * y * sizeof(struct bot_placement));
     int placement_decision = bot_possible_placement(board, players, placements, x, y);
@@ -120,7 +120,7 @@ void execute_placement_bot(struct board_tile* board, int x, int y, struct player
     // FREE THE MEMEORY OF plaments array
 }
 
-void execute_movement_bot(struct board_tile* board, int x, int y, struct player* players, int n, int curr_player) {
+void execute_movement_bot(struct board_tile** board, int x, int y, struct player* players, int n, int curr_player) {
     struct movement m;
     struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
     struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));

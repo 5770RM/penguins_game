@@ -190,7 +190,9 @@ void print_invalid_movement() {
     printf("Movement is invalid.\n");
 }
 
-void print_winner(struct player* players, int n, int winner) {
+void print_winner(struct player* players, int n, int winner) {}
+
+void show_ranking(struct player* players, int n) {
     printf("RANKING\n");
     printf("name | score\n");
     int i;
