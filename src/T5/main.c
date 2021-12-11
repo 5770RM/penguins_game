@@ -1,5 +1,4 @@
 #include "structures.h"
-//#include "gameplay_functions.h"
 #include "command_line_ui.h"
 #include "evaluation.h"
 #include "map.h"
@@ -23,18 +22,12 @@ int main(int agrc, char **argv) {
 
     init_players(players, n);
     int x = get_x_dimension();
-    int y = get_y_dimension();
-    
-    //pair dims = get_board_dims();
-    //int x = dims.x;
-    //int y = dims.y;
+    int y = get_y_dimension();  
 
     // allocate memory for board and fill with elements using generate_board
     struct board_tile** board = new_board(x, y);
     // board has ocean tiles on all of its borders
-    generate_board(board, x, y);
-    // show_board(board, x, y);
-    board_gen_check(board, players, x, y, n);
+    generate_board(board, x, y, n);
     
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
@@ -50,24 +43,22 @@ int main(int agrc, char **argv) {
             // until chosen placement is invalid ask for a new one
             int valid;
             struct placement p;
-            struct bot_placement *placements = (struct bot_placement *)malloc(x * y * sizeof(struct bot_placement));
-            if (players[curr_player].bot == 0)
-            {
-                display_curr_player(players, curr_player);
-                do 
-                {
+            
+            display_curr_player(players, curr_player);
+            if (players[curr_player-1].bot == FALSE) { 
+                // until chosen placement is invalid ask for a new one
+                do {
                     show_board(board, x, y);
                     p = get_placement(x, y);
-                    valid = valid_placement(board, x, y, p);
-                if  (!valid) print_invalid_placement();
+                    if ( (valid = valid_placement(board, x, y, p)) == FALSE);
+                        print_invalid_placement();
                 } while (valid == FALSE);
-            execute_placement(board, players, curr_player, p);
+                execute_placement(board, players, curr_player, p);
             }
-            else
-            {
+            else {
+                // current player is a bot
                 show_board(board, x, y);
-                int placement_decision = bot_possible_placement(board, players, placements, x, y);
-                bot1_placement_execution(board, players, placements, p, curr_player, placement_decision);
+                execute_placement_bot(board, x, y, players, n, curr_player);
             }
         }
         next_player(&curr_player, n);
@@ -83,29 +74,23 @@ int main(int agrc, char **argv) {
         if (movement_possible(board, x, y, players, curr_player) == TRUE) {
             // unitl chosen move is invalid ask for another            
             
-            struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
-            struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));
-            struct movement m;
-            if (players[curr_player].bot == 0)
-            {
-            int valid;
+            struct movement m; 
             display_curr_player(players, curr_player);
-            do {
-                show_board(board, x, y);
-                m = get_movement(x, y);
-                valid = valid_movement(board, players, m, curr_player);
-                if (!valid) print_invalid_movement();
-            } while (valid == FALSE);
-            execute_movement(board, players, curr_player, m);
-            }
-            else
-            {
-                show_board(board, x, y);
-                int penguin_decision = bot1_choosing_penguin(board, players, choice, x, y, curr_player);
-                m = bot1_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
-                int movement_deicision = bot1_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
-                m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+            if (players[curr_player].bot == FALSE) {
+                int valid;
+                // unitl chosen move is invalid ask for another            
+                do {    
+                    show_board(board, x, y);
+                    m = get_movement(x, y);
+                    if ( (valid = valid_movement(board, players, m, curr_player)) == FALSE);
+                        print_invalid_movement();
+                } while (valid == FALSE);
                 execute_movement(board, players, curr_player, m);
+            }
+            else {
+                // current player is a bot
+                show_board(board, x, y);
+                execute_movement_bot(board, x, y, players, n, curr_player);
             }
         }
         next_player(&curr_player, n);
