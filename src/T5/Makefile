@@ -22,8 +22,7 @@ placement.o: placement.h structures.h
 evaluation.o: evaluation.h structures.h
 	gcc -c evaluation.c
 
-
-bots.o: bots.h structures.h
+bots.o: bots.h structures.h placement.h movement.h
 	gcc -c bots.c
 
 clean:
