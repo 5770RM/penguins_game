@@ -257,10 +257,10 @@ this function is check if certain player is a bot.
 */
 int check_if_ai() {
     int answer;
-    printf("Is the player a bot?(1 for yes and 0 for no: ");
+    printf("Is the player a bot?(1 for yes and 0 for no): ");
     scanf("%i",&answer);
-    while(answer != 0 || answer != 1) {
-        printf("Wrong level of difficulty. Please try again");
+    while(answer != 0 && answer != 1) {
+        printf("Wrong answer. Please try again");
         scanf("%i",&answer);
     }
     return answer;
