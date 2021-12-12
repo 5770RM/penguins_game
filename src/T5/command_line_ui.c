@@ -58,6 +58,9 @@ void init_players(struct player* players, int number_of_players) {
         }
         printf("Is the player a bot(1 yes, 0 no): "); // We need to add cheching the values here
         scanf("%d",&bot);
+
+        get_difficulty_level()ж
+
         // assigning initial values
         players[i].id = i+1;
         players[i].name = ch;
@@ -233,10 +236,10 @@ this function is determine the difficulty level of the bot.
 */
 int get_difficulty_level() {
     int level;
-    printf("Enter the level of difficulty(from 0(included) to 3(included)): ");
+    printf("Enter the level of difficulty(from 1(included) to 5(included)): ");
     scanf("%i", &level);
 
-    while (level < 0 || level > 3) {
+    while (level < 0 || level > 5) {
         printf("Wrong level of difficulty. Please try again");
         scanf("%i", &level);
     }
