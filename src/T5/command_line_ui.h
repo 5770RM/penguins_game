@@ -58,3 +58,5 @@ void print_winner(struct player* players, int n, int winner_id);
 void show_ranking(struct player* players, int n);
 // askes the user if a player would be under bot's control
 int check_if_ai();
+// askes the user for the difficulty level of the bot
+int get_difficulty_level();
