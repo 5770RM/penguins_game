@@ -47,7 +47,7 @@ return: none
 this function gets an array and number of players as an input and asks each player for name, simultaneously assigning names to array.
 */
 void init_players(struct player* players, int number_of_players) {
-    int i,bot;
+    int i,bot,bot_dif;
     for (i = 0; i < number_of_players; i++) {
         char ch;
         printf("Enter the name of the %ist player(only one character):", i + 1);
@@ -56,28 +56,32 @@ void init_players(struct player* players, int number_of_players) {
             printf("Invalid name, try again:");
             scanf("%c", &ch);
         }
-        printf("Is the player a bot(1 yes, 0 no): "); // We need to add cheching the values here
-        scanf("%d",&bot);
-
-        get_difficulty_level()ж
-
+        
+        bot = check_if_ai();
+        if(bot != 0)
+        {
+            bot_dif = get_difficulty_level();
+        }
+        else
+        {
+            bot_dif = 0;
+        }
         // assigning initial values
         players[i].id = i+1;
         players[i].name = ch;
         players[i].fish_collected = 0;
         players[i].movement_status = 0;
         players[i].bot = bot;
-        players[i].bot_level = 0;
+        players[i].bot_level = bot_dif;
     }
     int penguins;
-    printf("Amount of players each players has: ");
+    printf("Amount of penguins each players has: ");
     scanf("%d", &penguins);
     for (i = 0; i < number_of_players; i++) {
         players[i].penguins = penguins;
         players[i].pen_not_placed = penguins;
     }
 }
-
 /*
 input parameters: none
 return: integer
