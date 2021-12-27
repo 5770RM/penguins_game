@@ -15,8 +15,8 @@ typedef struct queue_node queue_node;
 
 typedef struct {
     queue_node *front;  // pointer to the front  
-    queue_node *back;   // pointer to the front  
-    int size;           // number of elements in the stack
+    queue_node *back;   // pointer to the back  
+    int size;           // number of elements in the queue
     int elemSize;
 } queue;
 
