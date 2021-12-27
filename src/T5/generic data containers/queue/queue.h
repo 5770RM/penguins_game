@@ -20,9 +20,23 @@ typedef struct {
     int elemSize;
 } queue;
 
+// creates a new queue
+// arguments: size in bytes of the data to be stored in the queue
+// returs: a pointer to the memory allocated for the queue
 queue *queue_create(int elemSize);
+// frees the memory taken by the queue
+// argurments: pointer to the queue
 void queue_destroy(queue *q);
+// checkes if the queue is not empty
+// arguments: pointer to the queue
+// returns: 1 if queue is empty, 0 otherwise
 int queue_empty(queue *q);
+// pushes a new element onto a queue, copies the contents (shallow copy) of the data at address given
+// arguments: poiner to the queue, address of the data 
 void queue_push(queue *q, void *elemAddr);
+// pop last element from the queue
+// argurments: pointer to the queue
 void queue_pop(queue *q);
+// copies the data at the front of the queue to the variable at address elemAddr
+// arguments: pointer to the queue, address of the variable
 void queue_front(queue *q, void *elemAddr);

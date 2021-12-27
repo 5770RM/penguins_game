@@ -20,10 +20,32 @@ typedef struct {
     int elemSize;       // number of bytes taken up by a single element in the stack
 } stack;
 
+// allocates the memory for the new stack
+// agruments: size in bytes of the data to be stored on the stack
+// returns: pointer to the newly created stack
 stack *stack_create(int elemSize);  // stack constructor
+
+// frees all the memory taken up by the stack
+// agruments: pointer to the stack
 void stack_destroy(stack *s);       // stack deconstructor
+
+// checks if the stack is empty
+// arguments: pointer to the stack
+// returns: 1 if the stack is empty, 0 otherwise
 int stack_empty(stack *s);
+
+// aruments: pointer to the stack
+// returns: the number of element on the stack
 int stack_size(stack *s);
+
+// pushes a new element onto a stack, copies the data from elemAddr (shallow copy)
+// arguments: pointer to the stack, pointer to the data
 void stack_push(stack *s, void *elemAddr);
+
+// pop the top element from the stack
+// arguments: pointer to the stack
 void stack_pop(stack *s);
+
+// copies the data from the top element to the variable at address elemAddr
+// arguments: pointer to the stack, pointer to the variable
 void stack_top(stack *s, void *elemAddr);

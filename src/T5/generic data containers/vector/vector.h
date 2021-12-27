@@ -14,12 +14,37 @@ typedef struct {
     int allocLength;    // for how many elements the vector allocated memory 
 } vector;
 
+// allocates new memory for the vector
+// arguments: size if bytes of a sigle element to be stored in the vector
+// returns: pointer to the newly created vector
 vector *vector_create(int elemSize);
+
+// frees all the memory taken up by the vector
+// arguments: pointer to the vector
 void vector_destroy(vector *v);
+
+// checks if the vector is empty
+// arguments: poiner to the vector
+// returns: 1 if vector is empty, 0 otherwise
 int vector_empty(vector *v);
+
+// arguments: pointer to the vector
+// returns: the number of elements in the vector
 int vector_size(vector *v);
+
+// pushes a new element into the vector, copies (shallow copy) the data at address elemAddr
+// arguments: pointer to the vector, pointer to the data
 void vector_push(vector *v, void *elemAddr);
+
+// pops the last element from the vector
+// arguments: pointer to the vector
 void vector_pop(vector *v);
+
+// copies the data stored in the vector's last element to the variable at address elemAddr
+// arguments: pointer to the vector, address of the variable
 void vector_back(vector *v, void *elemAddr);
+
+// copies the data stored in the vector's n-th element to the variable at address elemAddr
+// arguments: pointer to the vector, address of the variable
 void vector_at_n(vector *v, void *elemAddr, int n);
 
