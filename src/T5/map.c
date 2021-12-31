@@ -5,9 +5,8 @@
 //#include "command_line_ui.c"
 //#include <conio.h>
 //#include "input.c"
-void generate_board(struct board_tile **board, int x_size, int y_size)
+void generate_board(struct board_tile **board, int x_size, int y_size,int n)
 {
-    srand(time(0));
     if (x_size < 6 && y_size < 6)
         for (int i = 0; i < y_size; i++) // Map generation
         {
@@ -117,7 +116,6 @@ void show_board(struct board_tile **board, int x_size, int y_size, struct player
 }
 void board_gen_check(struct board_tile **board, struct player *players, int x_size, int y_size, int n)
 {
-    srand(time(0));
     int one_counter = 0;
     int zero_counter = 0;
     int x_ran = 0;
