@@ -31,6 +31,10 @@ void movement_init(struct board_tile** board, int x, int y, struct player* playe
                     players[board[i][j].occupied-1].movement_status = 1;
 }
 
+void *new_players(struct player *players, int n) {
+    return realloc(players, sizeof(struct player)*n);
+}
+
 // IMPORTANT! in 2D array of the map first [] is for y, second [] is for x
 struct board_tile** new_board(int x, int y) {
     struct board_tile** board = (struct board_tile**)malloc(y * sizeof(struct board_tile*));

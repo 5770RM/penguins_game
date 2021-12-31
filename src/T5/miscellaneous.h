@@ -1,7 +1,7 @@
-#ifndef MISC
-#define MISC
+#ifndef MISCELLANEOUS_H
+#define MISCELLANEOUS_H
 // chooses the first player to start a game
-// argumenst: number of players
+// arguments: number of players
 // returns: random number from range 0..n-1
 int choose_first_player(int n);
 
@@ -9,6 +9,12 @@ int choose_first_player(int n);
 // arguments: address to current player index, number of players in the game
 // returns: no value
 void next_player(int *curr_player, int n);
+
+
+// (re)allocate memeory block for an array of players
+// arguments: pointer to array to players, number of players
+// returns: an address to memory block with the array 
+void *new_players(struct player *players, int n);
 
 // returns: 2D array of dimensions x, y
 // IMPORTANT! board[i][j], where i<y and j<x
