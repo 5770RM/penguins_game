@@ -12,5 +12,5 @@ To run, run
     `./run`
 
 # Gameplay gallery
-[](../../doc/gallry/input_phase1.png)
-[](../../doc/gallry/placement_phase1.png)
+![plot](../../doc/gallry/input_phase1.png)
+
