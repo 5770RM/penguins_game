@@ -11,10 +11,8 @@
 #include "autonomous.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include <time.h>
 
-int main(int agrc, char **argv) {
-    srand(time(NULL));   
+int main(int agrc, char **argv) {   
 #if AUTONOMOUS_MODE
     if (invalid_cla(agrc, argv) == TRUE) {
         error("Invalid command line arguments %s\n", argv[0]);
@@ -36,8 +34,7 @@ int main(int agrc, char **argv) {
     struct board_tile** board = new_board(x, y);
     // board has ocean tiles on all of its borders
     generate_board(board, x, y, n);
-    // checks if there are enough tiles with 1 fish
-    board_gen_check(board,players,x,y,n);
+    
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
     
