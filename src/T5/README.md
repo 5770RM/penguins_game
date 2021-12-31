@@ -6,4 +6,4 @@ To build this project, run
     `make`
 
 It will output an executable file name output, to run it type
-    `.output`
+    `./output`
