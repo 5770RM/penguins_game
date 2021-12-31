@@ -3,10 +3,13 @@
 This game relays on the GUI library called Raylib, which is cloned from GitHub during configuration.
 
 To configure, run
-    ./configure
+    `./configure`
 
 To build, run
-    ./build
+    `./build`
 
 To run, run
-    ./run
+    `./run`
+
+# Gameplay gallery
+
