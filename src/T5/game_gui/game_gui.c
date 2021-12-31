@@ -1,5 +1,4 @@
 #include "../structures.h"
-#include "../command_line_ui.h"
 #include "../evaluation.h"
 #include "../map.h"
 #include "../miscellaneous.h"
@@ -26,7 +25,8 @@
 int main(int agrc, char **argv) {   
 #if INTERACTIVE_MODE
     int n = 1;                                          // number of players
-    struct player* players = new_players(players, n);   // array of players
+    struct player* players;
+    players = new_players(players, n);   // array of players
     int curr_player;
     int x = 5, y = 5;                                   // x and y size of the map          
     struct board_tile** board = new_board(x, y);        // board stores a pointer to a 2D array
@@ -53,14 +53,14 @@ int main(int agrc, char **argv) {
             }   
             if (phase == PLACEMENT_PHASE && placement_game_status(board, x, y, players, n) == END_PP) {
                 phase = MOVEMENT_PHASE;
-            }/*
+            }
             if (phase == PLACEMENT_PHASE) {
                 draw_console(players, n, curr_player, "PLACEMENT PHASE");
                 if (placement_possible(board, x, y, players, curr_player) == FALSE) {
                     next_player(&curr_player, n);
                     continue;
                 }
-                struct placement p = get_placement_position(board, x, y);
+                struct placement p = get_placement(board, x, y);
                 if (valid_placement(board, x, y, p) == TRUE) {
                     execute_placement(board, players, curr_player, p);
                     next_player(&curr_player, n);
@@ -68,7 +68,7 @@ int main(int agrc, char **argv) {
             }
             if (phase == MOVEMENT_PHASE && movement_game_status(board, players, n) == END_MP) {
                 phase = END_PHASE;
-            }
+            }/*
             if (phase == MOVEMENT_PHASE) {
                 draw_console(players, n, curr_player, "MOVEMENT PHASE");  
                 if (movement_possible(board, x, y, players, curr_player) == FALSE) {

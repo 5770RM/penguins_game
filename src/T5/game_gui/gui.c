@@ -15,6 +15,11 @@
 #include "raygui.h"
 #include "gui.h"
 
+
+Color colorId[9] = {RED, BLUE, GREEN,
+                    PURPLE, BEIGE, PINK,
+                    ORANGE, YELLOW, BROWN};
+
 // parameters for GUI elements
 
 // spinner with number of players
@@ -35,7 +40,7 @@ int spinner4Value = 5;
 
 // input fields
 typedef struct {
-    char *text;
+    char text[16];
     char *placeHolder;
     bool editMode;
 } FieldValue; 
@@ -77,7 +82,7 @@ void init_gui(const int screenWidth, const int screenHeight, char *windowName, i
 
     // set initial values for GUI elements
     for (int i=0; i<9; ++i) {
-        inputFields[i].text = "";
+        //inputFields[i].text = "";
         inputFields[i].placeHolder = "Type name";
         inputFields[i].editMode = 0;
     }
@@ -85,7 +90,6 @@ void init_gui(const int screenWidth, const int screenHeight, char *windowName, i
 
 void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player **players, int *n, int *curr_player, Phase *phase) {
     ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
-    
     // draw the ocean
     DrawRectangle(0, 0, 800, 800, SKYBLUE);
     // draw the console - the area with inputs 
@@ -106,7 +110,6 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
         *n = new_n;
         *players = new_players(*players, *n);
     }
-    //printf("PLAYERS-------------------------------------------------\n");
     // draw comment and sliders for the number of penguins 
     DrawText("Number of penguins", 1010, 60, 15, DARKPURPLE);
     // set style for the spinner 
@@ -127,7 +130,8 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
     for (int i=0; i<9; i+=2) {
         if (i+1 > *n) break;
         if (GuiTextBox((Rectangle){ x_0, y_0 + i/2*dy, fieldWidth, fieldHeight}, 
-                                    inputFields[i].editMode ? inputFields[i].text : inputFields[i].placeHolder, 64,
+                                    (inputFields[i].editMode || strlen(inputFields[i].text) > 0) ? 
+                                    inputFields[i].text : inputFields[i].placeHolder, 16,
                                     inputFields[i].editMode)) {
             inputFields[i].editMode ^= 1;
         }
@@ -138,12 +142,12 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
     for (int i=1; i<9; i+=2) {
         if (i+1 > *n) break;
         if (GuiTextBox((Rectangle){ x_0, y_0 + i/2*dy, fieldWidth, fieldHeight}, 
-                                    inputFields[i].editMode ? inputFields[i].text : inputFields[i].placeHolder, 64,
+                                    (inputFields[i].editMode || strlen(inputFields[i].text) > 0) ? 
+                                    inputFields[i].text : inputFields[i].placeHolder, 16,
                                     inputFields[i].editMode)) {
             inputFields[i].editMode ^= 1;
         }
     }
-    //printf("LIST-------------------------------------------------\n");
     // draw comment for spinner for x board dimenstion
     DrawText("Board x-dim", 820, 450, 15, DARKPURPLE); 
     // draw the spinner and if it is clicked on enter if statemetment
@@ -152,7 +156,6 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
     }
     int new_x = spinner3Value;
     if (*x != new_x) {
-        printf("---------------xdim\n");
         free_board(*board, *x, *y);
         *x = new_x;
         *board = new_board(*x, *y);
@@ -166,13 +169,29 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
     }
     int new_y = spinner4Value;
     if (*y != new_y) {
-        printf("---------------ydim\n");
         free_board(*board, *x, *y);
         *y = new_y;
         *board = new_board(*x, *y);
         generate_board(*board, *x, *y, *n);
     }
-    //printf("BOARD-------------------------------------------------\n");
+    // draw a grid of tiles 
+    int tx = (int)(800.0 / (float)(*x));
+    int ty = (int)(800.0 / (float)(*y));
+    tx = (tx < ty) ? tx : ty;
+    ty = tx;
+    int padding = ty / 8.0;
+    int tw = tx - padding;
+    int th = ty - padding;
+    for (int i=0; i<*y; ++i) {
+        for (int j=0; j<*x; ++j) { 
+            DrawRectangle(j * tx + padding, i * ty + padding, tw, th, ((*board)[i][j].fishes>0)? WHITE : SKYBLUE);
+            char tile_val[2];
+            tile_val[0] = '0' + (*board)[i][j].fishes;
+            tile_val[1] = '\0';
+            if ((*board)[i][j].fishes)
+                DrawText(tile_val, j*tx + padding + tw/4.0, i*ty + padding + th/4.0, tw/1.5, BLACK);
+        }
+    }
     /* PLAY BUTTON */
     
     // set the style 
@@ -183,44 +202,16 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
         // copy all inputed values
         for (int i=0; i<9; ++i) {
             if (*n < i+1) break;
-            players[i]->id = i+1;
-            players[i]->name = inputFields[i].text[0];
-            players[i]->fish_collected = 0;
-            players[i]->penguins = spinner2Value;
-            players[i]->pen_not_placed = spinner2Value;
-            players[i]->bot = 0;
-            players[i]->bot_level = 0; 
+            (*players)[i].id = i+1;
+            (*players)[i].name = inputFields[i].text[0];
+            (*players)[i].fish_collected = 0;
+            (*players)[i].penguins = spinner2Value;
+            (*players)[i].pen_not_placed = spinner2Value;
+            (*players)[i].bot = 0;
+            (*players)[i].bot_level = 0;
         }       
         *curr_player = choose_first_player(*n); 
     }
-    
-    //printf("COPY-------------------------------------------------\n");
-    // draw a grid of tiles 
-    int tx = (int)(800.0 / (float)(*x));
-    int ty = (int)(800.0 / (float)(*y));
-    tx = (tx < ty) ? tx : ty;
-    ty = tx;
-    int padding = ty / 8.0;
-    int tw = tx - padding;
-    int th = ty - padding;
-    printf("0---------------------------------------------------------");
-    printf("x= %d, y=%d\n",tx, ty);
-    simple_board(*board, *x, *y);
-/*  //  show_board(*board, *x, *y, *players);
-    for (int i=0; i<*y; ++i) {
-        for (int j=0; j<*x; ++j) { 
-//            printf("%d ",board[i][j]->fishes);
-            //DrawRectangle(j * tx + padding, i * ty + padding, tw, th, (board[i][j]->fishes>0)? WHITE : SKYBLUE);
-            char tile_val[2];
-            tile_val[0] = '0' + board[i][j]->fishes;
-            tile_val[1] = '\0';
-            if (board[i][j]->fishes)
-                DrawText(tile_val, j*tx + padding + tw/4.0, i*ty + padding + th/4.0, tw/1.5, BLACK);
-        }
-        printf("\n");
-    }*/
-    draw_tiles(*board, *x, *y);
-    
     //printf("MAP-------------------------------------------------\n");
 }
 
@@ -244,6 +235,49 @@ void draw_console(struct player *players, int n, int curr_player, char *title) {
     for (int i=0; i<n; ++i) {
         char position[12];
         snprintf(position, 12, "%c%s%d", players[i].name, "\t", players[i].fish_collected); 
-        DrawText(position, 820, y_0 + i*dy, 30, DARKPURPLE); 
+        DrawText(position, 820, y_0 + i*dy, 30, colorId[i]); 
     }
+}
+
+struct placement get_placement(struct board_tile **board, int x, int y) {
+    struct placement p;
+    p.to.x = -1;
+    p.to.y = -1;
+    // draw a grid of tiles 
+    int tx = (int)(800.0 / (float)(x));
+    int ty = (int)(800.0 / (float)(y));
+    tx = (tx < ty) ? tx : ty;
+    ty = tx;
+    int padding = ty / 8.0;
+    int tw = tx - padding;
+    int th = ty - padding;
+    
+    for (int i=0; i<y; ++i) {
+        for (int j=0; j<x; ++j) {
+            if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){j * tx + padding, i * ty + padding, tw, th})) {
+                if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == true &&
+                    board[i][j].fishes > 0) {
+                    p.to.x = j;
+                    p.to.y = i;
+                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, WHITE);
+                    continue;
+                }
+                else if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == false &&
+                         board[i][j].fishes > 0) {
+                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, GRAY);
+                } 
+            }
+            if (board[i][j].occupied != 0)  
+                DrawRectangle(j * tx + padding, i * ty + padding, tw, th, colorId[board[i][j].occupied-1]);
+            else {
+                char tile_val[2];
+                tile_val[0] = '0' + board[i][j].fishes;
+                tile_val[1] = '\0';
+                DrawRectangle(j * tx + padding, i * ty + padding, tw, th, board[i][j].fishes ? WHITE : SKYBLUE);
+                if (board[i][j].fishes)
+                    DrawText(tile_val, j*tx + padding + tw/4.0, i*ty + padding + th/4.0, tw/1.5, BLACK);
+            }
+        }
+    }
+    return p;
 }

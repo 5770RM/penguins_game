@@ -30,7 +30,7 @@ endif()
 
 # This is the main part:
 
-add_executable(${PROJECT_NAME} game_gui.c gui.c ../bots.c ../command_line_ui.c ../evaluation.c ../map.c ../miscellaneous.c ../movement.c ../placement.c)
+add_executable(${PROJECT_NAME} game_gui.c gui.c ../bots.c ../evaluation.c ../map.c ../miscellaneous.c ../movement.c ../placement.c)
 #set(raylib_VERBOSE 1)
 #target_link_directories(${PROJECT_NAME} PRIVATE ../)
 target_link_libraries(${PROJECT_NAME} raylib)
