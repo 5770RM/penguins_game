@@ -10,6 +10,10 @@ int choose_first_player(int n);
 // returns: no value
 void next_player(int *curr_player, int n);
 
+// check if the movmeent is not composed only of values of -1
+// arguments: movement
+// return: 1 or 0
+int movement_null(struct movement m);
 
 // (re)allocate memeory block for an array of players
 // arguments: pointer to array to players, number of players

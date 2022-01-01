@@ -89,7 +89,6 @@ void init_gui(const int screenWidth, const int screenHeight, char *windowName, i
 }
 
 void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player **players, int *n, int *curr_player, Phase *phase) {
-    ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
     // draw the ocean
     DrawRectangle(0, 0, 800, 800, SKYBLUE);
     // draw the console - the area with inputs 
@@ -212,11 +211,9 @@ void draw_input_phase(struct board_tile ***board, int *x, int *y, struct player 
         }       
         *curr_player = choose_first_player(*n); 
     }
-    //printf("MAP-------------------------------------------------\n");
 }
 
 void draw_console(struct player *players, int n, int curr_player, char *title) {
-    ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
     
     // draw the ocean
     DrawRectangle(0, 0, 800, 800, SKYBLUE);
@@ -239,7 +236,7 @@ void draw_console(struct player *players, int n, int curr_player, char *title) {
     }
 }
 
-struct placement get_placement(struct board_tile **board, int x, int y) {
+struct placement get_placement(struct board_tile **board, int x, int y, int curr_player) {
     struct placement p;
     p.to.x = -1;
     p.to.y = -1;
@@ -259,12 +256,13 @@ struct placement get_placement(struct board_tile **board, int x, int y) {
                     board[i][j].fishes > 0) {
                     p.to.x = j;
                     p.to.y = i;
-                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, WHITE);
+                    DrawRectangle(j * tx + 2*padding, i * ty + 2*padding, tx - 3*padding, ty - 3*padding, colorId[curr_player-1]);
                     continue;
                 }
                 else if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == false &&
-                         board[i][j].fishes > 0) {
-                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, GRAY);
+                         board[i][j].fishes > 0 ) {
+                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, colorId[curr_player-1]);
+                    continue;
                 } 
             }
             if (board[i][j].occupied != 0)  
@@ -280,4 +278,92 @@ struct placement get_placement(struct board_tile **board, int x, int y) {
         }
     }
     return p;
+}
+
+static struct movement m = (struct movement){{-1, -1}, {-1, -1}};
+
+struct movement get_movement(struct board_tile **board, int x, int y, struct player *players, int n, int curr_player) {
+    if (m.from.x != -1 && m.from.y != -1 && m.to.x != -1 && m.to.y != -1)
+        m.from.x = m.from.y = m.to.x = m.to.y = -1;
+    // draw a grid of tiles 
+    int tx = (int)(800.0 / (float)(x));
+    int ty = (int)(800.0 / (float)(y));
+    tx = (tx < ty) ? tx : ty;
+    ty = tx;
+    int padding = ty / 8.0;
+    int tw = tx - padding;
+    int th = ty - padding;
+    for (int i=0; i<y; ++i) {
+        for (int j=0; j<x; ++j) {
+            // if it is the ocean skip this tile
+            if (board[i][j].occupied == 0 && board[i][j].fishes == 0)
+                continue;
+            // if the mouse if over the current tile
+            if (CheckCollisionPointRec(GetMousePosition(), (Rectangle){j * tx + padding, i * ty + padding, tw, th})) {
+                if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == true &&
+                    board[i][j].occupied == curr_player &&
+                    (m.from.x == -1 && m.from.y == -1)) {
+                   // we found the movement from 
+                    m.from.x = j;
+                    m.from.y = i;
+                    DrawRectangle(j * tx + 2*padding, i * ty + 2*padding, tx - 3*padding, ty - 3*padding, colorId[curr_player-1]);
+                    continue;
+                }
+                else if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == true &&
+                         board[i][j].occupied == 0 &&
+                         m.from.x != -1 && m.from.y != -1 &&
+                         m.to.x == -1 && m.to.y == -1) {
+                    // we found the movement to
+                    m.to.x = j;
+                    m.to.y = i;
+                    DrawRectangle(j * tx + 2*padding, i * ty + 2*padding, tx - 3*padding, ty - 3*padding, colorId[curr_player-1]);
+                    continue;
+                }
+                else if (IsMouseButtonDown(MOUSE_LEFT_BUTTON) == false &&
+                         ((board[i][j].occupied == curr_player) ||
+                         (board[i][j].occupied == 0 && board[i][j].fishes))) {
+                    // we hover about the tile we can move from/to
+                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, colorId[curr_player-1]);
+                    continue;
+                }
+            }
+            if (board[i][j].occupied != 0) {
+                if (m.from.x == j && m.from.y == i)  
+                    DrawRectangle(j * tx + 2*padding, i * ty + 2*padding, tx - 3*padding, ty - 3*padding, colorId[board[i][j].occupied-1]);
+                else 
+                    DrawRectangle(j * tx + padding, i * ty + padding, tw, th, colorId[board[i][j].occupied-1]);
+            }
+            else {
+                char tile_val[2];
+                tile_val[0] = '0' + board[i][j].fishes;
+                tile_val[1] = '\0';
+                DrawRectangle(j * tx + padding, i * ty + padding, tw, th, board[i][j].fishes ? WHITE : SKYBLUE);
+                if (board[i][j].fishes)
+                    DrawText(tile_val, j*tx + padding + tw/4.0, i*ty + padding + th/4.0, tw/1.5, BLACK);
+            }
+        }
+    }
+    return m;
+}
+
+void draw_end(struct player *players, int n, Phase *phase) {
+    // draw the ocean
+    DrawRectangle(0, 0, 800, 800, SKYBLUE);
+    // draw the console - the area with inputs 
+    DrawRectangle(800, 0, 400, 800, WHITE);
+    // draw comment and sliders for the number of players
+    DrawText("Ranking", 820, 120, 30, DARKPURPLE);
+
+    int y_0 =  155, dy = 40;
+    // draw ranking
+    for (int i=0; i<n; ++i) {
+        char position[12];
+        snprintf(position, 12, "%c%s%d", players[i].name, "\t", players[i].fish_collected); 
+        DrawText(position, 820, y_0 + i*dy, 30, colorId[i]); 
+    }
+    GuiSetState(GUI_STATE_NORMAL);
+    GuiSetStyle(DEFAULT, TEXT_SIZE, 30);     
+    if (GuiButton((Rectangle){ 300, 350, 200, 100}, "NEW GAME")) {
+        *phase = INPUT_PHASE;
+    }
 }

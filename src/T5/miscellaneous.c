@@ -31,6 +31,10 @@ void movement_init(struct board_tile** board, int x, int y, struct player* playe
                     players[board[i][j].occupied-1].movement_status = 1;
 }
 
+int movement_null(struct movement m) {
+    return m.from.x == -1 || m.from.y == -1 || m.to.x == -1 || m.to.y == -1;
+}
+
 void *new_players(struct player *players, int n) {
     return realloc(players, sizeof(struct player)*n);
 }

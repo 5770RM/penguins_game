@@ -46,13 +46,14 @@ int main(int agrc, char **argv) {
     // as long as the window should stay open 
     while (!exitWindow) {
         exitWindow = WindowShouldClose();
-        
         BeginDrawing();
+            ClearBackground(GetColor(GuiGetStyle(DEFAULT, BACKGROUND_COLOR)));
             if (phase == INPUT_PHASE) {
                 draw_input_phase(&board, &x, &y, &players, &n, &curr_player, &phase);
             }   
             if (phase == PLACEMENT_PHASE && placement_game_status(board, x, y, players, n) == END_PP) {
                 phase = MOVEMENT_PHASE;
+                movement_init(board, x, y, players, n);
             }
             if (phase == PLACEMENT_PHASE) {
                 draw_console(players, n, curr_player, "PLACEMENT PHASE");
@@ -60,7 +61,7 @@ int main(int agrc, char **argv) {
                     next_player(&curr_player, n);
                     continue;
                 }
-                struct placement p = get_placement(board, x, y);
+                struct placement p = get_placement(board, x, y, curr_player);
                 if (valid_placement(board, x, y, p) == TRUE) {
                     execute_placement(board, players, curr_player, p);
                     next_player(&curr_player, n);
@@ -68,22 +69,25 @@ int main(int agrc, char **argv) {
             }
             if (phase == MOVEMENT_PHASE && movement_game_status(board, players, n) == END_MP) {
                 phase = END_PHASE;
-            }/*
+            }
             if (phase == MOVEMENT_PHASE) {
                 draw_console(players, n, curr_player, "MOVEMENT PHASE");  
                 if (movement_possible(board, x, y, players, curr_player) == FALSE) {
                     next_player(&curr_player, n);
+                    EndDrawing();
                     continue;
                 }
                 struct movement m;
-                m.from = get_movement_from(board, x, y);
-                m.to = get_movement_to(board, x, y);
-                
-                if (valid_movement(board, players, m, curr_player) == TRUE) {
+                m = get_movement(board, x, y, players, n, curr_player);
+                if (movement_null(m) != 1 && valid_movement(board, players, m, curr_player) == TRUE) {
                     execute_movement(board, players, curr_player, m);
                     next_player(&curr_player, n);
                 } 
-            }*/
+            }
+            if (phase == END_PHASE) {
+                // Draw the results
+                draw_end(players, n, &phase);
+            }
  
         EndDrawing();
     }   
