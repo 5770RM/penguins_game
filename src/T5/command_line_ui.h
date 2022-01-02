@@ -42,21 +42,21 @@ struct movement get_movement(int number_of_columns, int number_of_rows);
 // returns: no value
 void display_curr_player(struct player* players, int curr_player);
 
-// displays error messange to the screen
+// displays error message to the screen
 void print_invalid_placement();
 
 // displays_error message to the screen
 void print_invalid_movement();
 
-// printf winnwer and message that sums up the game
-// arugments: array of players and its size n, winner_id is in range [1,n]
+// printf winner and message that sums up the game
+// arguments: array of players and its size n, winner_id is in range [1,n]
 // returns: no value
 void print_winner(struct player* players, int n, int winner_id);
 
-// prints scores and names of all players
-// arguemtns: array of players and its size n
+// prints score and names of all players
+// arguments: array of players and its size n
 void show_ranking(struct player* players, int n);
-// askes the user if a player would be under bot's control
+// asks the user if a player would be under bot's control
 int check_if_ai();
-// askes the user for the difficulty level of the bot
+// asks the user for the difficulty level of the bot
 int get_difficulty_level();
