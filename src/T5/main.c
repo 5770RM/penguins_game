@@ -19,6 +19,22 @@ int main(int agrc, char **argv) {
 #if AUTONOMOUS_MODE
     if (invalid_cla(agrc, argv) == TRUE) {
         error("Invalid command line arguments %s\n", argv[0]);
+             return 1;
+    }
+    struct GameState* state = read_board(argv[3]);
+    execute_autonomous_command(state, argc, argv); 
+    write_board(state, argv[4]);  
+#endif
+#if INTERACTIVE_MODE  
+    int n = get_nbr_of_players();
+    struct player* players = (struct player*)malloc(n * sizeof(struct player));
+
+    init_players(players, n);
+    int x = get_x_dimension();
+    int y = get_y_dimension();  
+
+    // allocate memory for board and fill with elements using generate_board
+
     struct board_tile** board = new_board(x, y);
     // board has ocean tiles on all of its borders
     generate_board(board, x, y, n);
