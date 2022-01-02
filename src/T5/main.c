@@ -11,30 +11,20 @@
 #include "autonomous.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 int main(int agrc, char **argv) {   
+int main(int agrc, char **argv) {
+    srand(time(NULL));   
 #if AUTONOMOUS_MODE
     if (invalid_cla(agrc, argv) == TRUE) {
         error("Invalid command line arguments %s\n", argv[0]);
-        return 1;
-    }
-    struct GameState* state = read_board(argv[3]);
-    execute_autonomous_command(state, argc, argv); 
-    write_board(state, argv[4]);  
-#endif
-#if INTERACTIVE_MODE  
-    int n = get_nbr_of_players();
-    struct player* players = (struct player*)malloc(n * sizeof(struct player));
-
-    init_players(players, n);
-    int x = get_x_dimension();
-    int y = get_y_dimension();  
-
-    // allocate memory for board and fill with elements using generate_board
     struct board_tile** board = new_board(x, y);
     // board has ocean tiles on all of its borders
     generate_board(board, x, y, n);
     
+    // checks if there are enough tiles with 1 fish
+    board_gen_check(board,players,x,y,n);
     // in the movement phase we might want to choose ones again the first player to make a move
     int curr_player = choose_first_player(n);
     
