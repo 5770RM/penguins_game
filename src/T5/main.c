@@ -14,7 +14,6 @@
 #include <time.h>
 
 int main(int agrc, char **argv) {   
-int main(int agrc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
     if (invalid_cla(agrc, argv) == TRUE) {
