@@ -10,7 +10,7 @@
 
 int bot12_possible_placement(struct board_tile **board, struct player *players, struct bot_placement *placements, int x_size, int y_size)
 {
-    srand(time(0));
+    // srand(time(0));
     int place_counter = 0;
     for (int i = 0; i < y_size; i++)
     {
@@ -38,13 +38,13 @@ void bot_placement_execution(struct board_tile **board, struct player *players, 
 }
 int bot123_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
 {
-    srand(time(0));
+    // srand(time(0));
     int choosing_counter = 0;
     for (int i = 0; i < y_size; i++)
     {
         for (int j = 0; j < x_size; j++)
         {
-            if (board[i][j].occupied == players[curr_player - 1].id) // CHANGE LINES BELOW
+            if (board[i][j].occupied == players[curr_player - 1].id)
             {
                 if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
                 {
@@ -66,7 +66,7 @@ struct movement bot_choosing_execution(struct board_tile **board, struct player 
 }
 int bot1_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
 {
-    srand(time(0));
+    // srand(time(0));
     int movement_counter = 0;
     int up = 1;
     int down = 1;
@@ -110,7 +110,7 @@ int bot1_choosing_movement(struct board_tile **board, struct player *players, st
 
 int bot2_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
 {
-    srand(time(0));
+    // srand(time(0));
     int movement_counter = 0;
     int up = 1;
     int down = 1;
@@ -181,11 +181,11 @@ int bot2_choosing_movement(struct board_tile **board, struct player *players, st
 }
 
 // bot level 3
-// Random placement, random choosing penguins, moving on tiles with 3 in prioritet, then on 2, then 1,
+// places penguins accrording to the amount of tiles with 3 it would be able to reach, random choosing penguins, moving on tiles with 3 in prioritet, then on 2, then 1,
 // escapes simple traps,places penguins accrording to the amount of tiles with 3 it would be able to reach
 int bot34_possible_placement(struct board_tile **board, struct player *players, struct bot_placement *placements, int x_size, int y_size)
 {
-    srand(time(0));
+    // srand(time(0));
     int place_counter = 0;
     // int position_counter = 0;
     int temp = 0;
@@ -202,7 +202,6 @@ int bot34_possible_placement(struct board_tile **board, struct player *players, 
             }
         }
     }
-    // int good_placement[place_counter];
     int potential_counter[place_counter];
     for (int i = 0; i < place_counter; i++)
     {
@@ -339,7 +338,6 @@ int bot34_possible_placement(struct board_tile **board, struct player *players, 
 }
 int bot3_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
 {
-    srand(time(0));
     int movement_counter = 0;
     int up = 1;
     int down = 1;
@@ -387,19 +385,19 @@ int bot3_choosing_movement(struct board_tile **board, struct player *players, st
     {
         if (board[mov_choice[i].y][mov_choice[i].x].fishes != 0)
         {
-            if (board[mov_choice[i].y + 1][mov_choice[i].x].fishes != 0)
+            if ((board[mov_choice[i].y + 1][mov_choice[i].x].fishes != 0) && (mov_choice[i].y + 1 != m.from.y) && (mov_choice[i].x != m.from.x))
             {
                 amount_of_directions[i]++;
             }
-            if (board[mov_choice[i].y - 1][mov_choice[i].x].fishes != 0)
+            if ((board[mov_choice[i].y - 1][mov_choice[i].x].fishes != 0) && (mov_choice[i].y - 1 != m.from.y) && (mov_choice[i].x != m.from.x))
             {
                 amount_of_directions[i]++;
             }
-            if (board[mov_choice[i].y][mov_choice[i].x + 1].fishes != 0)
+            if ((board[mov_choice[i].y][mov_choice[i].x + 1].fishes != 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x + 1 != m.from.x))
             {
                 amount_of_directions[i]++;
             }
-            if (board[mov_choice[i].y][mov_choice[i].x - 1].fishes != 0)
+            if ((board[mov_choice[i].y][mov_choice[i].x - 1].fishes != 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x - 1 != m.from.x))
             {
                 amount_of_directions[i]++;
             }
@@ -461,6 +459,237 @@ int bot3_choosing_movement(struct board_tile **board, struct player *players, st
     return movement_decision;
 }
 
+// Bot level 4
+// places penguins accrording to the amount of tiles with 3 it would be able to reach, chooses penguins with the least directions it go onto
+// moves escaping more complicated traps
+int bot4_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
+{
+    int choosing_counter = 0;
+    for (int i = 0; i < y_size; i++)
+    {
+        for (int j = 0; j < x_size; j++)
+        {
+            if (board[i][j].occupied == players[curr_player - 1].id)
+            {
+                if (((board[i + 1][j].fishes != 0) && (board[i + 1][j].occupied == 0)) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
+                {
+                    choice[choosing_counter].x = j;
+                    choice[choosing_counter].y = i;
+                    choosing_counter++;
+                }
+            }
+        }
+    }
+    int amount_of_directions[choosing_counter];
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        amount_of_directions[i] = 0;
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (board[choice[i].y + 1][choice[i].x].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y - 1][choice[i].x].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y][choice[i].x + 1].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y][choice[i].x - 1].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+    }
+    int temp = amount_of_directions[0];
+    // int flag = 0;
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_directions[i] < temp && amount_of_directions[i] != 1)
+        {
+            temp = amount_of_directions[i];
+            // flag = 1;
+        }
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_directions[i] == temp)
+        {
+            temp = i;
+            int penguin_decision = temp;
+            return penguin_decision;
+        }
+    }
+    int penguin_decision = (rand() % (choosing_counter));
+    return penguin_decision;
+}
+
+int bot4_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
+{
+    int movement_counter = 0;
+    int up = 1;
+    int down = 1;
+    int right = 1;
+    int left = 1;
+    int temp = -1; // amount of moves
+
+    while ((board[m.from.y + up][m.from.x].fishes != 0) && (board[m.from.y + up][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y + up);
+        up++;
+        movement_counter++;
+    }
+    while ((board[m.from.y - down][m.from.x].fishes != 0) && (board[m.from.y - down][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y - down);
+        down++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x + right].fishes != 0) && (board[m.from.y][m.from.x + right].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x + right);
+        mov_choice[movement_counter].y = (m.from.y);
+        right++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x - left].fishes != 0) && (board[m.from.y][m.from.x - left].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x - left);
+        mov_choice[movement_counter].y = (m.from.y);
+        left++;
+        movement_counter++;
+    }
+    int moves_possible[movement_counter];
+    for (int i = 0; i < movement_counter; i++)
+    {
+        moves_possible[i] = 0;
+    }
+    for (int i = 0; i < movement_counter; i++)
+    {
+        up = 1;
+        down = 1;
+        right = 1;
+        left = 1;
+        while ((board[mov_choice[i].y + up][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y + up][mov_choice[i].x].occupied == 0) && (mov_choice[i].y + up != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            up++;
+            moves_possible[i]++;
+        }
+        while ((board[mov_choice[i].y - down][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y - down][mov_choice[i].x].occupied == 0) && (mov_choice[i].y - down != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            down++;
+            moves_possible[i]++;
+        }
+        while ((board[mov_choice[i].y][mov_choice[i].x + right].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x + right].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x + right != m.from.x))
+        {
+            right++;
+            moves_possible[i]++;
+        }
+        while ((board[mov_choice[i].y][mov_choice[i].x - left].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x - left].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x - left != m.from.x))
+        {
+            left++;
+            moves_possible[i]++;
+        }
+    }
+    for (int i = 0; i < movement_counter; i++)
+    {
+        if (moves_possible[i] > temp)
+        {
+            temp = moves_possible[i];
+        }
+    }
+    int temp_ar[movement_counter]; // if there are several tiles with equal possible movements
+    for (int i = 0; i < movement_counter; i++)
+    {
+        temp_ar[i] = 0;
+    }
+    int j = 0;
+    for (int i = 0; i < movement_counter; i++)
+    {
+        if (moves_possible[i] == temp)
+        {
+            temp_ar[j] = i;
+            j++;
+        }
+    }
+    if (j > 1)
+    {
+        int board_prior[j];
+        for (int i = 0; i < j; i++)
+        {
+            board_prior[i] = 0;
+        }
+        int board_prior_counter = 0;
+        for (int i = 0; i < j; i++)
+        {
+            if (board[mov_choice[temp_ar[i]].y][mov_choice[temp_ar[i]].x].fishes == 3)
+            {
+                board_prior[board_prior_counter] = i;
+                board_prior_counter++;
+            }
+        }
+        if (board_prior_counter != 0)
+        {
+            temp = (rand() % board_prior_counter);
+            int movement_decision = temp_ar[board_prior[temp]];
+            return movement_decision;
+        }
+        else
+        {
+            
+            board_prior_counter = 0;
+            for (int i = 0; i < j; i++)
+            {
+                if (board[mov_choice[temp_ar[i]].y][mov_choice[temp_ar[i]].x].fishes == 2)
+                {
+                    board_prior[board_prior_counter] = i;
+                    board_prior_counter++;
+                }
+            }
+            if (board_prior_counter != 0)
+            {
+                temp = (rand() % board_prior_counter);
+                int movement_decision = temp_ar[board_prior[temp]];
+                return movement_decision;
+            }
+            else
+            {
+                
+                board_prior_counter = 0;
+                for (int i = 0; i < j; i++)
+                {
+                    if (board[mov_choice[temp_ar[i]].y][mov_choice[temp_ar[i]].x].fishes == 1)
+                    {
+                        board_prior[board_prior_counter] = i;
+                        board_prior_counter++;
+                    }
+                }
+                temp = (rand() % board_prior_counter);
+                int movement_decision = temp_ar[board_prior[temp]];
+                return movement_decision;
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < movement_counter; i++)
+        {
+            if (moves_possible[i] == temp)
+            {
+                temp = i;
+                break;
+            }
+        }
+        int movement_decision = temp;
+        return movement_decision;
+    }
+}
+
 /*
 
 
@@ -484,13 +713,19 @@ void execute_placement_bot(struct board_tile **board, int x, int y, struct playe
     }
     case 2:
     {
-        int placement_decision = bot12_possible_placement(board, players, placements, x, y); // has the same way of choosing placement as 1st
+        int placement_decision = bot12_possible_placement(board, players, placements, x, y);
         bot_placement_execution(board, players, placements, p, curr_player, placement_decision);
         break;
     }
     case 3:
     {
-        int placement_decision = bot34_possible_placement(board, players, placements, x, y); // has the same way of choosing placement as 1st
+        int placement_decision = bot34_possible_placement(board, players, placements, x, y);
+        bot_placement_execution(board, players, placements, p, curr_player, placement_decision);
+        break;
+    }
+    case 4:
+    {
+        int placement_decision = bot34_possible_placement(board, players, placements, x, y);
         bot_placement_execution(board, players, placements, p, curr_player, placement_decision);
         break;
     }
@@ -509,8 +744,8 @@ struct movement bot_mov_choosing_execution(struct board_tile **board, struct pla
 void execute_movement_bot(struct board_tile **board, int x, int y, struct player *players, int n, int curr_player)
 {
     struct movement m;
-    struct bot_choosing *choice = (struct bot_choosing *)malloc(x * y * sizeof(struct bot_choosing));
-    struct bot_movement *mov_choice = (struct bot_movement *)malloc(x * y * sizeof(struct bot_movement));
+    struct bot_choosing *choice = (struct bot_choosing *)calloc(x * y, sizeof(struct bot_choosing));
+    struct bot_movement *mov_choice = (struct bot_movement *)calloc(x * y, sizeof(struct bot_movement));
 
     switch (players[curr_player - 1].bot_level)
     {
@@ -518,26 +753,35 @@ void execute_movement_bot(struct board_tile **board, int x, int y, struct player
     {
         int penguin_decision = bot123_choosing_penguin(board, players, choice, x, y, curr_player);
         m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
-        int movement_deicision = bot1_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
-        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+        int movement_decision = bot1_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_decision);
         execute_movement(board, players, curr_player, m);
         break;
     }
     case 2:
     {
-        int penguin_decision = bot123_choosing_penguin(board, players, choice, x, y, curr_player); // same choosing
+        int penguin_decision = bot123_choosing_penguin(board, players, choice, x, y, curr_player);
         m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
-        int movement_deicision = bot2_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
-        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+        int movement_decision = bot2_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_decision);
         execute_movement(board, players, curr_player, m);
         break;
     }
     case 3:
     {
-        int penguin_decision = bot123_choosing_penguin(board, players, choice, x, y, curr_player); // same choosing
+        int penguin_decision = bot123_choosing_penguin(board, players, choice, x, y, curr_player);
         m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
-        int movement_deicision = bot3_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
-        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_deicision);
+        int movement_decision = bot3_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_decision);
+        execute_movement(board, players, curr_player, m);
+        break;
+    }
+    case 4:
+    {
+        int penguin_decision = bot4_choosing_penguin(board, players, choice, x, y, curr_player);
+        m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
+        int movement_decision = bot4_choosing_movement(board, players, m, mov_choice, x, y, curr_player);
+        m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_decision);
         execute_movement(board, players, curr_player, m);
         break;
     }
@@ -545,5 +789,6 @@ void execute_movement_bot(struct board_tile **board, int x, int y, struct player
         free(choice);
         free(mov_choice);
     }
-    // for tests: || 3 a 1 3 b 1 2 c 1 1 3 15 15 || 3 a 1 3 b 1 2 c 1 1 1 10 10
+    // for tests 3: || 3 a 1 3 b 1 2 c 1 1 3 15 15 || 3 a 1 3 b 1 2 c 1 1 1 10 10
+    // for tests 4: || 4 a 1 4 b 1 3 c 1 2 d 1 1 3 16 16 || 4 a 1 4 b 1 3 c 1 2 d 1 1 1 10 10
 }
