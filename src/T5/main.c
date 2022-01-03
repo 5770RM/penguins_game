@@ -82,15 +82,15 @@ int main(int argc char **argv) {
     movement_init(board, x, y, players, n);
     // as long as at least one player can make a move 
     while (movement_game_status(board, players, n) != END_MP) {
-        // check if currnet player can make a move        
+        // check if current player can make a move
         if (movement_possible(board, x, y, players, curr_player) == TRUE) {
-            // unitl chosen move is invalid ask for another            
+            // until chosen move is invalid ask for another
             
             struct movement m; 
             display_curr_player(players, curr_player);
             if (players[curr_player-1].bot == FALSE) {
                 int valid;
-                // unitl chosen move is invalid ask for another            
+                // until chosen move is invalid ask for another
                 do {
                     show_ranking(players, n);    
                     show_board(board, x, y, players);
