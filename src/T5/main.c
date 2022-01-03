@@ -13,10 +13,10 @@
 #include <stdio.h>
 #include <time.h>
 
-int main(int agrc, char **argv) {   
+int main(int argc char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
-    if (invalid_cla(agrc, argv) == TRUE) {
+    if (invalid_cla(argc, argv) == TRUE) {
         error("Invalid command line arguments %s\n", argv[0]);
              return 1;
     }
