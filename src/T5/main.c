@@ -13,7 +13,7 @@
 #include <stdio.h>
 #include <time.h>
 
-int main(int argc char **argv) {
+int main(int argc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
     if (invalid_cla(argc, argv) == TRUE) {
