@@ -34,9 +34,34 @@ struct GameState* read_board(char* name) {
             gs->board[i][j].occupied = tile[1] == 0? 0 : tile[1];
         }
     }
-
-
-
+    //reading information about player and assigning it to players*
+    int number_of_players = 0;
+    int counter_of_row = 0;
+    int flag = 1;
+    while (flag) {
+        struct player pl;
+        for(int i = 0; i < 3; i++) {
+            if(fscanf(fp, "%s", buff) == EOF) {
+                flag = 0;
+                break;
+            }
+            if(counter_of_row == 0) {
+                pl.full_name = buff;
+                counter_of_row++;
+            } else if(counter_of_row == 1) {
+                pl.id = buff[0];//because id is from 0 to 9
+                counter_of_row++;
+            } else {
+                int number_of_fish_collected;
+                sscanf(buff, "%d", &number_of_fish_collected);
+                pl.fish_collected = number_of_fish_collected;
+                counter_of_row = 0;
+            }
+        }
+        gs->players[number_of_players] = pl;
+        number_of_players++;
+    }
+    gs->n = number_of_players;
     return gs;
 }
 

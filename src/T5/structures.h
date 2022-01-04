@@ -3,6 +3,7 @@
 struct player {
     int id;
     char name;
+    char full_name[32]; //to get full_name it has to be checked somehow
     int fish_collected;
     int penguins;       //number of penguins, should not be changed
     int pen_not_placed; //number of penguins which are not placed
