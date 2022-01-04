@@ -2,13 +2,12 @@
 // Created by timur on 1/3/22.
 //
 #include "stdio.h"
-#include "external_data.h"
 #include "structures.h"
+#include "external_data.h"
 // input parameters: char* name
 // return: state of the game in the file
 // reads content of the file given in name, returns the state of the game given in the file
-struct GameState* read_board(char* name) {
-    struct GameState* gs;
+struct GameState* read_board(struct GameState* gs, char* name) {
     FILE *fp;
     char buff[255];
     fp = fopen(name, "r");

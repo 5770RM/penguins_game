@@ -20,9 +20,11 @@ int main(int argc, char **argv) {
         error("Invalid command line arguments %s\n", argv[0]);
              return 1;
     }
-    struct GameState* state = read_board(argv[3]);
+    struct GameState* state = malloc(sizeof(GameState));
+    state = read_board(state, argv[3]);
     execute_autonomous_command(state, argc, argv); 
     write_board(state, argv[4]);  
+//    free_game_state(state);
 #endif
 #if INTERACTIVE_MODE  
     int n = get_nbr_of_players();
