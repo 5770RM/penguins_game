@@ -21,7 +21,7 @@ int main(int argc, char **argv) {
              return 1;
     }
     struct GameState* state = malloc(sizeof(GameState));
-    state = read_board(state, argv[3]);
+    read_board(state, argv[3]);
     execute_autonomous_command(state, argc, argv); 
     write_board(state, argv[4]);  
 //    free_game_state(state);

@@ -4,10 +4,11 @@
 #include "stdio.h"
 #include "structures.h"
 #include "external_data.h"
-// input parameters: char* name
-// return: state of the game in the file
-// reads content of the file given in name, returns the state of the game given in the file
-struct GameState* read_board(struct GameState* gs, char* name) {
+
+// reads content of the file given in name, fills game state with date from a text file which path is specified in name
+// arguments: game state, name of the file
+// return: no value 
+void read_board(struct GameState* gs, char* name) {
     FILE *fp;
     char buff[255];
     fp = fopen(name, "r");
@@ -65,7 +66,6 @@ struct GameState* read_board(struct GameState* gs, char* name) {
     gs->players = playersArray;
 
     fclose(fp);
-    return gs;
 }
 
 // input parameters: struct GameState* state, char* name
