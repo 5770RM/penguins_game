@@ -16,15 +16,21 @@
 int main(int argc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
-    if (invalid_cla(argc, argv) == TRUE) {
+/*    if (invalid_cla(argc, argv) == TRUE) {
         error("Invalid command line arguments %s\n", argv[0]);
              return 1;
-    }
+    }*/
+    char *in = "2.txt";
+    char *out = "out2.txt";
+
     struct GameState* state = malloc(sizeof(struct GameState));
-    read_board(state, argv[3]);
-    execute_autonomous_command(state, argc, argv);
-    write_board(state, argv[4]);
-//    free_game_state(state);
+    //read_board(state, argv[3]);
+    read_board(state, in);
+    
+    //execute_autonomous_command(state, argc, argv);
+    //write_board(state, argv[4]);
+    //write_board(state, out);
+    // free_game_state(state);
 #endif
 #if INTERACTIVE_MODE  
     int n = get_nbr_of_players();
