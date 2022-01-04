@@ -14,6 +14,8 @@ void next_player(int *curr_player, int n);
 // arguments: movement
 // return: 1 or 0
 int movement_null(struct movement m);
+// checks if cords used in functions move beoynd the boarders of the map
+int coords_checker(int x, int y, int x_check, int y_check)
 
 // (re)allocate memeory block for an array of players
 // arguments: pointer to array to players, number of players
