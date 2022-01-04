@@ -39,7 +39,7 @@ void read_board(struct GameState* gs, char* name) {
     int number_of_players = 0;
     int counter_of_row = 0;
     int flag = 1;
-    player* players_array = malloc(sizeof(player)*number_of_players);
+    struct player* players_array = malloc(sizeof(struct player)*number_of_players);
     while (flag) {
         struct player pl;
         for(int i = 0; i < 3; i++) {
