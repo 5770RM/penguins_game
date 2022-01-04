@@ -1,7 +1,8 @@
 //
 // Created by timur on 1/3/22.
 //
-#include "stdio.h"
+#include <stdio.h>
+#include <stdlib.h>
 #include "structures.h"
 #include "external_data.h"
 
@@ -38,7 +39,7 @@ void read_board(struct GameState* gs, char* name) {
     int number_of_players = 0;
     int counter_of_row = 0;
     int flag = 1;
-    player* playersArray;
+    player* playersArray = malloc(sizeof(player)*number_of_players);
     while (flag) {
         struct player pl;
         for(int i = 0; i < 3; i++) {
