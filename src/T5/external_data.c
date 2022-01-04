@@ -64,7 +64,7 @@ void read_board(struct GameState* gs, char* name) {
         number_of_players++;
     }
     gs->n = number_of_players;
-    gs->players = playersArray;
+    gs->players = players_array;
 
     fclose(fp);
 }
