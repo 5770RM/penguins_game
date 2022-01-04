@@ -34,7 +34,7 @@ int placement_possible(struct board_tile** board, int x, int y, struct player* p
 }
 
 int valid_placement(struct board_tile** board, int x, int y, struct placement p) {
-	if ((p.to.x > 0) && (p.to.y > 0) && (p.to.x < x) && (p.to.y < y) && board[p.to.y][p.to.x].fishes == 1 && board[p.to.y][p.to.x].occupied == 0)
+	if ((p.to.x > -1) && (p.to.y > -1) && (p.to.x < x) && (p.to.y < y) && board[p.to.y][p.to.x].fishes == 1 && board[p.to.y][p.to.x].occupied == 0)
 		return 1;
 	else
 		return 0;
