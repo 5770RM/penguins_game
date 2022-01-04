@@ -48,7 +48,7 @@ void read_board(struct GameState* gs, char* name) {
                 break;
             }
             if(counter_of_row == 0) {
-                pl.full_name = buff;
+                snprintf(pl.full_name,32,"%s",buff);
                 counter_of_row++;
             } else if(counter_of_row == 1) {
                 pl.id = buff[0];//because id is from 0 to 9
