@@ -38,6 +38,7 @@ struct GameState* read_board(char* name) {
     int number_of_players = 0;
     int counter_of_row = 0;
     int flag = 1;
+    player* playersArray;
     while (flag) {
         struct player pl;
         for(int i = 0; i < 3; i++) {
@@ -58,17 +59,57 @@ struct GameState* read_board(char* name) {
                 counter_of_row = 0;
             }
         }
-        gs->players[number_of_players] = pl;
+        *playersArray = pl;
         number_of_players++;
     }
     gs->n = number_of_players;
+    gs->players = playersArray;
+
+    fclose(fp);
     return gs;
 }
 
 // input parameters: struct GameState* state, char* name
 // return: none
 // writes a new file to location specified in name
-void write_board(struct GameState* state, char* name) {
+void write_board(struct GameState* gs, char* name) {
+    FILE *fp;
+    fp = fopen(name, "w");
+
+    //writing number of columns
+    char board_x_array[BUFSIZ];
+    int board_x = gs->board_x;
+    sprintf(board_x_array,"%d",board_x);
+    fputs(board_x_array, fp);
+
+    //space
+    fputc(' ',fp);
+
+    //writing number of rows
+    char board_y_array[BUFSIZ];
+    int board_y = gs->board_y;
+    sprintf(board_y_array,"%d",board_y);
+    fputs(board_y_array, fp);
+
+    //writing the map
+    for(int i = 0; i < board_x; i++) {
+        for (int j = 0; j < board_y; j++) {
+            int number_of_fishes = gs->board[i][j].fishes;
+            int occupied = gs->board[i][j].occupied;
+
+            fputc('0' + number_of_fishes,fp); //adding '0' to convert int to char
+            fputc('0' + occupied,fp);
+        }
+        fputc('\n',fp);
+    }
+
+//    int number_of_players = gs->n;
+//    for (int i = 0; i < number_of_players; i++) {
+//        for (int j = 0; j < 3; j++) {
+//            fputs(gs->players[i].)
+//        }
+//    }
+
 
 }
 
