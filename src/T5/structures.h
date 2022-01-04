@@ -54,4 +54,3 @@ struct bot_placement
 
 
 #endif
-struct board_tile** board;
