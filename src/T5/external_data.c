@@ -64,7 +64,7 @@ void read_board(struct GameState* gs, char* name) {
         number_of_players++;
     }
     gs->n = number_of_players;
-    gs->players = players_array;
+    gs->players = playersArray;
 
     fclose(fp);
 }
@@ -77,7 +77,7 @@ void write_board(struct GameState* gs, char* name) {
     fp = fopen(name, "w");
 
     //writing number of columns
-    char board_x_array[BUFSIZ];
+    char board_x_array[255];
     int board_x = gs->board_x;
     sprintf(board_x_array,"%d",board_x);
     fputs(board_x_array, fp);
@@ -86,10 +86,13 @@ void write_board(struct GameState* gs, char* name) {
     fputc(' ',fp);
 
     //writing number of rows
-    char board_y_array[BUFSIZ];
+    char board_y_array[255];
     int board_y = gs->board_y;
     sprintf(board_y_array,"%d",board_y);
     fputs(board_y_array, fp);
+
+    //new line
+    fputc('\n',fp);
 
     //writing the map
     for(int i = 0; i < board_x; i++) {
@@ -99,17 +102,30 @@ void write_board(struct GameState* gs, char* name) {
 
             fputc('0' + number_of_fishes,fp); //adding '0' to convert int to char
             fputc('0' + occupied,fp);
+
+            fputc(' ', fp);
         }
         fputc('\n',fp);
     }
 
-//    int number_of_players = gs->n;
-//    for (int i = 0; i < number_of_players; i++) {
-//        for (int j = 0; j < 3; j++) {
-//            fputs(gs->players[i].)
-//        }
-//    }
+    //writing player's name, number of collected fish and id
+    int number_of_players = gs->n;
+    for (int i = 0; i < number_of_players; i++) {
+        fputs(gs->players[i].full_name, fp);
+        fputc(' ', fp);
 
+        int fish_collected = gs->players[i].fish_collected;
+        char fish_collected_array[255];
+        sprintf(fish_collected_array,"%d",fish_collected);
+        fputs(fish_collected_array,fp);
+        fputc(' ', fp);
 
+        int player_id = gs->players[i].id;
+        char player_id_array[255];
+        sprintf(player_id_array,"%d",player_id);
+        fputc('\n', fp);
+    }
+
+    fclose(fp);
 }
 
