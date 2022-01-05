@@ -16,10 +16,8 @@
 int main(int argc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
-    if (invalid_cla(argc, argv) == TRUE) {
-            error("Invalid command line arguments %s\n", argv[0]);
-             return 1;
-    }
+    invalid_cla_check(argc, argv);
+    
     struct GameState* state = malloc(sizeof(struct GameState));
     read_board(state, argv[3]);
     execute_autonomous_command(state, argc, argv);
