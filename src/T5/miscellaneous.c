@@ -34,6 +34,13 @@ void movement_init(struct board_tile** board, int x, int y, struct player* playe
 int movement_null(struct movement m) {
     return m.from.x == -1 || m.from.y == -1 || m.to.x == -1 || m.to.y == -1;
 }
+int coords_checker(int x, int y, int x_check, int y_check)
+    {
+        if ((x_check < 0) || (y_check < 0) || (x_check > x - 1) || (y_check > y - 1))
+            return 0;
+        else
+            return 1;
+    }
 
 void *new_players(struct player *players, int n) {
     return realloc(players, sizeof(struct player)*n);

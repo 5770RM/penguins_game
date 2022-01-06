@@ -26,4 +26,6 @@ int bot3_choosing_movement(struct board_tile **board, struct player *players, st
 int bot4_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player);
 // choosing a tile for a penguin to move the movement phase, used by bot with 4th level of difficulty
 int bot4_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player);
+// placement of penguins by the 5th bot
+int bot5_possible_placement(struct board_tile **board, struct player *players, struct bot_placement *placements, int x_size, int y_size, int curr_player);
 #endif

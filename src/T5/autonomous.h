@@ -6,6 +6,6 @@
 void execute_autonomous_command(struct GameState* state, int argc, char **argv);
 // these functions only run in autonomous mode, check if command line arguments are valid - according to documentation
 // arguments: number of command line arguments, command line arguments
-// returns: 1 if cla are invalid, 0 otherwise 
-int invalid_cla(int argc, char **argv);
+// returns: no value 
+void invalid_cla(int argc, char **argv);
 #endif

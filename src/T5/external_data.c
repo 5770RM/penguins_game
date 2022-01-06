@@ -5,6 +5,8 @@
 #include <stdlib.h>
 #include "structures.h"
 #include "external_data.h"
+#include "miscellaneous.h"
+#include "map.h"
 
 // reads content of the file given in name, fills game state with date from a text file which path is specified in name
 // arguments: game state, name of the file
@@ -16,30 +18,31 @@ void read_board(struct GameState* gs, char* name) {
 
     //reads the number of columns from the file and assigns it
     fscanf(fp, "%s", buff);
-    int board_x;
-    sscanf(buff, "%d", &board_x);
-    gs->board_x = board_x;
-
-    //reads the number of rows from the file and assigns it
-    fscanf(fp, "%s", buff);
     int board_y;
     sscanf(buff, "%d", &board_y);
     gs->board_y = board_y;
 
+    //reads the number of rows from the file and assigns it
+    fscanf(fp, "%s", buff);
+    int board_x;
+    sscanf(buff, "%d", &board_x);
+    gs->board_x = board_x;
     //assigning map to board_tile**
-    for(int i = 0; i < board_x; i++) {
-        for (int j = 0; j < board_y; j++) {
-            char tile[2];
+    gs->board = new_board(board_x, board_y);
+    for(int i = 0; i < board_y; i++) {
+        for (int j = 0; j < board_x; j++) {
+            char tile[3];
+            tile[2] = '\0';
             fscanf(fp,"%s", tile);
-            gs->board[i][j].fishes = tile[0];
-            gs->board[i][j].occupied = tile[1] == 0? 0 : tile[1];
+            gs->board[i][j].fishes = tile[0] - '0';
+            gs->board[i][j].occupied = tile[1] - '0';
         }
     }
     //reading information about player and assigning it to players*
     int number_of_players = 0;
     int counter_of_row = 0;
     int flag = 1;
-    player* players_array = malloc(sizeof(struct player)*number_of_players);
+    struct player* players_array = malloc(sizeof(struct player)*number_of_players);
     while (flag) {
         struct player pl;
         for(int i = 0; i < 3; i++) {
@@ -48,7 +51,7 @@ void read_board(struct GameState* gs, char* name) {
                 break;
             }
             if(counter_of_row == 0) {
-                snprintf(pl.full_name,32,"%s",buff);;
+                snprintf(pl.full_name,32,"%s",buff);
                 counter_of_row++;
             } else if(counter_of_row == 1) {
                 pl.id = buff[0];//because id is from 0 to 9
@@ -64,7 +67,7 @@ void read_board(struct GameState* gs, char* name) {
         number_of_players++;
     }
     gs->n = number_of_players;
-    gs->players = playersArray;
+    gs->players = players_array;
 
     fclose(fp);
 }
