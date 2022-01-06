@@ -16,7 +16,7 @@
 int main(int argc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
-    invalid_cla_check(argc, argv);
+//    invalid_cla_check(argc, argv);
     
     struct GameState* state = malloc(sizeof(struct GameState));
     char *in = "2.txt";
