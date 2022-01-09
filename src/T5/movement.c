@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <math.h>
 #include "structures.h"
-// #include "gameplay_functions.h"
 #include "movement.h"
+
 
 int movement_game_status(struct board_tile **board, struct player *players, int amount_of_players) // check if there are tiles left to go onto
 {
@@ -82,7 +82,7 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
                     }
                     else
                     {
-                        for (int i = 1; i <= (abs(m.from.y - m.to.y)); i++)
+                        for (int i = 1; i <= (abs(m.from.x - m.to.x)); i++)
                         {
                             if ((m.from.x - m.to.x) > 0)
                             {
@@ -114,17 +114,3 @@ void execute_movement(struct board_tile **board, struct player *players, int cur
     board[m.to.y][m.to.x].fishes = 0;
 }
 
-/* int main()
-{
-    int x = get_x_dimension();
-    int y = get_y_dimension();
-    int position_x = input_x(x);
-    int position_y = input_y(y);
-    // checking what is the current player
-    // checking if there are any penguins left who can move
-    // getting cords
-    // checking if there is a current player's penguin on that tile
-    // getting cords to move on
-    // checking if cords are valid
-    // switch players
-} */
