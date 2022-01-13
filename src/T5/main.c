@@ -19,17 +19,23 @@ int main(int argc, char **argv) {
 //    invalid_cla_check(argc, argv);
     
     struct GameState* state = malloc(sizeof(struct GameState));
-    char *in = "2.txt";
-    char *out = "2out.txt"; 
+    char *in = argv[1];//"2.txt";
+    char *out = argv[2];//"2out.txt"; 
     read_board(state, in);
-    //read_board(state, argv[3]);
+
+    // add exra border around the board
+    // add_border(state);
+
+//    char *nick = "GROUP-B";
+//    if (!nick_used(state->players, state->n, nick))
+//        add_new_player(state->players, n, next_free_id(state->players), );
     //execute_autonomous_command(state, argc, argv); 
     write_board(state, out);  
 //    free_game_state(state);
 #endif
 #if INTERACTIVE_MODE  
     int n = get_nbr_of_players();
-    struct player* players = (struct player*)malloc(n * sizeof(struct player));
+    struct player* players = malloc(n * sizeof(struct player));
 
     init_players(players, n);
     int x = get_x_dimension();

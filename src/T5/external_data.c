@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "structures.h"
-#include "external_data.h"
+//#include "external_data.h"
 #include "miscellaneous.h"
 #include "map.h"
 #include "defines.h"
@@ -43,7 +43,7 @@ void read_board(struct GameState* gs, char* name) {
     }
     //reading information about player and assigning it to players*
     int n = 0;  // number of players
-    struct player* players_array;
+    struct player* players_array = malloc(sizeof(struct player));
     while (!feof(fp)) {
         struct player pl;
         char player_name[32];
