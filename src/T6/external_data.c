@@ -32,8 +32,8 @@ void read_board(struct GameState* gs, char* name) {
 
     //assigning map to board_tile**
     gs->board = new_board(board_x, board_y);
-    for(int i = 0; i < board_y; i++) {
-        for (int j = 0; j < board_x; j++) {
+    for(int i = 0; i < board_x; i++) {
+        for (int j = 0; j < board_y; j++) {
             char tile[3];
             if (!fscanf(fp,"%s", tile)) 
                 exit( TXT_FAILURE );
