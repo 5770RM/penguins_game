@@ -87,7 +87,7 @@ void show_board(struct board_tile **board, int x_size, int y_size, struct player
                 if (occupied != 0)
                     printf("|- %c", players[occupied].name);
                 else if (occupied == 0 && fishes == 0)
-                    printf("|- -");
+                    printf("|   ");
                 else
                     printf("|%d -", fishes);
             }
@@ -96,7 +96,7 @@ void show_board(struct board_tile **board, int x_size, int y_size, struct player
                 if (occupied != 0)
                     printf("|- %c", players[occupied-1].name);
                 else if (occupied == 0 && fishes == 0)
-                    printf("|- -");
+                    printf("|   ");
                 else
                     printf("|%d -", fishes);
             }
