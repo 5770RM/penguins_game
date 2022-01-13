@@ -38,7 +38,6 @@ void bot_placement_execution(struct board_tile **board, struct player *players, 
 }
 int bot123_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
 {
-    // srand(time(0));
     int choosing_counter = 0;
     for (int i = 0; i < y_size; i++)
     {
@@ -488,10 +487,6 @@ int bot4_choosing_penguin(struct board_tile **board, struct player *players, str
     int *amount_of_directions = calloc(choosing_counter, sizeof(int)); // freed
     for (int i = 0; i < choosing_counter; i++)
     {
-        amount_of_directions[i] = 0;
-    }
-    for (int i = 0; i < choosing_counter; i++)
-    {
         if (board[choice[i].y + 1][choice[i].x].fishes != 0)
         {
             amount_of_directions[i]++;
@@ -797,7 +792,7 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
             int flag_wh = 0;
             while (flag_wh == 0)
             {
-                if (board[placements[i].y + up][placements[i].x].fishes != 0 && board[placements[i].y + up][placements[i].x].occupied == 0)
+                if (board[placements[i].y + up][placements[i].x].fishes == 0 || board[placements[i].y + up][placements[i].x].occupied != 0)
                     flag_wh = 1;
                 if ((board[placements[i].y + up][placements[i].x].occupied > 0) &&
                     (board[placements[i].y + up][placements[i].x].occupied != players[curr_player - 1].id))
@@ -809,7 +804,7 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
             flag_wh = 0;
             while (flag_wh == 0)
             {
-                if (board[placements[i].y - down][placements[i].x].fishes != 0 && board[placements[i].y - down][placements[i].x].occupied == 0)
+                if (board[placements[i].y - down][placements[i].x].fishes == 0 || board[placements[i].y - down][placements[i].x].occupied != 0)
                     flag_wh = 1;
                 if ((board[placements[i].y - down][placements[i].x].occupied > 0) &&
                     (board[placements[i].y - down][placements[i].x].occupied != players[curr_player - 1].id))
@@ -821,7 +816,7 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
             flag_wh = 0;
             while (flag_wh == 0)
             {
-                if (board[placements[i].y][placements[i].x + right].fishes != 0 && board[placements[i].y][placements[i].x + right].occupied == 0)
+                if (board[placements[i].y][placements[i].x + right].fishes == 0 || board[placements[i].y][placements[i].x + right].occupied != 0)
                     flag_wh = 1;
                 if ((board[placements[i].y][placements[i].x + right].occupied > 0) &&
                     (board[placements[i].y][placements[i].x + right].occupied != players[curr_player - 1].id))
@@ -833,7 +828,7 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
             flag_wh = 0;
             while (flag_wh == 0)
             {
-                if (board[placements[i].y][placements[i].x - left].fishes != 0 && board[placements[i].y][placements[i].x - left].occupied == 0)
+                if (board[placements[i].y][placements[i].x - left].fishes == 0 || board[placements[i].y][placements[i].x - left].occupied != 0)
                     flag_wh = 1;
                 if ((board[placements[i].y][placements[i].x - left].occupied > 0) &&
                     (board[placements[i].y][placements[i].x - left].occupied != players[curr_player - 1].id))
@@ -888,6 +883,393 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
         return placement_decision;
     }
 }
+int bot5_1_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
+{
+    int choosing_counter = 0;
+    int temp = -1;
+    for (int i = 0; i < y_size; i++)
+    {
+        for (int j = 0; j < x_size; j++)
+        {
+            if (board[i][j].occupied == players[curr_player - 1].id)
+            {
+                if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
+                {
+                    choice[choosing_counter].x = j;
+                    choice[choosing_counter].y = i;
+                    choosing_counter++;
+                }
+            }
+        }
+    }
+    int *amount_of_moves = calloc(choosing_counter, sizeof(int)); // freed
+    int *block_potention = calloc(choosing_counter, sizeof(int)); // freed
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        int amount_of_directions = 0;
+        int up = 1;
+        int down = 1;
+        int right = 1;
+        int left = 1;
+        while ((board[choice[i].y + up][choice[i].x].fishes != 0) && (board[choice[i].y + up][choice[i].x].occupied == 0))
+        {
+            amount_of_moves[i]++;
+            if (board[choice[i].y + up + 1][choice[i].x].occupied != 0 && board[choice[i].y + up + 1][choice[i].x].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y + up + 2][choice[i].x].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up + 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up + 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y + up][choice[i].x + 1].occupied != 0 && board[choice[i].y + up][choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y + up + 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up][choice[i].x + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up - 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y + up][choice[i].x - 1].occupied != 0 && board[choice[i].y + up][choice[i].x - 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y + up + 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up - 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + up][choice[i].x - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            up++;
+        }
+        while (board[choice[i].y - down][choice[i].x].fishes != 0 && (board[choice[i].y - down][choice[i].x].occupied == 0))
+        {
+            amount_of_moves[i]++;
+            if (board[choice[i].y - down - 1][choice[i].x].occupied != 0 && board[choice[i].y - down - 1][choice[i].x].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y - down - 2][choice[i].x].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down - 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down - 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y - down][choice[i].x + 1].occupied != 0 && board[choice[i].y - down][choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y - down - 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down][choice[i].x + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down + 1][choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y - down][choice[i].x - 1].occupied != 0 && board[choice[i].y - down][choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y - down - 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down + 1][choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - down][choice[i].x - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            down++;
+        }
+        while (board[choice[i].y][choice[i].x + right].fishes != 0 && board[choice[i].y][choice[i].x + right].occupied == 0)
+        {
+            amount_of_moves[i]++;
+            if (board[choice[i].y + 1][choice[i].x + right].occupied != 0 && board[choice[i].y + 1][choice[i].x + right].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y + 1][choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 2][choice[i].x + right].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 1][choice[i].x + right - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y - 1][choice[i].x + right].occupied != 0 && board[choice[i].y + 1][choice[i].x + right].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y - 1][choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 2][choice[i].x + right].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 1][choice[i].x + right - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y][choice[i].x + right + 1].occupied != 0 && board[choice[i].y][choice[i].x + right + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y][choice[i].x + right + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 1][choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 1][choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            right++;
+        }
+
+        while (board[choice[i].y][choice[i].x - left].fishes != 0 && board[choice[i].y][choice[i].x - left].occupied == 0)
+        {
+            amount_of_moves[i]++;
+            if (board[choice[i].y + 1][choice[i].x - left].occupied != 0 && board[choice[i].y + 1][choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y + 1][choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 1][choice[i].x - left + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 2][choice[i].x - left].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y - 1][choice[i].x - left].occupied != 0 && board[choice[i].y + 1][choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y - 1][choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 1][choice[i].x - left + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 2][choice[i].x - left].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            if (board[choice[i].y][choice[i].x - left - 1].occupied != 0 && board[choice[i].y][choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[choice[i].y][choice[i].x - left - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y + 1][choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[choice[i].y - 1][choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 35;
+                else if (amount_of_directions == 2)
+                    block_potention[i] += 10;
+                else
+                    block_potention[i] += 3;
+            }
+            left++;
+        }
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (block_potention[i] > temp)
+            temp = block_potention[i];
+    }
+    int *same_potention = calloc(choosing_counter, sizeof(int)); // freed
+    int same_potention_counter = 0;
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (block_potention[i] == temp)
+            same_potention[same_potention_counter] = i;
+        same_potention_counter++;
+    }
+    if (same_potention_counter == 1)
+    {
+        temp = same_potention[0];
+        free(amount_of_moves);
+        free(block_potention);
+        free(same_potention);
+        return temp;
+    }
+    temp = -1;
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_moves[same_potention[i]] > temp)
+            temp = amount_of_moves[same_potention[i]];
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_moves[same_potention[i]] == temp)
+        {
+            temp = same_potention[i];
+            break;
+        }
+    }
+    temp = same_potention[0];
+    free(amount_of_moves);
+    free(block_potention);
+    free(same_potention);
+    return temp;
+}
+int bot5_2_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
+{
+
+}
+
+
+
+
 /*
 
 
@@ -990,10 +1372,22 @@ void execute_movement_bot(struct board_tile **board, int x, int y, struct player
     }
     case 5:
     {
-        int penguin_decision = bot4_choosing_penguin(board, players, choice, x, y, curr_player); // should be changed to 5
+        int active_player_counter = 0;
+        int penguin_decision = -1;
+        for (int i = 0; i < n; i++)
+        {
+            if (players[i].movement_status == 1)
+                active_player_counter++;
+        }
+        if (active_player_counter < 3)
+        {
+            penguin_decision = bot5_1_choosing_penguin(board, players, choice, x, y, curr_player);
+        }
+        else
+            penguin_decision = bot5_1_choosing_penguin(board, players, choice, x, y, curr_player); // should be changed to 5_2
         m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
-        int movement_decision;
-        if (n < 3)
+        int movement_decision = -1;
+        if (active_player_counter < 3)
         {
             movement_decision = bot4_choosing_movement(board, players, m, mov_choice, x, y, curr_player); // should be changed to 5_1
         }
