@@ -19,19 +19,19 @@ void read_board(struct GameState* gs, char* name) {
         fprintf(stderr, "[ERROR] Input file not found.\n");
         exit( TXT_FAILURE );
     }
-    
-    //reads the number of columns from the file and assigns it
-    int board_y;
-    fscanf(fp, "%d", &board_y);
-    gs->board_y = board_y;
 
     //reads the number of rows from the file and assigns it
     int board_x;
     fscanf(fp, "%d", &board_x);
     gs->board_x = board_x;
 
+    //reads the number of columns from the file and assigns it
+    int board_y;
+    fscanf(fp, "%d", &board_y);
+    gs->board_y = board_y;
+
     //assigning map to board_tile**
-    gs->board = new_board(board_x, board_y);
+    gs->board = new_board(board_y, board_x);
     for(int i = 0; i < board_x; i++) {
         for (int j = 0; j < board_y; j++) {
             char tile[3];
