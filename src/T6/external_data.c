@@ -16,19 +16,20 @@ void read_board(struct GameState* gs, char* name) {
     char buff[255];
     fp = fopen(name, "r");
 
+    //reads the number of rows from the file and assigns it
+    fscanf(fp, "%s", buff);
+    int board_x;
+    sscanf(buff, "%d", &board_x);
+    gs->board_x = board_x;
+
     //reads the number of columns from the file and assigns it
     fscanf(fp, "%s", buff);
     int board_y;
     sscanf(buff, "%d", &board_y);
     gs->board_y = board_y;
 
-    //reads the number of rows from the file and assigns it
-    fscanf(fp, "%s", buff);
-    int board_x;
-    sscanf(buff, "%d", &board_x);
-    gs->board_x = board_x;
     //assigning map to board_tile**
-    gs->board = new_board(board_x, board_y);
+    gs->board = new_board(board_y, board_x);
     for(int i = 0; i < board_x; i++) {
         for (int j = 0; j < board_y; j++) {
             char tile[3];
