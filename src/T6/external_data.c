@@ -89,7 +89,7 @@ void write_board(struct GameState* gs, char* name) {
 
     //writing number of columns
     char board_x_array[255];
-    int board_x = gs->board_x;
+    int board_x = gs->board_x - 2;
     sprintf(board_x_array,"%d",board_x);
     fputs(board_x_array, fp);
 
@@ -98,7 +98,7 @@ void write_board(struct GameState* gs, char* name) {
 
     //writing number of rows
     char board_y_array[255];
-    int board_y = gs->board_y;
+    int board_y = gs->board_y - 2;
     sprintf(board_y_array,"%d",board_y);
     fputs(board_y_array, fp);
 
@@ -106,8 +106,8 @@ void write_board(struct GameState* gs, char* name) {
     fputc('\n',fp);
 
     //writing the map
-    for(int i = 0; i < board_x; i++) {
-        for (int j = 0; j < board_y; j++) {
+    for(int i = 1; i < gs->board_x - 1; i++) {
+        for (int j = 1; j < gs->board_y - 1; j++) {
             int number_of_fishes = gs->board[i][j].fishes;
             int occupied = gs->board[i][j].occupied;
 
