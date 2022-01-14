@@ -14,60 +14,66 @@
 void read_board(struct GameState* gs, char* name) {
     FILE *fp;
     char buff[255];
-    fp = fopen(name, "r");
+    if ( (fp = fopen(name, "r")) == NULL) {
+        fprintf(stderr, "[ERROR] Input file not found.\n");
+        exit( TXT_FAILURE );
+    }
 
     //reads the number of rows from the file and assigns it
-    fscanf(fp, "%s", buff);
     int board_x;
-    sscanf(buff, "%d", &board_x);
-    gs->board_x = board_x;
+    fscanf(fp, "%d", &board_x);
+    gs->board_x = board_x + 2;
 
     //reads the number of columns from the file and assigns it
-    fscanf(fp, "%s", buff);
     int board_y;
-    sscanf(buff, "%d", &board_y);
-    gs->board_y = board_y;
+    fscanf(fp, "%d", &board_y);
+    gs->board_y = board_y + 2;
 
     //assigning map to board_tile**
-    gs->board = new_board(board_y, board_x);
-    for(int i = 0; i < board_x; i++) {
-        for (int j = 0; j < board_y; j++) {
+    gs->board = new_board(gs->board_y,gs->board_x);
+
+    for(int i = 1; i < gs->board_x - 1; i++) {
+        for (int j = 1; j < gs->board_y - 1; j++) {
             char tile[3];
-            tile[2] = '\0';
-            fscanf(fp,"%s", tile);
+            if (!fscanf(fp,"%s", tile))
+                exit( TXT_FAILURE );
             gs->board[i][j].fishes = tile[0] - '0';
             gs->board[i][j].occupied = tile[1] - '0';
         }
     }
-    //reading information about player and assigning it to players*
-    int number_of_players = 0;
-    int counter_of_row = 0;
-    int flag = 1;
-    struct player* players_array = malloc(sizeof(struct player)*number_of_players);
-    while (flag) {
-        struct player pl;
-        for(int i = 0; i < 3; i++) {
-            if(fscanf(fp, "%s", buff) == EOF) {
-                flag = 0;
-                break;
-            }
-            if(counter_of_row == 0) {
-                snprintf(pl.full_name,32,"%s",buff);
-                counter_of_row++;
-            } else if(counter_of_row == 1) {
-                pl.id = buff[0];//because id is from 0 to 9
-                counter_of_row++;
-            } else {
-                int number_of_fish_collected;
-                sscanf(buff, "%d", &number_of_fish_collected);
-                pl.fish_collected = number_of_fish_collected;
-                counter_of_row = 0;
-            }
-        }
-        *players_array = pl;
-        number_of_players++;
+
+    for (int i = 0; i < gs->board_x; i++) {
+        gs->board[i][0].fishes = 0;
+        gs->board[i][0].occupied = 0;
     }
-    gs->n = number_of_players;
+    for (int i = 0; i < gs->board_y; i++) {
+        gs->board[0][i].fishes = 0;
+        gs->board[0][i].occupied = 0;
+    }
+
+    for (int i = 0; i < gs->board_x; i++) {
+        gs->board[i][gs->board_x - 2].fishes = 0;
+        gs->board[i][gs->board_x - 2].occupied = 0;
+    }
+
+    for (int i = 0; i < gs->board_y; i++) {
+        gs->board[gs->board_y - 2][i].fishes = 0;
+        gs->board[gs->board_y - 2][i].occupied = 0;
+    }
+    //reading information about player and assigning it to players*
+    int n = 0;  // number of players
+    struct player* players_array = malloc(sizeof(struct player));
+    while (!feof(fp)) {
+        struct player pl;
+        char player_name[32];
+        int player_id, player_score;
+        if (fscanf(fp, "%s %d %d", pl.full_name, &pl.id, &pl.fish_collected) == EOF) {
+            break;
+        }
+        players_array = realloc(players_array, sizeof(struct player)*(n+1));
+        players_array[n++] = pl;
+    }
+    gs->n = n;
     gs->players = players_array;
 
     fclose(fp);
@@ -118,18 +124,20 @@ void write_board(struct GameState* gs, char* name) {
         fputs(gs->players[i].full_name, fp);
         fputc(' ', fp);
 
+        int player_id = gs->players[i].id;
+        char player_id_array[255];
+        sprintf(player_id_array,"%d",player_id);
+        fputs(player_id_array,fp);
+        fputc(' ', fp);
+
         int fish_collected = gs->players[i].fish_collected;
         char fish_collected_array[255];
         sprintf(fish_collected_array,"%d",fish_collected);
         fputs(fish_collected_array,fp);
-        fputc(' ', fp);
-
-        int player_id = gs->players[i].id;
-        char player_id_array[255];
-        sprintf(player_id_array,"%d",player_id);
         fputc('\n', fp);
     }
 
     fclose(fp);
 }
+
 
