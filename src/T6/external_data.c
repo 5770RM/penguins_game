@@ -23,23 +23,43 @@ void read_board(struct GameState* gs, char* name) {
     //reads the number of rows from the file and assigns it
     int board_x;
     fscanf(fp, "%d", &board_x);
-    gs->board_x = board_x;
+    gs->board_x = board_x + 2;
 
     //reads the number of columns from the file and assigns it
     int board_y;
     fscanf(fp, "%d", &board_y);
-    gs->board_y = board_y;
+    gs->board_y = board_y + 2;
 
     //assigning map to board_tile**
-    gs->board = new_board(board_y, board_x);
-    for(int i = 0; i < board_x; i++) {
-        for (int j = 0; j < board_y; j++) {
+    gs->board = new_board(gs->board_y,gs->board_x);
+
+    for(int i = 1; i < gs->board_x - 1; i++) {
+        for (int j = 1; j < gs->board_y - 1; j++) {
             char tile[3];
             if (!fscanf(fp,"%s", tile)) 
                 exit( TXT_FAILURE );
             gs->board[i][j].fishes = tile[0] - '0';
             gs->board[i][j].occupied = tile[1] - '0';
         }
+    }
+
+    for (int i = 0; i < gs->board_x; i++) {
+        gs->board[i][0].fishes = 0;
+        gs->board[i][0].occupied = 0;
+    }
+    for (int i = 0; i < gs->board_y; i++) {
+        gs->board[0][i].fishes = 0;
+        gs->board[0][i].occupied = 0;
+    }
+
+    for (int i = 0; i < gs->board_x; i++) {
+        gs->board[i][gs->board_x - 2].fishes = 0;
+        gs->board[i][gs->board_x - 2].occupied = 0;
+    }
+
+    for (int i = 0; i < gs->board_y; i++) {
+        gs->board[gs->board_y - 2][i].fishes = 0;
+        gs->board[gs->board_y - 2][i].occupied = 0;
     }
     //reading information about player and assigning it to players*
     int n = 0;  // number of players
