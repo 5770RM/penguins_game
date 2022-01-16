@@ -566,10 +566,6 @@ int bot4_choosing_movement(struct board_tile **board, struct player *players, st
     int *moves_possible = calloc(movement_counter, sizeof(int)); // freed
     for (int i = 0; i < movement_counter; i++)
     {
-        moves_possible[i] = 0;
-    }
-    for (int i = 0; i < movement_counter; i++)
-    {
         up = 1;
         down = 1;
         right = 1;
@@ -615,10 +611,6 @@ int bot4_choosing_movement(struct board_tile **board, struct player *players, st
     if (j > 1)
     {
         int *board_prior = calloc(j, sizeof(int));
-        for (int i = 0; i < j; i++)
-        {
-            board_prior[i] = 0;
-        }
         int board_prior_counter = 0;
         for (int i = 0; i < j; i++)
         {
@@ -882,7 +874,7 @@ int bot5_possible_placement(struct board_tile **board, struct player *players, s
         free(flag_ar);
         return placement_decision;
     }
-}
+} // ааа
 int bot5_1_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
 {
     int choosing_counter = 0;
@@ -1231,8 +1223,10 @@ int bot5_1_choosing_penguin(struct board_tile **board, struct player *players, s
     for (int i = 0; i < choosing_counter; i++)
     {
         if (block_potention[i] == temp)
+        {
             same_potention[same_potention_counter] = i;
-        same_potention_counter++;
+            same_potention_counter++;
+        }
     }
     if (same_potention_counter == 1)
     {
@@ -1264,11 +1258,1552 @@ int bot5_1_choosing_penguin(struct board_tile **board, struct player *players, s
 }
 int bot5_2_choosing_penguin(struct board_tile **board, struct player *players, struct bot_choosing *choice, int x_size, int y_size, int curr_player)
 {
+    int choosing_counter = 0;
+    int temp = -1;
+    for (int i = 0; i < y_size; i++)
+    {
+        for (int j = 0; j < x_size; j++)
+        {
+            if (board[i][j].occupied == players[curr_player - 1].id)
+            {
+                if (((board[i + 1][j].fishes != 0) && ((board[i + 1][j].occupied == 0))) || ((board[i - 1][j].fishes != 0) && (board[i - 1][j].occupied == 0)) || ((board[i][j + 1].fishes != 0) && (board[i][j + 1].occupied == 0)) || ((board[i][j - 1].fishes != 0) && (board[i][j - 1].occupied == 0)))
+                {
+                    choice[choosing_counter].x = j;
+                    choice[choosing_counter].y = i;
+                    choosing_counter++;
+                }
+            }
+        }
+    }
+    int *amount_of_directions = calloc(choosing_counter, sizeof(int)); // freed
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (board[choice[i].y + 1][choice[i].x].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y - 1][choice[i].x].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y][choice[i].x + 1].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+        if (board[choice[i].y][choice[i].x - 1].fishes != 0)
+        {
+            amount_of_directions[i]++;
+        }
+    }
+    int *amount_reacheble = calloc(choosing_counter, sizeof(int)); // freed
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        int amount_of_directions = 0;
+        int up = 1;
+        int down = 1;
+        int right = 1;
+        int left = 1;
+        while ((board[choice[i].y + up][choice[i].x].fishes != 0) && (board[choice[i].y + up][choice[i].x].occupied == 0))
+        {
+            amount_reacheble[i] += board[choice[i].y + up][choice[i].x].fishes;
+            up++;
+        }
+        while (board[choice[i].y - down][choice[i].x].fishes != 0 && (board[choice[i].y - down][choice[i].x].occupied == 0))
+        {
+            amount_reacheble[i] += board[choice[i].y - down][choice[i].x].fishes;
+            down++;
+        }
+        while (board[choice[i].y][choice[i].x + right].fishes != 0 && board[choice[i].y][choice[i].x + right].occupied == 0)
+        {
+            amount_reacheble[i] += board[choice[i].y][choice[i].x + right].fishes;
+            right++;
+        }
 
+        while (board[choice[i].y][choice[i].x - left].fishes != 0 && board[choice[i].y][choice[i].x - left].occupied == 0)
+        {
+            amount_reacheble[i] += board[choice[i].y][choice[i].x - left].fishes;
+            left++;
+        }
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_reacheble[i] > temp)
+            temp = amount_reacheble[i];
+    }
+    int *same_potention = calloc(choosing_counter, sizeof(int)); // free
+    int same_potention_counter = 0;
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_reacheble[i] == temp)
+            same_potention[same_potention_counter] = i;
+        same_potention_counter++;
+    }
+    if (same_potention_counter == 1)
+    {
+        temp = same_potention[0];
+        free(amount_reacheble);
+        free(same_potention);
+        return temp;
+    }
+    temp = 5;
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_directions[same_potention[i]] < temp)
+            temp = amount_of_directions[same_potention[i]];
+    }
+    for (int i = 0; i < choosing_counter; i++)
+    {
+        if (amount_of_directions[same_potention[i]] == temp)
+        {
+            temp = same_potention[i];
+            break;
+        }
+    }
+    free(amount_of_directions);
+    free(same_potention);
+    return temp;
 }
+int bot5_1_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
+{
+    int movement_counter = 0;
+    int up = 1;
+    int down = 1;
+    int right = 1;
+    int left = 1;
 
+    while ((board[m.from.y + up][m.from.x].fishes != 0) && (board[m.from.y + up][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y + up);
+        up++;
+        movement_counter++;
+    }
+    while ((board[m.from.y - down][m.from.x].fishes != 0) && (board[m.from.y - down][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y - down);
+        down++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x + right].fishes != 0) && (board[m.from.y][m.from.x + right].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x + right);
+        mov_choice[movement_counter].y = (m.from.y);
+        right++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x - left].fishes != 0) && (board[m.from.y][m.from.x - left].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x - left);
+        mov_choice[movement_counter].y = (m.from.y);
+        left++;
+        movement_counter++;
+    }
+    int *amount_of_moves = calloc(movement_counter, sizeof(int)); // free
+    int *block_potention = calloc(movement_counter, sizeof(int)); // free
+    for (int i = 0; i < movement_counter; i++)
+    {
+        int amount_of_directions = 0;
+        int up = 1;
+        int down = 1;
+        int right = 1;
+        int left = 1;
+        while ((board[mov_choice[i].y + up][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y + up][mov_choice[i].x].occupied == 0))
+        {
+            amount_of_moves[i]++;
+            if (board[mov_choice[i].y + up + 1][mov_choice[i].x].occupied != 0 && board[mov_choice[i].y + up + 1][mov_choice[i].x].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y + up + 2][mov_choice[i].x].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up + 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up + 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y + up][mov_choice[i].x + 1].occupied != 0 && board[mov_choice[i].y + up][mov_choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y + up + 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up][mov_choice[i].x + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up - 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y + up][mov_choice[i].x - 1].occupied != 0 && board[mov_choice[i].y + up][mov_choice[i].x - 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y + up + 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up - 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + up][mov_choice[i].x - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            up++;
+        }
+        while (board[mov_choice[i].y - down][mov_choice[i].x].fishes != 0 && (board[mov_choice[i].y - down][mov_choice[i].x].occupied == 0))
+        {
+            amount_of_moves[i]++;
+            if (board[mov_choice[i].y - down - 1][mov_choice[i].x].occupied != 0 && board[mov_choice[i].y - down - 1][mov_choice[i].x].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y - down - 2][mov_choice[i].x].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down - 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down - 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y - down][mov_choice[i].x + 1].occupied != 0 && board[mov_choice[i].y - down][mov_choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y - down - 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down][mov_choice[i].x + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down + 1][mov_choice[i].x + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1) // ааа
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y - down][mov_choice[i].x - 1].occupied != 0 && board[mov_choice[i].y - down][mov_choice[i].x + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y - down - 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down + 1][mov_choice[i].x - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - down][mov_choice[i].x - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            down++;
+        }
+        while (board[mov_choice[i].y][mov_choice[i].x + right].fishes != 0 && board[mov_choice[i].y][mov_choice[i].x + right].occupied == 0)
+        {
+            amount_of_moves[i]++;
+            if (board[mov_choice[i].y + 1][mov_choice[i].x + right].occupied != 0 && board[mov_choice[i].y + 1][mov_choice[i].x + right].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y + 1][mov_choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 2][mov_choice[i].x + right].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 1][mov_choice[i].x + right - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y - 1][mov_choice[i].x + right].occupied != 0 && board[mov_choice[i].y + 1][mov_choice[i].x + right].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y - 1][mov_choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 2][mov_choice[i].x + right].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 1][mov_choice[i].x + right - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y][mov_choice[i].x + right + 1].occupied != 0 && board[mov_choice[i].y][mov_choice[i].x + right + 1].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y][mov_choice[i].x + right + 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 1][mov_choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 1][mov_choice[i].x + right + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            right++;
+        }
 
+        while (board[mov_choice[i].y][mov_choice[i].x - left].fishes != 0 && board[mov_choice[i].y][mov_choice[i].x - left].occupied == 0)
+        {
+            amount_of_moves[i]++;
+            if (board[mov_choice[i].y + 1][mov_choice[i].x - left].occupied != 0 && board[mov_choice[i].y + 1][mov_choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y + 1][mov_choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 1][mov_choice[i].x - left + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 2][mov_choice[i].x - left].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y - 1][mov_choice[i].x - left].occupied != 0 && board[mov_choice[i].y + 1][mov_choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y - 1][mov_choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 1][mov_choice[i].x - left + 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 2][mov_choice[i].x - left].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            if (board[mov_choice[i].y][mov_choice[i].x - left - 1].occupied != 0 && board[mov_choice[i].y][mov_choice[i].x - left].occupied != players[curr_player - 1].id)
+            {
+                amount_of_directions = 0;
+                if (board[mov_choice[i].y][mov_choice[i].x - left - 2].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y + 1][mov_choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (board[mov_choice[i].y - 1][mov_choice[i].x - left - 1].fishes != 0)
+                {
+                    amount_of_directions++;
+                }
+                if (amount_of_directions == 0)
+                    block_potention[i] += 1000;
+                else if (amount_of_directions == 1)
+                    block_potention[i] += 1;
+            }
+            left++;
+        }
+    }
+    int temp = -1;
+    for (int i = 0; i < movement_counter; i++)
+    {
+        if (block_potention[i] > temp)
+            temp = block_potention[i];
+    }
+    int *same_potention = calloc(movement_counter, sizeof(int)); // freed
+    int same_potention_counter = 0;
+    for (int i = 0; i < movement_counter; i++)
+    {
+        if (block_potention[i] == temp && block_potention[i] != 0)
+        {
+            same_potention[same_potention_counter] = i;
+            same_potention_counter++;
+        }
+    }
+    if (same_potention_counter == 1)
+    {
+        temp = same_potention[0];
+        free(amount_of_moves);
+        free(block_potention);
+        free(same_potention);
+        return temp;
+    }
+    //аа
+    int *fish_possible = calloc(movement_counter, sizeof(int)); // freed
+    struct bot_second_round *second_round = calloc(movement_counter * x_size * y_size, sizeof(struct bot_second_round));
+    int second_round_counter = 0;
+    for (int i = 0; i < movement_counter; i++)
+    {
+        up = 1;
+        while ((board[mov_choice[i].y + up][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y + up][mov_choice[i].x].occupied == 0) && (mov_choice[i].y + up != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y + up][mov_choice[i].x].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x;
+            second_round[second_round_counter].y = mov_choice[i].y + up;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            up++;
+        }
+        down = 1;
+        while ((board[mov_choice[i].y - down][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y - down][mov_choice[i].x].occupied == 0) && (mov_choice[i].y - down != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y - down][mov_choice[i].x].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x;
+            second_round[second_round_counter].y = mov_choice[i].y - down;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            down++;
+        }
+        right = 1;
+        while ((board[mov_choice[i].y][mov_choice[i].x + right].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x + right].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x + right != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y][mov_choice[i].x + right].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x + right;
+            second_round[second_round_counter].y = mov_choice[i].y;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            right++;
+        }
+        left = 1;
+        while ((board[mov_choice[i].y][mov_choice[i].x - left].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x - left].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x - left != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y][mov_choice[i].x - left].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x - left;
+            second_round[second_round_counter].y = mov_choice[i].y;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            left++;
+        }
+    }
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        second_round[i].direct = 0;
+        second_round[i].prof = 0;
+    }
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        int dir_temp = -1;
+        int dir_tile = 0;
+        up = 1;
+        down = 1;
+        right = 1;
+        left = 1;
 
+        while ((board[second_round[i].y + up][second_round[i].x].fishes != 0) && (board[second_round[i].y + up][second_round[i].x].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up + up1][second_round[i].x].fishes != 0) && (board[second_round[i].y + up + up1][second_round[i].x].occupied == 0) && ((second_round[i].y + up + up1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + up1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y + up + up1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y + up + up1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1][second_round[i].x + 1].fishes != 0) && (second_round[i].y + up + up1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1][second_round[i].x - 1].fishes != 0) && (second_round[i].y + up + up1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y + up - down1][second_round[i].x].fishes != 0) && (board[second_round[i].y + up - down1][second_round[i].x].occupied == 0) && ((second_round[i].y + up - down1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up - down1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y + up - down1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y + up - down1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1][second_round[i].x + 1].fishes != 0) && (second_round[i].y + up - down1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1][second_round[i].x - 1].fishes != 0) && (second_round[i].y + up - down1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y + up][second_round[i].x + right1].fishes != 0) && (board[second_round[i].y + up][second_round[i].x + right1].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y + up + 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y + up - 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x + right1 + 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x + right1 - 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y + up][second_round[i].x - left1].fishes != 0) && (board[second_round[i].y + up][second_round[i].x - left1].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y + up + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y + up - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x - left1 + 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x - left1 - 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            up++;
+        }
+        while ((board[second_round[i].y - down][second_round[i].x].fishes != 0) && (board[second_round[i].y - down][second_round[i].x].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y - down + up1][second_round[i].x].fishes != 0) && (board[second_round[i].y - down + up1][second_round[i].x].occupied == 0) && ((second_round[i].y - down + up1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + up1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y - down + up1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y - down + up1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1][second_round[i].x + 1].fishes != 0) && (second_round[i].y - down + up1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1][second_round[i].x - 1].fishes != 0) && (second_round[i].y - down + up1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down - down1][second_round[i].x].fishes != 0) && (board[second_round[i].y - down - down1][second_round[i].x].occupied == 0) && ((second_round[i].y - down - down1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down - down1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y - down - down1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y - down - down1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1][second_round[i].x + 1].fishes != 0) && (second_round[i].y - down - down1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1][second_round[i].x - 1].fishes != 0) && (second_round[i].y - down - down1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y - down][second_round[i].x + right1].fishes != 0) && (board[second_round[i].y - down][second_round[i].x + right1].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y - down + 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y - down - 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x + right1 + 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x + right1 - 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y - down][second_round[i].x - left1].fishes != 0) && (board[second_round[i].y - down][second_round[i].x - left1].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y - down + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y - down - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x - left1 + 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x - left1 - 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            down++;
+        }
+        while ((board[second_round[i].y][second_round[i].x + right].fishes != 0) && (board[second_round[i].y][second_round[i].x + right].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up1][second_round[i].x + right].fishes != 0) && (board[second_round[i].y + up1][second_round[i].x + right].occupied == 0) && ((second_round[i].y + up1 != m.from.y) && (second_round[i].x + right != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up1 + 1][second_round[i].x + right].fishes != 0) && (second_round[i].y + up1 + 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1 - 1][second_round[i].x + right].fishes != 0) && (second_round[i].y + up1 - 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x + right + 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x + right + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x + right - 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x + right - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down1][second_round[i].x + right].fishes != 0) && (board[second_round[i].y - down1][second_round[i].x + right].occupied == 0) && ((second_round[i].y - down1 != m.from.y) && (second_round[i].x + right != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down1 + 1][second_round[i].x + right].fishes != 0) && (second_round[i].y - down1 + 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1 - 1][second_round[i].x + right].fishes != 0) && (second_round[i].y - down1 - 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x + right + 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x + right + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x + right - 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x + right - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x + right + right1].fishes != 0) && (board[second_round[i].y][second_round[i].x + right + right1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x + right + right1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x + right + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x + right + right1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x + right + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right + right1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x + right + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right + right1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x + right + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x + right - left1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x + right - left1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x + right - left1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right - left1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right - left1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            right++;
+        }
+        while ((board[second_round[i].y][second_round[i].x - left].fishes != 0) && (board[second_round[i].y][second_round[i].x - left].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left != m.from.x))) // left
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up1][second_round[i].x - left].fishes != 0) && (board[second_round[i].y + up1][second_round[i].x - left].occupied == 0) && ((second_round[i].y + up1 != m.from.y) && (second_round[i].x - left != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up1 + 1][second_round[i].x - left].fishes != 0) && (second_round[i].y + up1 + 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1 - 1][second_round[i].x - left].fishes != 0) && (second_round[i].y + up1 - 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x - left + 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x - left + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x - left - 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x - left - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down1][second_round[i].x - left].fishes != 0) && (board[second_round[i].y - down1][second_round[i].x - left].occupied == 0) && ((second_round[i].y - down1 != m.from.y) && (second_round[i].x - left != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down1 + 1][second_round[i].x - left].fishes != 0) && (second_round[i].y - down1 + 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1 - 1][second_round[i].x - left].fishes != 0) && (second_round[i].y - down1 - 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x - left + 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x - left + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x - left - 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x - left - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x - left + right1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left + right1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x - left + right1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x - left + right1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left + right1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left + right1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x - left - left1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x - left - left1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x - left - left1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left - left1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left - left1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            left++;
+        }
+        second_round[i].direct = dir_temp;
+        dir_temp = -1;
+    }
+    int *first_prior_ar = calloc(second_round_counter, sizeof(int)); // free
+    int first_prior_counter = 0;
+    temp = -1;
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        if (second_round[i].prof > temp)
+            temp = second_round[i].prof;
+    }
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        if (second_round[i].prof == temp)
+        {
+            first_prior_ar[first_prior_counter] = second_round[i].id;
+            first_prior_counter++;
+        }
+    }
+    if (first_prior_counter == 1)
+    {
+        temp = first_prior_ar[0];
+        free(fish_possible);
+        free(first_prior_ar);
+        return temp;
+    }
+    temp = -1;
+    int *second_prior_ar = calloc(second_round_counter, sizeof(int)); // free
+    int second_prior_counter = 0;
+    for (int i = 0; i < first_prior_counter; i++)
+    {
+        if (second_round[first_prior_ar[i]].direct > temp)
+            temp = second_round[first_prior_ar[i]].direct;
+    }
+    for (int i = 0; i < first_prior_counter; i++)
+    {
+        if (second_round[first_prior_ar[i]].direct == temp)
+        {
+            second_prior_ar[second_prior_counter] = first_prior_ar[i];
+            second_prior_counter++;
+        }
+    }
+    if (second_prior_counter == 1)
+    {
+        temp = second_prior_ar[0];
+        free(amount_of_moves);
+        free(block_potention);
+        free(same_potention);
+        free(fish_possible);
+        free(first_prior_ar);
+        free(second_prior_ar);
+        return temp;
+    }
+    int *third_prior_ar = calloc(second_prior_counter, sizeof(int)); // free
+    int third_prior_counter = 0;
+    temp = -1;
+    for (int i = 0; i < second_prior_counter; i++)
+    {
+        if (fish_possible[second_prior_ar[i]] > temp)
+            temp = fish_possible[second_prior_ar[i]];
+    }
+    for (int i = 0; i < second_prior_counter; i++)
+    {
+        if (second_round[second_prior_ar[i]].direct == temp)
+        {
+            third_prior_ar[third_prior_counter] = second_prior_ar[i];
+            second_prior_counter++;
+        }
+    }
+    temp = third_prior_ar[0];
+    free(fish_possible);
+    free(amount_of_moves);
+    free(block_potention);
+    free(same_potention);
+    free(first_prior_ar);
+    free(second_prior_ar);
+    free(third_prior_ar);
+    return temp;
+}
+int bot5_2_choosing_movement(struct board_tile **board, struct player *players, struct movement m, struct bot_movement *mov_choice, int x_size, int y_size, int curr_player)
+{
+    int movement_counter = 0;
+    int up = 1;
+    int down = 1;
+    int right = 1;
+    int left = 1;
+
+    while ((board[m.from.y + up][m.from.x].fishes != 0) && (board[m.from.y + up][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y + up);
+        up++;
+        movement_counter++;
+    }
+    while ((board[m.from.y - down][m.from.x].fishes != 0) && (board[m.from.y - down][m.from.x].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x);
+        mov_choice[movement_counter].y = (m.from.y - down);
+        down++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x + right].fishes != 0) && (board[m.from.y][m.from.x + right].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x + right);
+        mov_choice[movement_counter].y = (m.from.y);
+        right++;
+        movement_counter++;
+    }
+    while ((board[m.from.y][m.from.x - left].fishes != 0) && (board[m.from.y][m.from.x - left].occupied == 0))
+    {
+        mov_choice[movement_counter].x = (m.from.x - left);
+        mov_choice[movement_counter].y = (m.from.y);
+        left++;
+        movement_counter++;
+    }
+    int *fish_possible = calloc(movement_counter, sizeof(int)); // free
+    struct bot_second_round *second_round = calloc(movement_counter * x_size * y_size, sizeof(struct bot_second_round));
+    int second_round_counter = 0;
+    for (int i = 0; i < movement_counter; i++)
+    {
+        up = 1;
+        while ((board[mov_choice[i].y + up][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y + up][mov_choice[i].x].occupied == 0) && (mov_choice[i].y + up != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y + up][mov_choice[i].x].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x;
+            second_round[second_round_counter].y = mov_choice[i].y + up;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            up++;
+        }
+        down = 1;
+        while ((board[mov_choice[i].y - down][mov_choice[i].x].fishes != 0) && (board[mov_choice[i].y - down][mov_choice[i].x].occupied == 0) && (mov_choice[i].y - down != m.from.y) && (mov_choice[i].x != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y - down][mov_choice[i].x].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x;
+            second_round[second_round_counter].y = mov_choice[i].y - down;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            down++;
+        }
+        right = 1;
+        while ((board[mov_choice[i].y][mov_choice[i].x + right].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x + right].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x + right != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y][mov_choice[i].x + right].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x + right;
+            second_round[second_round_counter].y = mov_choice[i].y;
+            second_round_counter++;
+            right++;
+        }
+        left = 1;
+        while ((board[mov_choice[i].y][mov_choice[i].x - left].fishes != 0) && (board[mov_choice[i].y][mov_choice[i].x - left].occupied == 0) && (mov_choice[i].y != m.from.y) && (mov_choice[i].x - left != m.from.x))
+        {
+            fish_possible[i] += board[mov_choice[i].y][mov_choice[i].x - left].fishes;
+            second_round[second_round_counter].x = mov_choice[i].x - left;
+            second_round[second_round_counter].y = mov_choice[i].y;
+            second_round[second_round_counter].id = i;
+            second_round_counter++;
+            left++;
+        }
+    }
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        int dir_temp = -1;
+        int dir_tile = 0;
+        up = 1;
+        down = 1;
+        right = 1;
+        left = 1;
+
+        while ((board[second_round[i].y + up][second_round[i].x].fishes != 0) && (board[second_round[i].y + up][second_round[i].x].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up + up1][second_round[i].x].fishes != 0) && (board[second_round[i].y + up + up1][second_round[i].x].occupied == 0) && ((second_round[i].y + up + up1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + up1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y + up + up1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y + up + up1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1][second_round[i].x + 1].fishes != 0) && (second_round[i].y + up + up1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up + up1][second_round[i].x - 1].fishes != 0) && (second_round[i].y + up + up1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y + up - down1][second_round[i].x].fishes != 0) && (board[second_round[i].y + up - down1][second_round[i].x].occupied == 0) && ((second_round[i].y + up - down1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up - down1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y + up - down1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y + up - down1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1][second_round[i].x + 1].fishes != 0) && (second_round[i].y + up - down1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - down1][second_round[i].x - 1].fishes != 0) && (second_round[i].y + up - down1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y + up][second_round[i].x + right1].fishes != 0) && (board[second_round[i].y + up][second_round[i].x + right1].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y + up + 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y + up - 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x + right1 + 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x + right1 - 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y + up][second_round[i].x - left1].fishes != 0) && (board[second_round[i].y + up][second_round[i].x - left1].occupied == 0) && ((second_round[i].y + up != m.from.y) && (second_round[i].x - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up + 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y + up + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up - 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y + up - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x - left1 + 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up][second_round[i].x - left1 - 1].fishes != 0) && (second_round[i].y + up != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            up++;
+        }
+        while ((board[second_round[i].y - down][second_round[i].x].fishes != 0) && (board[second_round[i].y - down][second_round[i].x].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y - down + up1][second_round[i].x].fishes != 0) && (board[second_round[i].y - down + up1][second_round[i].x].occupied == 0) && ((second_round[i].y - down + up1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + up1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y - down + up1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y - down + up1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1][second_round[i].x + 1].fishes != 0) && (second_round[i].y - down + up1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down + up1][second_round[i].x - 1].fishes != 0) && (second_round[i].y - down + up1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down - down1][second_round[i].x].fishes != 0) && (board[second_round[i].y - down - down1][second_round[i].x].occupied == 0) && ((second_round[i].y - down - down1 != m.from.y) && (second_round[i].x != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down - down1 + 1][second_round[i].x].fishes != 0) && (second_round[i].y - down - down1 + 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1 - 1][second_round[i].x].fishes != 0) && (second_round[i].y - down - down1 - 1 != m.from.y) && (second_round[i].x != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1][second_round[i].x + 1].fishes != 0) && (second_round[i].y - down - down1 != m.from.y) && (second_round[i].x + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - down1][second_round[i].x - 1].fishes != 0) && (second_round[i].y - down - down1 != m.from.y) && (second_round[i].x - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y - down][second_round[i].x + right1].fishes != 0) && (board[second_round[i].y - down][second_round[i].x + right1].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y - down + 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - 1][second_round[i].x + right1].fishes != 0) && (second_round[i].y - down - 1 != m.from.y) && (second_round[i].x + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x + right1 + 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x + right1 - 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y - down][second_round[i].x - left1].fishes != 0) && (board[second_round[i].y - down][second_round[i].x - left1].occupied == 0) && ((second_round[i].y - down != m.from.y) && (second_round[i].x - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down + 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y - down + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down - 1][second_round[i].x - left1].fishes != 0) && (second_round[i].y - down - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x - left1 + 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down][second_round[i].x - left1 - 1].fishes != 0) && (second_round[i].y - down != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            down++;
+        }
+        while ((board[second_round[i].y][second_round[i].x + right].fishes != 0) && (board[second_round[i].y][second_round[i].x + right].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right != m.from.x)))
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up1][second_round[i].x + right].fishes != 0) && (board[second_round[i].y + up1][second_round[i].x + right].occupied == 0) && ((second_round[i].y + up1 != m.from.y) && (second_round[i].x + right != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up1 + 1][second_round[i].x + right].fishes != 0) && (second_round[i].y + up1 + 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1 - 1][second_round[i].x + right].fishes != 0) && (second_round[i].y + up1 - 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x + right + 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x + right + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x + right - 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x + right - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down1][second_round[i].x + right].fishes != 0) && (board[second_round[i].y - down1][second_round[i].x + right].occupied == 0) && ((second_round[i].y - down1 != m.from.y) && (second_round[i].x + right != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down1 + 1][second_round[i].x + right].fishes != 0) && (second_round[i].y - down1 + 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1 - 1][second_round[i].x + right].fishes != 0) && (second_round[i].y - down1 - 1 != m.from.y) && (second_round[i].x + right != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x + right + 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x + right + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x + right - 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x + right - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x + right + right1].fishes != 0) && (board[second_round[i].y][second_round[i].x + right + right1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x + right + right1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x + right + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x + right + right1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x + right + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right + right1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x + right + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right + right1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x + right + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x + right - left1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x + right - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x + right - left1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x + right - left1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right - left1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x + right - left1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            right++;
+        }
+        while ((board[second_round[i].y][second_round[i].x - left].fishes != 0) && (board[second_round[i].y][second_round[i].x - left].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left != m.from.x))) // left
+        {
+            second_round[i].prof += board[second_round[i].y + up][second_round[i].x].fishes;
+            int up1 = 1;
+            int down1 = 1;
+            int right1 = 1;
+            int left1 = 1;
+            while ((board[second_round[i].y + up1][second_round[i].x - left].fishes != 0) && (board[second_round[i].y + up1][second_round[i].x - left].occupied == 0) && ((second_round[i].y + up1 != m.from.y) && (second_round[i].x - left != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + up1 + 1][second_round[i].x - left].fishes != 0) && (second_round[i].y + up1 + 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1 - 1][second_round[i].x - left].fishes != 0) && (second_round[i].y + up1 - 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x - left + 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x - left + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y + up1][second_round[i].x - left - 1].fishes != 0) && (second_round[i].y + up1 != m.from.y) && (second_round[i].x - left - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                up1++;
+            }
+            while ((board[second_round[i].y - down1][second_round[i].x - left].fishes != 0) && (board[second_round[i].y - down1][second_round[i].x - left].occupied == 0) && ((second_round[i].y - down1 != m.from.y) && (second_round[i].x - left != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y - down1 + 1][second_round[i].x - left].fishes != 0) && (second_round[i].y - down1 + 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1 - 1][second_round[i].x - left].fishes != 0) && (second_round[i].y - down1 - 1 != m.from.y) && (second_round[i].x - left != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x - left + 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x - left + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - down1][second_round[i].x - left - 1].fishes != 0) && (second_round[i].y - down1 != m.from.y) && (second_round[i].x - left - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                down1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x - left + right1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left + right1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left + right1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x - left + right1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x - left + right1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left + right1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left + right1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left + right1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left + right1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left + right1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                right1++;
+            }
+            while ((board[second_round[i].y][second_round[i].x - left - left1].fishes != 0) && (board[second_round[i].y][second_round[i].x - left1].occupied == 0) && ((second_round[i].y != m.from.y) && (second_round[i].x - left - left1 != m.from.x)))
+            {
+                dir_tile = 0;
+                if ((board[second_round[i].y + 1][second_round[i].x - left - left1].fishes != 0) && (second_round[i].y + 1 != m.from.y) && (second_round[i].x - left - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y - 1][second_round[i].x - left - left1].fishes != 0) && (second_round[i].y - 1 != m.from.y) && (second_round[i].x - left1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left - left1 + 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left - left1 + 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if ((board[second_round[i].y][second_round[i].x - left - left1 - 1].fishes != 0) && (second_round[i].y != m.from.y) && (second_round[i].x - left - left1 - 1 != m.from.x))
+                {
+                    dir_tile++;
+                }
+                if (dir_temp < dir_tile)
+                    dir_temp = dir_tile;
+                left1++;
+            }
+            left++;
+        }
+        second_round[i].direct = dir_temp;
+        dir_temp = -1;
+    }
+    int *first_prior_ar = calloc(second_round_counter, sizeof(int)); // free
+    int first_prior_counter = 0;
+    int temp = -1;
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        if (second_round[i].prof > temp)
+            temp = second_round[i].prof;
+    }
+    for (int i = 0; i < second_round_counter; i++)
+    {
+        if (second_round[i].prof == temp)
+        {
+            first_prior_ar[first_prior_counter]=second_round[i].id;;
+            first_prior_counter++;
+        }
+    }
+    if (first_prior_counter == 1)
+    {
+        temp = first_prior_ar[0];
+        free(fish_possible);
+        free(first_prior_ar);
+        return temp;
+    }
+    int *second_prior_ar = calloc(second_round_counter, sizeof(int)); // free
+    int second_prior_counter = 0;
+    for (int i = 0; i < first_prior_counter; i++)
+    {
+        if (second_round[first_prior_ar[i]].direct > temp)
+            temp = second_round[first_prior_ar[i]].direct;
+    }
+    for (int i = 0; i < first_prior_counter; i++)
+    {
+        if (second_round[first_prior_ar[i]].direct == temp)
+        {
+            second_prior_ar[second_prior_counter] = first_prior_ar[i];
+            second_prior_counter++;
+        }
+    }
+    if (second_prior_counter == 1)
+    {
+        temp = second_prior_ar[0];
+        free(fish_possible);
+        free(first_prior_ar);
+        free(second_prior_ar);
+        return temp;
+    }
+    int *third_prior_ar = calloc(second_round_counter, sizeof(int)); // free
+    int third_prior_counter = 0;
+    temp = -1;
+    for (int i = 0; i < second_prior_counter; i++)
+    {
+        if (fish_possible[second_prior_ar[i]] > temp)
+            temp = fish_possible[second_prior_ar[i]];
+    }
+    for (int i = 0; i < second_prior_counter; i++)
+    {
+        if (second_round[second_prior_ar[i]].direct == temp)
+        {
+            third_prior_ar[third_prior_counter] = second_prior_ar[i];
+            second_prior_counter++;
+        }
+    }
+    temp = third_prior_ar[0];
+    free(fish_possible);
+    free(first_prior_ar);
+    free(second_prior_ar);
+    free(third_prior_ar);
+    return temp;
+}
 
 /*
 
@@ -1384,16 +2919,16 @@ void execute_movement_bot(struct board_tile **board, int x, int y, struct player
             penguin_decision = bot5_1_choosing_penguin(board, players, choice, x, y, curr_player);
         }
         else
-            penguin_decision = bot5_1_choosing_penguin(board, players, choice, x, y, curr_player); // should be changed to 5_2
+            penguin_decision = bot5_2_choosing_penguin(board, players, choice, x, y, curr_player);
         m = bot_choosing_execution(board, players, choice, m, curr_player, penguin_decision);
         int movement_decision = -1;
         if (active_player_counter < 3)
         {
-            movement_decision = bot4_choosing_movement(board, players, m, mov_choice, x, y, curr_player); // should be changed to 5_1
+            movement_decision = bot5_1_choosing_movement(board, players, m, mov_choice, x, y, curr_player); // should be changed to 5_1
         }
         else
         {
-            movement_decision = bot4_choosing_movement(board, players, m, mov_choice, x, y, curr_player); // should be changed to 5_2
+            movement_decision = bot5_2_choosing_movement(board, players, m, mov_choice, x, y, curr_player); // should be changed to 5_2
         }
         m = bot_mov_choosing_execution(board, players, mov_choice, m, curr_player, movement_decision);
         execute_movement(board, players, curr_player, m);
