@@ -58,6 +58,7 @@ struct bot_placement
         int y; // y coordinate of the tile
         int prof; // amount of fish it would be able to collect
         int direct; // max amount of directions
+        int id; // id of initial tile
     };
 
 
