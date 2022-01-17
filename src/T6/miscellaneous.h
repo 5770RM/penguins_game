@@ -28,6 +28,9 @@ struct board_tile** new_board(int x, int y);
 
 // frees memory takes by the 2D array
 void free_board(struct board_tile** board, int x, int y);
+
+// frees memory occupied by state and its arrays
+void free_game_state(struct GameState* state);
 // To-do
 void placement_init();
 // To-do

@@ -11,27 +11,46 @@
 #include "autonomous.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <time.h>
 
 int main(int argc, char **argv) {
     srand(time(NULL));   
 #if AUTONOMOUS_MODE
-//    invalid_cla_check(argc, argv);
+    invalid_cla_check(argc, argv);
     
     struct GameState* state = malloc(sizeof(struct GameState));
-    char *in = argv[1];//"2.txt";
-    char *out = argv[2];//"2out.txt"; 
+    char *in = "2.txt";
+    char *out = "2out.txt"; 
+    
     read_board(state, in);
-
-    // add exra border around the board
-    // add_border(state);
-
-//    char *nick = "GROUP-B";
-//    if (!nick_used(state->players, state->n, nick))
-//        add_new_player(state->players, n, next_free_id(state->players), );
-    //execute_autonomous_command(state, argc, argv); 
+    char *nick = "GROUP-B";
+    int id = find_id_by_name(state->players, state->n, nick);
+    int bot_level = 1;
+    int bot = 1;
+    
+    if (argc == 5 && strcmp(argv[1], "phase=placement")!=0) {
+        int penguins = atoi(argv[2]+9);
+        if (!id) {
+            id = next_free_id(state->players, state->n);
+            add_new_player(&(state->players), state->n, id, 'b', nick, penguins, penguins, 0, bot, bot_level);
+        }
+        while (state->players[id-1].penguins--) {
+            execute_placement_bot(state->board, state->board_x, state->board_y, state->players, state->n, id);
+        }
+    }
+    else if (argc == 4 && strcmp(argv[1], "phase=movement")!=0) {
+        state->players[id-1].bot = bot;
+        state->players[id-1].bot_level = bot_level;
+        state->players[id-1].movement_status = 1;
+        execute_movement_bot(state->board, state->board_x, state->board_y, state->players, state->n, id);     
+    }
+    else {
+        printf("%s",nick);
+    }
     write_board(state, out);  
-//    free_game_state(state);
+
+    free_game_state(state);
 #endif
 #if INTERACTIVE_MODE  
     int n = get_nbr_of_players();

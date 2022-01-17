@@ -64,5 +64,11 @@ void free_board(struct board_tile** board, int x, int y) {
     free(board);
 }
 
+void free_game_state(struct GameState* state) {
+    free(state->players);
+    free_board(state->board, state->board_x, state->board_y);
+    free(state);
+}
+
 void init_game() {}
 void end_game() {}
