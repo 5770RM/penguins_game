@@ -66,7 +66,7 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
                         {
                             if ((m.from.y - m.to.y) > 0)
                             {
-                                if ((board[m.from.y - i][m.to.x].fishes == 0))
+                                if (board[m.from.y - i][m.to.x].fishes == 0)
                                 {
                                     flag = 0;
                                 }
@@ -86,7 +86,7 @@ int valid_movement(struct board_tile **board, struct player *players, struct mov
                         {
                             if ((m.from.x - m.to.x) > 0)
                             {
-                                if ((board[m.from.y][m.from.x - i].fishes == 0))
+                                if (board[m.from.y][m.from.x - i].fishes == 0)
                                 {
                                     flag = 0;
                                 }

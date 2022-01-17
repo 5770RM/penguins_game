@@ -13,16 +13,19 @@ void next_player(int* curr_player, int n) {
 }
 
 void placement_init() {
+#if INTERACTIVE_MODE
     printf("-------------------\n");        
     printf("| PLACEMENT PHASE |\n");    
     printf("-------------------\n");    
+#endif
 }
 
 void movement_init(struct board_tile** board, int x, int y, struct player* players, int n) {
+#if INTERACTIVE_MODE
     printf("------------------\n");        
     printf("| MOVEMENT PHASE |\n");    
     printf("------------------\n");    
-
+#endif
     int i, j;
     for (i=1; i<y-1; ++i) 
         for (j=1; j<x-1; ++j) 

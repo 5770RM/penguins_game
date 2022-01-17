@@ -33,8 +33,9 @@ void free_board(struct board_tile** board, int x, int y);
 void free_game_state(struct GameState* state);
 // To-do
 void placement_init();
-// To-do
-void movement_init();
+// sets movment_status of each players
+// arguemtns: board, its x and y sizes, array of players and its length n
+void movement_init(struct board_tile** board, int x, int y, struct player* players, int n);
 
 // TO-DO
 void init_game();

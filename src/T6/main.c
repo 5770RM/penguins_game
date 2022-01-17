@@ -20,33 +20,36 @@ int main(int argc, char **argv) {
     invalid_cla_check(argc, argv);
     
     struct GameState* state = malloc(sizeof(struct GameState));
-    char *in = "2.txt";
-    char *out = "2out.txt"; 
+        
+    char *nick = "GROUP-B";
+    if (argc == 2) {
+        printf("%s",nick);
+        return 0;
+    }
+    char *in = argc == 5 ? argv[3] : argv[2];
+    char *out = argc == 5 ? argv[4] : argv[3];
     
     read_board(state, in);
-    char *nick = "GROUP-B";
+
     int id = find_id_by_name(state->players, state->n, nick);
     int bot_level = 1;
     int bot = 1;
     
-    if (argc == 5 && strcmp(argv[1], "phase=placement")!=0) {
+    if (strcmp(argv[1], "phase=placement")==0) {
         int penguins = atoi(argv[2]+9);
         if (!id) {
             id = next_free_id(state->players, state->n);
-            add_new_player(&(state->players), state->n, id, 'b', nick, penguins, penguins, 0, bot, bot_level);
+            add_new_player(&(state->players), &(state->n), id, 'b', nick, 0, penguins, penguins, 0, bot, bot_level);
         }
-        while (state->players[id-1].penguins--) {
+        for (int i=0; i<state->players[id-1].penguins; ++i) {
             execute_placement_bot(state->board, state->board_x, state->board_y, state->players, state->n, id);
         }
     }
-    else if (argc == 4 && strcmp(argv[1], "phase=movement")!=0) {
+    else if (strcmp(argv[1], "phase=movement")==0) {
         state->players[id-1].bot = bot;
         state->players[id-1].bot_level = bot_level;
-        state->players[id-1].movement_status = 1;
+        movement_init(state->board, state->board_x, state->board_y, state->players, state->n);
         execute_movement_bot(state->board, state->board_x, state->board_y, state->players, state->n, id);     
-    }
-    else {
-        printf("%s",nick);
     }
     write_board(state, out);  
 
