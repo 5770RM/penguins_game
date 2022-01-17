@@ -56,6 +56,17 @@ void init_players(struct player* players, int number_of_players) {
             printf("Invalid name, try again:");
             scanf("%c", &ch);
         }
+
+        for(int j = 0; j < i; j++) {
+            if (players[j].name == ch) {
+                printf("Invalid name or name is taken by another user. Please try again");
+                scanf("%c", &ch);
+                while ((ch < 'A' || ch > 'z') && players[j].name == ch) {
+                    printf("Invalid name or name is taken by another user. Please try again");
+                    scanf("%c", &ch);
+                }
+            }
+        }
         
         bot = check_if_ai();
         if(bot != 0)
