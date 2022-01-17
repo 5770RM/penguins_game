@@ -57,9 +57,9 @@ int main(int agrc, char **argv) {
             }
             if (phase == PLACEMENT_PHASE) {
                 draw_console(players, n, curr_player, "PLACEMENT PHASE");
-                if (placement_possible(board, x, y, players, curr_player) == FALSE) {
+                while (placement_game_status(board, x, y, players, n) == END_PP && placement_possible(board, x, y, players, curr_player) == FALSE) {
                     next_player(&curr_player, n);
-                    continue;
+                    //continue;
                 }
                 struct placement p = get_placement(board, x, y, curr_player);
                 if (valid_placement(board, x, y, p) == TRUE) {
@@ -72,10 +72,10 @@ int main(int agrc, char **argv) {
             }
             if (phase == MOVEMENT_PHASE) {
                 draw_console(players, n, curr_player, "MOVEMENT PHASE");  
-                if (movement_possible(board, x, y, players, curr_player) == FALSE) {
+                while (movement_game_status(board, players, n) != END_MP && movement_possible(board, x, y, players, curr_player) == FALSE) {
                     next_player(&curr_player, n);
-                    EndDrawing();
-                    continue;
+                    //EndDrawing();
+                    //continue;
                 }
                 struct movement m;
                 m = get_movement(board, x, y, players, n, curr_player);
