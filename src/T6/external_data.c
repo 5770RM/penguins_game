@@ -7,6 +7,7 @@
 #include "external_data.h"
 #include "miscellaneous.h"
 #include "map.h"
+#include "defines.h"
 
 // reads content of the file given in name, fills game state with date from a text file which path is specified in name
 // arguments: game state, name of the file
