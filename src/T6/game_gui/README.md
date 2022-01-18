@@ -23,7 +23,7 @@ We have created Shell scripts to automate the process of configuring, building a
 ./run
 ```
 
-In case of using Windows, code inside above Shell scripts should be done manually.
+In case of using **Windows**, code inside above Shell scripts should be run manually and use CMake GUI app.
 
 # Gameplay gallery
 ![plot](../../../doc/gallery/input_phase1.png)
