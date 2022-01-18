@@ -26,7 +26,8 @@ int main(int agrc, char **argv) {
 #if INTERACTIVE_MODE
     int n = 1;                                          // number of players
     struct player* players;
-    players = new_players(players, n);   // array of players
+    players = malloc(sizeof(struct player));    // init the array
+    players = new_players(players, n);          // array of players
     int curr_player;
     int x = 5, y = 5;                                   // x and y size of the map          
     struct board_tile** board = new_board(x, y);        // board stores a pointer to a 2D array
