@@ -23,6 +23,8 @@ We have created Shell scripts to automate the process of configuring, building a
 ./run
 ```
 
+In case of using Windows, code inside above Shell scripts should be done manually.
+
 # Gameplay gallery
 ![plot](../../../doc/gallery/input_phase1.png)
 ![plot](../../../doc/gallery/placement_phase1.png)
