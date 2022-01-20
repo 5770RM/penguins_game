@@ -1,15 +1,29 @@
 # Game "Penguins" with GUI
 
-This game relays on the GUI library called Raylib, which is cloned from GitHub during configuration.
+This game relays on the GUI library called **Raylib** (https://www.raylib.com), which is cloned from GitHub during configuration.
 
-To configure, run
-    `./configure`
+Raylib uses **GLFW** library, for which additional installations might be necessary (see https://www.glfw.org/docs/latest/compile.html).
 
-To build, run
-    `./build`
+**CMake** is also needed to build the project.
 
-To run, run
-    `./run`
+We have created Shell scripts to automate the process of configuring, building and running the game.
+
+**To configure, run**
+```sh
+./configure
+```
+
+**To build, run**
+```sh
+./build
+```
+
+**To run, run**
+```sh
+./run
+```
+
+In case of using **Windows**, code inside above Shell scripts should be run manually and use CMake GUI app for building.
 
 # Gameplay gallery
 ![plot](../../../doc/gallery/input_phase1.png)

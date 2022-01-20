@@ -229,7 +229,10 @@ input parameters: struct player* players, int n, int winner
 return: none
 this function is used to print the winner.
 */
-void print_winner(struct player* players, int n, int winner) {}
+void print_winner(struct player* players, int n, int winner) {
+    printf("The winner is %c,Congratulations!\n", players[winner - 1].name);
+    printf("The winner's score is %d\n", players[winner - 1].fish_collected);
+}
 
 /*
 input parameters: struct player* players, int n

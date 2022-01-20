@@ -1,0 +1,144 @@
+Enter the number of players(from 1 to 9):Enter the name of the 1st player(only one character):Is the player a bot?(1 for yes and 0 for no): Enter the level of difficulty(from 1(included) to 5(included)): Enter the name of the 2st player(only one character):Invalid name, try again:Invalid name, try again:Is the player a bot?(1 for yes and 0 for no): Enter the level of difficulty(from 1(included) to 5(included)): Amount of penguins each players has: Enter how many columns you want in the board(from 2 to 16):Enter how many rows you want in the board(from 2 to 16):-------------------
+| PLACEMENT PHASE |
+-------------------
+TURN: a
+RANKING
+name | score
+a: 1
+b: 0
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |1 -|2 -|   |
+2   |   |3 -|- a|3 -|   |
+3   |   |2 -|1 -|3 -|   |
+4   |   |3 -|3 -|1 -|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 1
+b: 1
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |- b|2 -|   |
+2   |   |3 -|- a|3 -|   |
+3   |   |2 -|1 -|3 -|   |
+4   |   |3 -|3 -|1 -|   |
+5   |   |   |   |   |   |
+TURN: a
+RANKING
+name | score
+a: 2
+b: 1
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |- b|2 -|   |
+2   |   |3 -|- a|3 -|   |
+3   |   |2 -|1 -|3 -|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 2
+b: 2
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |- b|2 -|   |
+2   |   |3 -|- a|3 -|   |
+3   |   |2 -|- b|3 -|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+------------------
+| MOVEMENT PHASE |
+------------------
+TURN: a
+RANKING
+name | score
+a: 2
+b: 2
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |- b|2 -|   |
+2   |   |3 -|- a|3 -|   |
+3   |   |2 -|- b|3 -|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 5
+b: 2
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |- b|2 -|   |
+2   |   |3 -|   |- a|   |
+3   |   |2 -|- b|3 -|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+TURN: a
+RANKING
+name | score
+a: 5
+b: 4
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |   |- b|   |
+2   |   |3 -|   |- a|   |
+3   |   |2 -|- b|3 -|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 8
+b: 4
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |   |- b|   |
+2   |   |3 -|   |   |   |
+3   |   |2 -|- b|- a|   |
+4   |   |3 -|3 -|- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 8
+b: 7
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |   |- b|   |
+2   |   |3 -|   |   |   |
+3   |   |2 -|   |- a|   |
+4   |   |3 -|- b|- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 8
+b: 10
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |   |- b|   |
+2   |   |3 -|   |   |   |
+3   |   |2 -|   |- a|   |
+4   |   |- b|   |- a|   |
+5   |   |   |   |   |   |
+TURN: b
+RANKING
+name | score
+a: 8
+b: 12
+      0   1   2   3   4
+0   |   |   |   |   |   |
+1   |   |   |   |- b|   |
+2   |   |3 -|   |   |   |
+3   |   |- b|   |- a|   |
+4   |   |   |   |- a|   |
+5   |   |   |   |   |   |
+RANKING
+name | score
+a: 8
+b: 15
+The winner is b,Congratulations!
+The winner's score is 15

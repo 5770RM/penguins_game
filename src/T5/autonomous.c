@@ -20,25 +20,28 @@ void invalid_cla_check(int argc, char **argv) {
         exit( CLA_FAILURE );
 	}
 	//placement
-	if (argc == 5) {
+	else if (argc == 5) {
 		if (strcmp(argv[1], "phase=placement") != 0) {
 			fprintf(stderr, "[ERROR] Invalid command arguments! First argument is should be phase=placement.Possibly too many arguments.\n");
             exit( CLA_FAILURE );
 		}
-		char* nptr;
-		strstr(argv[2], "penguins=", nptr);
+		char* nptr = strstr(argv[2], "penguins=");
 		if (nptr == NULL) {
 			fprintf(stderr, "[ERROR] Invalid command arguments! The number of penguins is incorrect!\n");
             exit( CLA_FAILURE );
 		}
 	}
 	//movement
-	if (argc == 4) {
+	else if (argc == 4) {
 		if (strcmp(argv[1], "phase=movement") != 0) {
 			fprintf(stderr, "[ERROR]Invalid command arguments! First argument is should be phase=movement.Possibly too few arguments.\n");
             exit( CLA_FAILURE );
 		}
 	}
+    else {
+	    fprintf(stderr, "[ERROR]Invalid command arguments! Wrong number of arguments.\n");
+        exit( CLA_FAILURE );   
+    }
 }
 
 int nick_used(struct player* players, int n, char *nick) {

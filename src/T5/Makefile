@@ -1,5 +1,5 @@
-output: main.o evaluation.o external_data.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
-	gcc -o output main.o evaluation.o external_data.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
+output: main.o autonomous.o evaluation.o external_data.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
+	gcc -o output main.o autonomous.o evaluation.o external_data.o map.o miscellaneous.o movement.o placement.o command_line_ui.o bots.o
 	
 main.o: evaluation.h map.h miscellaneous.h movement.h placement.h command_line_ui.h defines.h structures.h
 	gcc -c main.c
@@ -27,6 +27,9 @@ bots.o: bots.h structures.h placement.h movement.h
 
 external_data.o: external_data.h structures.h
 	gcc -c external_data.c
+
+autonomous.o: autonomous.h structures.h
+	gcc -c autonomous.c
 
 clean:
 	rm *.o output
