@@ -22,7 +22,6 @@ void init_players(struct player* array, int n);
 //returns: 1 if this name doesn't exist, 0 if it does
 int check_if_exists(struct player* players,char ch,int number_of_players);
 
-
 // asks user for x dimension of the map
 // arguments: none
 // returns: the size of the map's x dimension

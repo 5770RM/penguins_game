@@ -16,27 +16,27 @@
 #include "gui.h"
 
 
-Color colorId[9] = {RED, BLUE, GREEN,
+static Color colorId[9] = {RED, BLUE, GREEN,
                     PURPLE, BEIGE, PINK,
-                    ORANGE, YELLOW, BROWN};
+                    ORANGE, BROWN, YELLOW};
 
 // parameters for GUI elements
 
 // spinner with number of players
-bool spinner1EditMode = 0;  
-int spinner1Value = 1;      
+static bool spinner1EditMode = 0;  
+static int spinner1Value = 1;      
 
 // spinner with number of penguins
-bool spinner2EditMode = 0; 
-int spinner2Value = 1;
+static bool spinner2EditMode = 0; 
+static int spinner2Value = 1;
 
 // spinner with size of board's x dim
-bool spinner3EditMode = 0; 
-int spinner3Value = 5;
+static bool spinner3EditMode = 0; 
+static int spinner3Value = 5;
 
 // spinner with size of board's y dim
-bool spinner4EditMode = 0; 
-int spinner4Value = 5;
+static bool spinner4EditMode = 0; 
+static int spinner4Value = 5;
 
 // input fields
 typedef struct {

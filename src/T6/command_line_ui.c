@@ -52,7 +52,7 @@ void init_players(struct player* players, int number_of_players) {
         char ch;
         printf("Enter the name of the %ist player(only one character):", i + 1);
         scanf(" %c", &ch);
-        while (ch < 'A' || ch > 'z'|| (check_if_exists(players,ch,i) == 0)) {
+        while ((ch < 'A' || ch > 'z') || (check_if_exists(players,ch,i) == 0)) {
             printf("Invalid name, try again:");
             scanf("%c", &ch);
         }
@@ -82,7 +82,6 @@ void init_players(struct player* players, int number_of_players) {
         players[i].pen_not_placed = penguins;
     }
 }
-
 //input parameters: pointer to array's first index, name of current player and number of players
 //returns: 1 if this name doesn't exist, 0 if it does
 //check if the name already exists in array

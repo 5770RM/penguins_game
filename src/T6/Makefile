@@ -10,6 +10,9 @@ command_line_ui.o: command_line_ui.h structures.h
 map.o: map.h structures.h
 	gcc -c map.c
 
+autonomous.o: autonomous.h structures.h defines.h bots.h
+	gcc -c autonomous.c
+
 miscellaneous.o: miscellaneous.h structures.h
 	gcc -c miscellaneous.c
 
@@ -27,9 +30,6 @@ bots.o: bots.h structures.h placement.h movement.h
 
 external_data.o: external_data.h structures.h
 	gcc -c external_data.c
-
-autonomous.o: autonomous.h structures.h
-	gcc -c autonomous.c
 
 clean:
 	rm *.o output
