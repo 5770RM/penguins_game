@@ -1,4 +1,9 @@
-#include <sys/syscall.h>
+#ifdef __APPLE__
+    #include <sys/syscall.h>
+#elif __linux__
+    #include "syscalls.h"
+#endif
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
